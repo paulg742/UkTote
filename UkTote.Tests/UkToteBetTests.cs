@@ -61,7 +61,7 @@ namespace TBS.ARK.Tests
         [TestMethod]
         public async Task TestEachWayBet()
         {
-            var reply = await gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.WIN, Enums.BetOption.EACH_WAY, new[] { 1 });
+            var reply = await gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 400, Enums.BetCode.WIN, Enums.BetOption.EACH_WAY, new[] { 1 });
             Assert.IsTrue(!string.IsNullOrEmpty(reply.TSN));
         }
 
