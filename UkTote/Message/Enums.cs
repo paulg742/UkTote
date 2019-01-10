@@ -195,7 +195,11 @@
             PLACEPOT8 = 0x11,
             QUADDIE = 0x12,
             THURSDAY_MILLIONS = 0x13,
-            QUINELLA = 0x14
+            QUINELLA = 0x14,
+            TRIO = 0x15,
+            DOUBLETRIO = 0x16,
+            TRIPLETRIO = 0x17,
+            SIXUP = 0x18
         }
 
         public enum BetOption : ushort

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using BinarySerialization;
 
 namespace UkTote.Message
@@ -35,6 +36,17 @@ namespace UkTote.Message
                 RaceNumber = raceNumber,
                 HorseNumber = (ushort)((s > 900) ? s - 900 : s),
                 IsBanker = (byte)((s > 900) ? 1 : 0)
+            }).ToArray();
+        }
+
+        public static Selection[] Create(ushort meetingNumber, Tuple<ushort, int>[] selections)
+        {
+            return selections.Select(s => new Selection()
+            {
+                MeetingNumber = meetingNumber,
+                RaceNumber = s.Item1,
+                HorseNumber = (ushort)((s.Item2 > 900) ? s.Item2 - 900 : s.Item2),
+                IsBanker = (byte)((s.Item2 > 900) ? 1 : 0)
             }).ToArray();
         }
 

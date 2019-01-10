@@ -39,6 +39,9 @@ namespace UkTote
         public event Action OnConnected;
         public event Action<string> OnDisconnected;
         public event Action<string> OnIdle;
+        public event Action OnRuOk;
+        public event Action<byte[]> OnRawPacketReceived;
+        public event Action<byte[]> OnRawPacketSent;
 
         // update events
         public event Action<MeetingSalesUpdate> OnMeetingSalesUpdate;
@@ -183,6 +186,7 @@ namespace UkTote
             var buffer = stream.ToArray();
 
             _logger.DebugFormat("Sending {0} bytes: {1}", buffer.Length, string.Join(" ", Array.ConvertAll(buffer, b => b.ToString("X2"))));
+            OnRawPacketSent?.Invoke(buffer);
 
             networkStream.Write(buffer, 0, buffer.Length);
         }
@@ -269,6 +273,7 @@ namespace UkTote
                         // pull the entire packet from the buffer
                         var packetBuffer = _circularBuffer.Get(header.Length);
                         _watchdogTimer?.Kick();  // kick the dog whenever we receive a complete packet
+                        OnRawPacketReceived?.Invoke(packetBuffer);
                         ProcessPacket(header, packetBuffer);
                     }
                 }
@@ -287,6 +292,7 @@ namespace UkTote
 
         void ProcessRuok()
         {
+            OnRuOk?.Invoke();
             if (_watchdogTimer == null)
             {
                 _watchdogTimer = new WatchdogTimer(_watchdogTimeoutMs);
@@ -537,7 +543,7 @@ namespace UkTote
             QueueWork(req);
         }
 
-        protected int SellBetAsync(DateTime forDate, int meetingNumber, int raceNumber,
+        protected int SellBetAsync(DateTime forDate, int meetingNumber,
             int unitStake, int totalStake,
             Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, Selection[] selections, int? useBetId)
         {
@@ -749,17 +755,25 @@ namespace UkTote
                 case Message.Enums.BetCode.TRIFECTA:
                 case Message.Enums.BetCode.WIN:
                     // single leg bet
-                    return SellBet(forDate, meetingNumber, raceNumber, unitStake, totalStake, betCode, betOption,
+                    return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
                         Selection.Create((ushort)meetingNumber, (ushort)raceNumber, selections));
 
                 default:
                     // multi leg bet
-                    return SellBet(forDate, meetingNumber, raceNumber, unitStake, totalStake, betCode, betOption,
+                    return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
                         Selection.Create((ushort)meetingNumber, selections));
             }
         }
 
-        public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, 
+        public Task<BetReply> SellBet(DateTime forDate, int meetingNumber,
+            int unitStake, int totalStake,
+            Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, Tuple<ushort,int>[] selections)
+        {
+            return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
+                Selection.Create((ushort)meetingNumber, selections));
+        }
+
+        public Task<BetReply> SellBet(DateTime forDate, int meetingNumber,
             int unitStake, int totalStake, 
             Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, Selection[] selections, int? betId=null)
         {
@@ -797,7 +811,7 @@ namespace UkTote
             OnSellBetSuccess += successHandler;
             OnSellBetFailed += failedHandler;
 
-            SellBetAsync(forDate, meetingNumber, raceNumber, unitStake, totalStake, betCode, betOption, selections, betId);
+            SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections, betId);
             return tcs.Task;
         }
 
@@ -855,13 +869,13 @@ namespace UkTote
             OnSellBetSuccess += successHandler;
             OnSellBetFailed += failedHandler;
 
-            foreach (var bet in batch)
-            {
-                var betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.RaceNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, 
-                    Selection.Create((ushort)bet.MeetingNumber, (ushort)bet.RaceNumber, bet.Selections), bet.BetId);
+            //foreach (var bet in batch)
+            //{
+            //    var betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.RaceNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, 
+            //        Selection.Create((ushort)bet.MeetingNumber, (ushort)bet.RaceNumber, bet.Selections), bet.BetId);
 
-                responses[betId] = null;
-            }
+            //    responses[betId] = null;
+            //}
             return tcs.Task;
         }
 
@@ -942,6 +956,11 @@ namespace UkTote
             }
             Disconnect("stopping");
             Stop();
+        }
+
+        public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, Selection[] selections, int? betId = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

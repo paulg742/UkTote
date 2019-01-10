@@ -16,6 +16,9 @@ namespace TBS.ARK.Tests
 
         const string host = "217.46.202.209";
         const int port = 8032;
+        //const int port = 8036;    // HK port
+        // const string username = "HKATCentrum02";
+        // const string password = "password";
         const string username = "ATCentrum9";
         const string password = "at9password";
         ToteGateway gateway = new ToteGateway(120000);
@@ -447,6 +450,17 @@ namespace TBS.ARK.Tests
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.TSN, reply.BetId, betStr, reply.ErrorText);
         }
 
+        //[TestMethod]
+        //public async Task RunHkBatchTest()
+        //{
+        //    gateway.NextBetId = 400;
+
+        //    var batch = new List<BetRequest>()
+        //    {
+        //        new BetRequest(DateTime.UtcNow, 1, 1, 100, 4000, Enums.BetCode.DOUBLETRIO, Enums.BetOption.PERMUTATION, new[] { 103, 110, 106, 107, 108, 204, 202, 209, 212 }),
+        //        new BetRequest(DateTime.UtcNow, 1, 1, 100, 2400, Enums.BetCode.DOUBLETRIO, Enums.BetOption.BANKER, new[] { Tuple.Create(, 110, 106, 107, 108, 204, 202, 209, 212 }),
+        //    }
+        //}
         [TestMethod]
         public async Task RunBatchTest()
         {
