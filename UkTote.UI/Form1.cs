@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -9,6 +10,7 @@ namespace UkTote.UI
         private readonly ToteGateway _gateway = new ToteGateway(5000);
         private bool _connected;
         private bool _loggedIn;
+        private Message.RacecardReply _racecard;
 
         public MainForm()
         {
@@ -23,6 +25,8 @@ namespace UkTote.UI
             _gateway.OnRuOk += _gateway_OnRuOk;
             _gateway.OnRawPacketReceived += _gateway_OnRawPacketReceived;
             _gateway.OnRawPacketSent += _gateway_OnRawPacketSent;
+
+            UpdateButtons();
         }
 
         private void _gateway_OnRawPacketSent(byte[] buffer)
@@ -44,12 +48,19 @@ namespace UkTote.UI
         {
             Log($"Gateway disconnected: {obj}");
             _connected = false;
-            btnConnect.Enabled = true;
+            UpdateButtons();
         }
 
         private void _gateway_OnConnected()
         {
             Log($"Gateway connected");
+        }
+
+        void UpdateButtons()
+        {
+            btnConnect.Enabled = !_connected;
+            btnGetRacecard.Enabled = _connected && _racecard == null;
+            btnExportRacecard.Enabled = _racecard != null;
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
@@ -70,6 +81,10 @@ namespace UkTote.UI
                     {
                         Log($"Login failed with {txtUsername.Text}");
                     }
+                    else
+                    {
+                        btnGetRacecard.Enabled = true;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -89,6 +104,7 @@ namespace UkTote.UI
                     {
                         Log("Login successful");
                     }
+                    UpdateButtons();
                 }
             }
         }
@@ -145,6 +161,59 @@ namespace UkTote.UI
             }
             Clipboard.SetText(text);
             UpdateStatus("Copied to clipboard!");
+        }
+
+        private async void btnGetRacecard_Click(object sender, EventArgs e)
+        {
+            btnGetRacecard.Enabled = false;
+            try
+            {
+                _racecard = await _gateway.GetRacecardFast(DateTime.UtcNow.Date, true);
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+            }
+            UpdateButtons();
+            DisplayRacecardTree();
+        }
+
+        void DisplayRacecardTree()
+        {
+            if (_racecard == null) return;
+            foreach (var meeting in _racecard.Meetings)
+            {
+                var meetingNode = racecardTreeView.Nodes.Add($"{meeting.Key} - {meeting.Value.MeetingName} ({meeting.Value.NumberOfRaces} races)");
+                foreach (var race in meeting.Value.Races)
+                {
+                    var raceNode = meetingNode.Nodes.Add($"R{race.Key} - {race.Value.RaceName} {race.Value.DistanceMeters}m");
+                    if (race.Value.Runners != null)
+                    {
+                        var runnersNode = raceNode.Nodes.Add("Runners");
+
+                        foreach (var runner in race.Value.Runners)
+                        {
+                            runnersNode.Nodes.Add($"{runner.Key}. {runner.Value.RunnerName}");
+                        }
+                    }
+                    if (race.Value.RacePools != null)
+                    {
+                        var poolsNode = raceNode.Nodes.Add("Pools");
+                        foreach (var pool in race.Value.RacePools)
+                        {
+                            poolsNode.Nodes.Add($"{pool.Key} - {pool.Value.PoolName}");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void btnExportRacecard_Click(object sender, EventArgs e)
+        {
+            if (_racecard == null) return;
+            var text = Newtonsoft.Json.JsonConvert.SerializeObject(_racecard, Newtonsoft.Json.Formatting.Indented).Replace("\\u0000", string.Empty);
+            Clipboard.SetText(text);
+            UpdateStatus("Copied racecard to clipboard!");
         }
     }
 }

@@ -41,6 +41,10 @@
             this.btnCopyLog = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.balanceLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnGetRacecard = new System.Windows.Forms.Button();
+            this.racecardTreeView = new System.Windows.Forms.TreeView();
+            this.btnExportRacecard = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -142,15 +146,15 @@
             this.listBoxLog.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.ItemHeight = 16;
-            this.listBoxLog.Location = new System.Drawing.Point(189, 12);
+            this.listBoxLog.Location = new System.Drawing.Point(189, 284);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(599, 420);
+            this.listBoxLog.Size = new System.Drawing.Size(1277, 804);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(700, 442);
+            this.btnCopyLog.Location = new System.Drawing.Point(1378, 1094);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(88, 30);
             this.btnCopyLog.TabIndex = 11;
@@ -162,23 +166,63 @@
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 483);
+            this.statusLabel,
+            this.balanceLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1146);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1478, 30);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            this.statusLabel.Size = new System.Drawing.Size(0, 25);
+            // 
+            // balanceLabel
+            // 
+            this.balanceLabel.Name = "balanceLabel";
+            this.balanceLabel.Size = new System.Drawing.Size(179, 25);
+            this.balanceLabel.Text = "toolStripStatusLabel1";
+            // 
+            // btnGetRacecard
+            // 
+            this.btnGetRacecard.Location = new System.Drawing.Point(23, 324);
+            this.btnGetRacecard.Name = "btnGetRacecard";
+            this.btnGetRacecard.Size = new System.Drawing.Size(156, 34);
+            this.btnGetRacecard.TabIndex = 13;
+            this.btnGetRacecard.Text = "Get Racecard";
+            this.btnGetRacecard.UseVisualStyleBackColor = true;
+            this.btnGetRacecard.Click += new System.EventHandler(this.btnGetRacecard_Click);
+            // 
+            // racecardTreeView
+            // 
+            this.racecardTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.racecardTreeView.Location = new System.Drawing.Point(189, 12);
+            this.racecardTreeView.Name = "racecardTreeView";
+            this.racecardTreeView.Size = new System.Drawing.Size(1277, 224);
+            this.racecardTreeView.TabIndex = 14;
+            // 
+            // btnExportRacecard
+            // 
+            this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportRacecard.Location = new System.Drawing.Point(1237, 242);
+            this.btnExportRacecard.Name = "btnExportRacecard";
+            this.btnExportRacecard.Size = new System.Drawing.Size(229, 30);
+            this.btnExportRacecard.TabIndex = 15;
+            this.btnExportRacecard.Text = "Export Racecard";
+            this.btnExportRacecard.UseVisualStyleBackColor = true;
+            this.btnExportRacecard.Click += new System.EventHandler(this.btnExportRacecard_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 505);
+            this.ClientSize = new System.Drawing.Size(1478, 1176);
+            this.Controls.Add(this.btnExportRacecard);
+            this.Controls.Add(this.racecardTreeView);
+            this.Controls.Add(this.btnGetRacecard);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnCopyLog);
             this.Controls.Add(this.listBoxLog);
@@ -217,6 +261,10 @@
         private System.Windows.Forms.Button btnCopyLog;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel balanceLabel;
+        private System.Windows.Forms.Button btnGetRacecard;
+        private System.Windows.Forms.TreeView racecardTreeView;
+        private System.Windows.Forms.Button btnExportRacecard;
     }
 }
 

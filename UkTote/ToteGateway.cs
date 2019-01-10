@@ -81,8 +81,10 @@ namespace UkTote
             : base(0, 1)
         {
             _watchdogTimeoutMs = watchdogTimeoutMs;
-            _serializer = new BinarySerializer();
-            _serializer.Endianness = Endianness.Big;
+            _serializer = new BinarySerializer
+            {
+                Endianness = Endianness.Big
+            };
             _circularBuffer = new CircularBuffer<byte>(BUFFER_SIZE * 4);
 
             _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.ACCOUNT_LOGIN, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(AccountLoginSuccess);
@@ -200,9 +202,8 @@ namespace UkTote
                     _logger.Error("Async operation didn't complete!");
                     return;
                 }
-                var stream = asyncResult.AsyncState as NetworkStream;
 
-                if (stream == null)
+                if (!(asyncResult.AsyncState is NetworkStream stream))
                 {
                     _logger.Error("Invalid ASyncState on asyncResult");
                     return;
