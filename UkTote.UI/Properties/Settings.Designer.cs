@@ -70,5 +70,17 @@ namespace UkTote.UI.Properties {
                 this["Password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Bets")]
+        public string BetFolder {
+            get {
+                return ((string)(this["BetFolder"]));
+            }
+            set {
+                this["BetFolder"] = value;
+            }
+        }
     }
 }

@@ -45,6 +45,12 @@
             this.btnGetRacecard = new System.Windows.Forms.Button();
             this.racecardTreeView = new System.Windows.Forms.TreeView();
             this.btnExportRacecard = new System.Windows.Forms.Button();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.checkBoxHideRawComms = new System.Windows.Forms.CheckBox();
+            this.btnGetBalance = new System.Windows.Forms.Button();
+            this.txtBetFolder = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnChangeBetFolder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -148,17 +154,17 @@
             this.listBoxLog.ItemHeight = 16;
             this.listBoxLog.Location = new System.Drawing.Point(189, 284);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(1277, 804);
+            this.listBoxLog.Size = new System.Drawing.Size(1277, 420);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(1378, 1094);
+            this.btnCopyLog.Location = new System.Drawing.Point(1237, 710);
             this.btnCopyLog.Name = "btnCopyLog";
-            this.btnCopyLog.Size = new System.Drawing.Size(88, 30);
+            this.btnCopyLog.Size = new System.Drawing.Size(229, 30);
             this.btnCopyLog.TabIndex = 11;
-            this.btnCopyLog.Text = "Copy";
+            this.btnCopyLog.Text = "Export Log";
             this.btnCopyLog.UseVisualStyleBackColor = true;
             this.btnCopyLog.Click += new System.EventHandler(this.btnCopyLog_Click);
             // 
@@ -168,22 +174,21 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.balanceLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1146);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1154);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1478, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1478, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // statusLabel
             // 
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 25);
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // balanceLabel
             // 
             this.balanceLabel.Name = "balanceLabel";
-            this.balanceLabel.Size = new System.Drawing.Size(179, 25);
-            this.balanceLabel.Text = "toolStripStatusLabel1";
+            this.balanceLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // btnGetRacecard
             // 
@@ -215,11 +220,71 @@
             this.btnExportRacecard.UseVisualStyleBackColor = true;
             this.btnExportRacecard.Click += new System.EventHandler(this.btnExportRacecard_Click);
             // 
+            // listView1
+            // 
+            this.listView1.Location = new System.Drawing.Point(189, 784);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(1277, 359);
+            this.listView1.TabIndex = 16;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // checkBoxHideRawComms
+            // 
+            this.checkBoxHideRawComms.AutoSize = true;
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(189, 716);
+            this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
+            this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
+            this.checkBoxHideRawComms.TabIndex = 17;
+            this.checkBoxHideRawComms.Text = "Hide Raw Comms";
+            this.checkBoxHideRawComms.UseVisualStyleBackColor = true;
+            // 
+            // btnGetBalance
+            // 
+            this.btnGetBalance.Location = new System.Drawing.Point(23, 364);
+            this.btnGetBalance.Name = "btnGetBalance";
+            this.btnGetBalance.Size = new System.Drawing.Size(156, 34);
+            this.btnGetBalance.TabIndex = 18;
+            this.btnGetBalance.Text = "Get Balance";
+            this.btnGetBalance.UseVisualStyleBackColor = true;
+            this.btnGetBalance.Click += new System.EventHandler(this.btnGetBalance_Click);
+            // 
+            // txtBetFolder
+            // 
+            this.txtBetFolder.Location = new System.Drawing.Point(278, 746);
+            this.txtBetFolder.Name = "txtBetFolder";
+            this.txtBetFolder.Size = new System.Drawing.Size(443, 26);
+            this.txtBetFolder.TabIndex = 19;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(185, 749);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(87, 20);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Bet Folder:";
+            // 
+            // btnChangeBetFolder
+            // 
+            this.btnChangeBetFolder.Location = new System.Drawing.Point(727, 746);
+            this.btnChangeBetFolder.Name = "btnChangeBetFolder";
+            this.btnChangeBetFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetFolder.TabIndex = 21;
+            this.btnChangeBetFolder.Text = "...";
+            this.btnChangeBetFolder.UseVisualStyleBackColor = true;
+            this.btnChangeBetFolder.Click += new System.EventHandler(this.btnChangeBetFolder_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1478, 1176);
+            this.Controls.Add(this.btnChangeBetFolder);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtBetFolder);
+            this.Controls.Add(this.btnGetBalance);
+            this.Controls.Add(this.checkBoxHideRawComms);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.btnExportRacecard);
             this.Controls.Add(this.racecardTreeView);
             this.Controls.Add(this.btnGetRacecard);
@@ -265,6 +330,12 @@
         private System.Windows.Forms.Button btnGetRacecard;
         private System.Windows.Forms.TreeView racecardTreeView;
         private System.Windows.Forms.Button btnExportRacecard;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.CheckBox checkBoxHideRawComms;
+        private System.Windows.Forms.Button btnGetBalance;
+        private System.Windows.Forms.TextBox txtBetFolder;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnChangeBetFolder;
     }
 }
 

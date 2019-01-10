@@ -36,6 +36,7 @@ namespace UkTote
         public event Action<PayEnquiryFailed> OnPayEnquiryFailed;
         public event Action<MsnReply> OnMsnReply;
         public event Action<CurrentMsnReply> OnCurrentMsnReply;
+        public event Action<CurrentBalanceReply> OnCurrentBalanceReply;
         public event Action OnConnected;
         public event Action<string> OnDisconnected;
         public event Action<string> OnIdle;
@@ -124,6 +125,9 @@ namespace UkTote
 
             _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(CurrentMsnReply);
             _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentMsnReply);
+
+            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(CurrentBalanceReply);
+            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentBalanceReply);
 
             _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_UPDATE_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(MeetingUpdate);
             _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_UPDATE_MSG, Message.Enums.ActionCode.ACTION_CANCELLED)] = typeof(MeetingUpdate);
@@ -431,6 +435,10 @@ namespace UkTote
                 {
                     OnRunnerUpdate?.Invoke(packet as RunnerUpdate);
                 }
+                else if (pType == typeof(CurrentBalanceReply))
+                {
+                    OnCurrentBalanceReply?.Invoke(packet as CurrentBalanceReply);
+                }
             }
             else
             {
@@ -578,6 +586,11 @@ namespace UkTote
         protected void CurrentMsnRequestAsync()
         {
             QueueWork(new CurrentMsnRequest());
+        }
+
+        protected void CurrentBalanceRequestAsync()
+        {
+            QueueWork(new CurrentBalanceRequest());
         }
 
         protected void MsnRequestAsync(ushort sequence)
@@ -945,6 +958,21 @@ namespace UkTote
             };
             OnCurrentMsnReply += handler;
             CurrentMsnRequestAsync();
+            return tcs.Task;
+        }
+
+        public Task<CurrentBalanceReply> GetCurrentBalance()
+        {
+            var tcs = new TaskCompletionSource<CurrentBalanceReply>();
+            Action<CurrentBalanceReply> handler = null;
+
+            handler += (reply) =>
+            {
+                tcs.TrySetResult(reply);
+                OnCurrentBalanceReply -= handler;
+            };
+            OnCurrentBalanceReply += handler;
+            CurrentBalanceRequestAsync();
             return tcs.Task;
         }
 

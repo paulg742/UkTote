@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace UkTote.UI
 {
@@ -11,6 +13,8 @@ namespace UkTote.UI
         private bool _connected;
         private bool _loggedIn;
         private Message.RacecardReply _racecard;
+        private FileSystemWatcher _watcher;
+        private Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
 
         public MainForm()
         {
@@ -19,6 +23,7 @@ namespace UkTote.UI
             numHostPort.Value = Properties.Settings.Default.HostPort;
             txtUsername.Text = Properties.Settings.Default.Username;
             txtPassword.Text = Properties.Settings.Default.Password;
+            txtBetFolder.Text = Properties.Settings.Default.BetFolder;
 
             _gateway.OnConnected += _gateway_OnConnected;
             _gateway.OnDisconnected += _gateway_OnDisconnected;
@@ -31,12 +36,18 @@ namespace UkTote.UI
 
         private void _gateway_OnRawPacketSent(byte[] buffer)
         {
-            Log($"[TX] {string.Join(" ", Array.ConvertAll(buffer, b => b.ToString("X2")))}");
+            if (!checkBoxHideRawComms.Checked)
+            {
+                Log($"[TX] {string.Join(" ", Array.ConvertAll(buffer, b => b.ToString("X2")))}");
+            }
         }
 
         private void _gateway_OnRawPacketReceived(byte[] buffer)
         {
-            Log($"[RX] {string.Join(" ", Array.ConvertAll(buffer, b => b.ToString("X2")))}");
+            if (!checkBoxHideRawComms.Checked)
+            {
+                Log($"[RX] {string.Join(" ", Array.ConvertAll(buffer, b => b.ToString("X2")))}");
+            }
         }
 
         private void _gateway_OnRuOk()
@@ -48,12 +59,14 @@ namespace UkTote.UI
         {
             Log($"Gateway disconnected: {obj}");
             _connected = false;
+            StopWatchingFolder();
             UpdateButtons();
         }
 
         private void _gateway_OnConnected()
         {
             Log($"Gateway connected");
+            StartWatchingFolder();
         }
 
         void UpdateButtons()
@@ -61,6 +74,7 @@ namespace UkTote.UI
             btnConnect.Enabled = !_connected;
             btnGetRacecard.Enabled = _connected && _racecard == null;
             btnExportRacecard.Enabled = _racecard != null;
+            btnGetBalance.Enabled = _connected;
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
@@ -168,7 +182,9 @@ namespace UkTote.UI
             btnGetRacecard.Enabled = false;
             try
             {
+                Log("Requesting racecard");
                 _racecard = await _gateway.GetRacecardFast(DateTime.UtcNow.Date, true);
+                Log($"Racecard complete {_racecard.NumMeetings} meetings downloaded");
             }
             catch (Exception ex)
             {
@@ -211,9 +227,94 @@ namespace UkTote.UI
         private void btnExportRacecard_Click(object sender, EventArgs e)
         {
             if (_racecard == null) return;
-            var text = Newtonsoft.Json.JsonConvert.SerializeObject(_racecard, Newtonsoft.Json.Formatting.Indented).Replace("\\u0000", string.Empty);
+            var text = Newtonsoft.Json.JsonConvert.SerializeObject(_racecard, Newtonsoft.Json.Formatting.Indented)
+                .Replace("\\u0000", string.Empty);
             Clipboard.SetText(text);
             UpdateStatus("Copied racecard to clipboard!");
+        }
+
+        void DisplayBalance(Message.CurrentBalanceReply currentBalance)
+        {
+            balanceLabel.Text = $"Remaining: {((double)currentBalance.RemainingBalance) / 100:N2} Stake Limit: {((double)currentBalance.StakeLimit) / 100:N2}";
+        }
+
+        private async void btnGetBalance_Click(object sender, EventArgs e)
+        {
+            btnGetBalance.Enabled = false;
+            try
+            {
+                Log("Requesting balance");
+                var currentBalance = await _gateway.GetCurrentBalance();
+                if (currentBalance != null)
+                {
+                    Log(JsonConvert.SerializeObject(currentBalance));
+                    DisplayBalance(currentBalance);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
+            }
+            UpdateButtons();
+        }
+
+        void StopWatchingFolder()
+        {
+            if (_watcher != null)
+            {
+                _watcher.EnableRaisingEvents = false;
+                _watcher.Dispose();
+            }
+        }
+
+        void StartWatchingFolder()
+        {
+            StopWatchingFolder();    
+
+            _watcher = new FileSystemWatcher
+            {
+                Path = txtBetFolder.Text,
+                NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
+                                   | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = "*.bet"
+            };
+            _watcher.Changed += new FileSystemEventHandler(OnChanged);
+            _watcher.EnableRaisingEvents = true;
+            Log($"Watching folder {txtBetFolder.Text} for .bet files");
+        }
+
+        List<Model.FileBet> ProcessBetFile(string path)
+        {
+            var ret = new List<Model.FileBet>();
+            var lines = File.ReadAllLines(path);
+            foreach (var line in lines)
+            {
+                ret.Add(Model.FileBet.Parse(line));
+            }
+            return ret;
+        }
+
+        private void OnChanged(object source, FileSystemEventArgs e)
+        {
+            if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 1)
+            {
+                // ignore this dupe event
+                return;
+            }
+            _watcherLog[e.FullPath] = DateTime.UtcNow;
+            Log($"{e.FullPath} was found, processing");
+            var bets = ProcessBetFile(e.FullPath);
+            Log($"{bets.Count} bets processed");
+        }
+
+        private void btnChangeBetFolder_Click(object sender, EventArgs e)
+        {
+            var dlg = new FolderBrowserDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                txtBetFolder.Text = dlg.SelectedPath;
+                StartWatchingFolder();
+            }
         }
     }
 }
