@@ -6,13 +6,14 @@ namespace UkTote.UI.Model
 {
     public class FileBet
     {
+        public string Raw { get; set; }
         public bool IsValid { get; set; }
         public string Error { get; set; }
         public BetRequest Request { get; set; }
 
         public static FileBet Parse(string text)
         {
-            var fileBet = new FileBet() { IsValid = true };
+            var fileBet = new FileBet() { Raw = text, IsValid = true };
             var request = new BetRequest();
 
             var fields = text.Split('|');

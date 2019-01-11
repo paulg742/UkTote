@@ -7,9 +7,11 @@ namespace UkTote
     {
         public BetRequest()
         {
+            Ref = Guid.NewGuid();
         }
 
         public BetRequest(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, int[] selections, int? betId = null)
+            : this()
         {
             ForDate = forDate;
             MeetingNumber = meetingNumber;
@@ -31,5 +33,6 @@ namespace UkTote
         public Enums.BetOption BetOption { get; set; }
         public int[] Selections { get; set; }
         public int? BetId { get; set; }
+        public Guid Ref { get; set; }
     }
 }

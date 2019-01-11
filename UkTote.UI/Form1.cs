@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -286,25 +287,76 @@ namespace UkTote.UI
         List<Model.FileBet> ProcessBetFile(string path)
         {
             var ret = new List<Model.FileBet>();
-            var lines = File.ReadAllLines(path);
-            foreach (var line in lines)
+            try
             {
-                ret.Add(Model.FileBet.Parse(line));
+                var lines = File.ReadAllLines(path);
+                foreach (var line in lines)
+                {
+                    ret.Add(Model.FileBet.Parse(line));
+                }
+            }
+            catch (Exception)
+            {
             }
             return ret;
         }
 
-        private void OnChanged(object source, FileSystemEventArgs e)
+        private async void OnChanged(object source, FileSystemEventArgs e)
         {
             if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 1)
             {
                 // ignore this dupe event
                 return;
             }
-            _watcherLog[e.FullPath] = DateTime.UtcNow;
-            Log($"{e.FullPath} was found, processing");
-            var bets = ProcessBetFile(e.FullPath);
-            Log($"{bets.Count} bets processed");
+            if (listView1.InvokeRequired)
+            {
+                Invoke(new Action(() => OnChanged(source, e)));
+            }
+            else
+            {
+                _watcherLog[e.FullPath] = DateTime.UtcNow;
+                Log($"{e.FullPath} was found, processing");
+                var bets = ProcessBetFile(e.FullPath);
+                foreach (var bet in bets)
+                {
+                    var item = listView1.Items.Add(new ListViewItem(new string[]
+                    {
+                        bet.Raw,
+                        bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
+                        bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
+                        bet.Request == null ? string.Empty : bet.Request.RaceNumber.ToString(),
+                        bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
+                        bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
+                        bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
+                        bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
+                        bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections),
+                        !bet.IsValid ? bet.Error : string.Empty
+                    }));
+                    item.Tag = bet.Request?.Ref;
+                }
+                var batch = bets
+                    .Where(b => b.Request != null && b.IsValid)
+                    .Select(b => b.Request)
+                    .ToList();
+                var results = await _gateway.SellBatch(batch);
+                foreach (var result in results)
+                {
+                    foreach (ListViewItem item in listView1.Items)
+                    {
+                        if (item.Tag as Guid? == result.Ref)
+                        {
+                            item.SubItems[9].Text = result.ErrorCode.ToString();
+
+                            if (result.ErrorCode == Message.Enums.ErrorCode.SUCCESS)
+                            {
+                                item.SubItems[10].Text = result.BetId.ToString();
+                                item.SubItems[11].Text = result.TSN;
+                            }
+                        }
+                    }
+                }
+                Log($"{bets.Count} bets processed");
+            }
         }
 
         private void btnChangeBetFolder_Click(object sender, EventArgs e)

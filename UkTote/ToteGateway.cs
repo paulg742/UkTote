@@ -64,6 +64,7 @@ namespace UkTote
         private Dictionary<Message.Enums.MessageType, bool> _ignoreUpdates = new Dictionary<Message.Enums.MessageType, bool>();
         private WatchdogTimer _watchdogTimer;
         private readonly int _watchdogTimeoutMs;
+        private ConcurrentDictionary<int, Guid> _refLookup = new ConcurrentDictionary<int, Guid>();
 
         public int NextBetId
         {
@@ -869,7 +870,8 @@ namespace UkTote
                         TSN = string.Empty,
                         BetId = reply.BetId,
                         ErrorCode = reply.ErrorCode2,
-                        ErrorText = reply.ErrorText
+                        ErrorText = reply.ErrorText,
+                        Ref = _refLookup.ContainsKey((int)reply.BetId) ? _refLookup[(int)reply.BetId] : (Guid?)null
                     };
                 }
                 if (Interlocked.Increment(ref responseCount) >= betCount)
@@ -883,13 +885,15 @@ namespace UkTote
             OnSellBetSuccess += successHandler;
             OnSellBetFailed += failedHandler;
 
-            //foreach (var bet in batch)
-            //{
-            //    var betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.RaceNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, 
-            //        Selection.Create((ushort)bet.MeetingNumber, (ushort)bet.RaceNumber, bet.Selections), bet.BetId);
+            foreach (var bet in batch)
+            {
+                var betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption,
+                    Selection.Create((ushort)bet.MeetingNumber, (ushort)bet.RaceNumber, bet.Selections), bet.BetId);
 
-            //    responses[betId] = null;
-            //}
+                responses[betId] = null;
+                _refLookup[betId] = bet.Ref;
+            }
+
             return tcs.Task;
         }
 
