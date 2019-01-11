@@ -57,12 +57,12 @@
             this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.checkBoxHideRawComms = new System.Windows.Forms.CheckBox();
             this.btnGetBalance = new System.Windows.Forms.Button();
             this.txtBetFolder = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnChangeBetFolder = new System.Windows.Forms.Button();
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -166,13 +166,13 @@
             this.listBoxLog.ItemHeight = 16;
             this.listBoxLog.Location = new System.Drawing.Point(189, 284);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(1277, 420);
+            this.listBoxLog.Size = new System.Drawing.Size(1663, 404);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(1237, 710);
+            this.btnCopyLog.Location = new System.Drawing.Point(1623, 707);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(229, 30);
             this.btnCopyLog.TabIndex = 11;
@@ -186,9 +186,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.balanceLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1154);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1151);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1478, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1864, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -218,13 +218,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.racecardTreeView.Location = new System.Drawing.Point(189, 12);
             this.racecardTreeView.Name = "racecardTreeView";
-            this.racecardTreeView.Size = new System.Drawing.Size(1277, 224);
+            this.racecardTreeView.Size = new System.Drawing.Size(1663, 224);
             this.racecardTreeView.TabIndex = 14;
             // 
             // btnExportRacecard
             // 
-            this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportRacecard.Location = new System.Drawing.Point(1237, 242);
+            this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportRacecard.Location = new System.Drawing.Point(1623, 245);
             this.btnExportRacecard.Name = "btnExportRacecard";
             this.btnExportRacecard.Size = new System.Drawing.Size(229, 30);
             this.btnExportRacecard.TabIndex = 15;
@@ -249,9 +249,9 @@
             this.columnHeader9,
             this.columnHeader11,
             this.columnHeader12});
-            this.listView1.Location = new System.Drawing.Point(189, 784);
+            this.listView1.Location = new System.Drawing.Point(189, 781);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1277, 359);
+            this.listView1.Size = new System.Drawing.Size(1663, 359);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -300,10 +300,15 @@
             // 
             this.columnHeader11.Text = "BetId";
             // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "TSN";
+            // 
             // checkBoxHideRawComms
             // 
+            this.checkBoxHideRawComms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxHideRawComms.AutoSize = true;
-            this.checkBoxHideRawComms.Location = new System.Drawing.Point(189, 716);
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(189, 713);
             this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
             this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
             this.checkBoxHideRawComms.TabIndex = 17;
@@ -322,6 +327,7 @@
             // 
             // txtBetFolder
             // 
+            this.txtBetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtBetFolder.Location = new System.Drawing.Point(278, 746);
             this.txtBetFolder.Name = "txtBetFolder";
             this.txtBetFolder.Size = new System.Drawing.Size(443, 26);
@@ -329,6 +335,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(185, 749);
             this.label5.Name = "label5";
@@ -338,6 +345,7 @@
             // 
             // btnChangeBetFolder
             // 
+            this.btnChangeBetFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnChangeBetFolder.Location = new System.Drawing.Point(727, 746);
             this.btnChangeBetFolder.Name = "btnChangeBetFolder";
             this.btnChangeBetFolder.Size = new System.Drawing.Size(33, 32);
@@ -346,15 +354,11 @@
             this.btnChangeBetFolder.UseVisualStyleBackColor = true;
             this.btnChangeBetFolder.Click += new System.EventHandler(this.btnChangeBetFolder_Click);
             // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "TSN";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1478, 1176);
+            this.ClientSize = new System.Drawing.Size(1864, 1173);
             this.Controls.Add(this.btnChangeBetFolder);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtBetFolder);
