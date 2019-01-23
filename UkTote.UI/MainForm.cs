@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -72,10 +73,17 @@ namespace UkTote.UI
 
         void UpdateButtons()
         {
-            btnConnect.Enabled = !_connected;
-            btnGetRacecard.Enabled = _connected && _racecard == null;
-            btnExportRacecard.Enabled = _racecard != null;
-            btnGetBalance.Enabled = _connected;
+            if (btnConnect.InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateButtons()));
+            }
+            else
+            {
+                btnConnect.Enabled = !_connected;
+                btnGetRacecard.Enabled = _connected && _racecard == null;
+                btnExportRacecard.Enabled = _racecard != null;
+                btnGetBalance.Enabled = _connected;
+            }
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
@@ -383,6 +391,39 @@ namespace UkTote.UI
             {
                 Log(ex.Message);
             }
+        }
+
+        private void btnExportBets_Click(object sender, EventArgs e)
+        {
+            /*
+             * var item = listView1.Items.Add(new ListViewItem(new string[]
+                    {
+                        bet.Raw,
+                        bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
+                        bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
+                        bet.Request == null ? string.Empty : bet.Request.RaceNumber.ToString(),
+                        bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
+                        bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
+                        bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
+                        bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
+                        bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections),
+                        !bet.IsValid ? bet.Error : string.Empty,
+                        string.Empty, // BetId
+                        string.Empty    // TSN
+             */
+
+            var sb = "RAW,ForDate,MeetingNumber,RaceNumber,UnitStake,TotalStake,BetCode,BetOption,Selections,Status,BetId,TSN\r\n";
+            foreach (ListViewItem item in listView1.Items)
+            {
+                sb += $"\"{item.Text.Replace('\0', ' ')}\",";
+                for (var i = 1; i < item.SubItems.Count; ++i)
+                {
+                    sb += $"\"{item.SubItems[i].Text.Replace('\0', ' ')}\",";
+                }
+                sb += "\r\n";
+            }
+            Clipboard.SetText(sb);
+
         }
     }
 }
