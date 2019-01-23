@@ -116,7 +116,7 @@ namespace UkTote.UI
                 }
                 finally
                 {
-                    if (!_connected && !_loggedIn)
+                    if (!_connected || !_loggedIn)
                     {
                         _gateway.Disconnect();
                     }

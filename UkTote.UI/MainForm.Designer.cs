@@ -167,17 +167,17 @@
             this.listBoxLog.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.ItemHeight = 16;
-            this.listBoxLog.Location = new System.Drawing.Point(189, 851);
+            this.listBoxLog.Location = new System.Drawing.Point(189, 907);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(1663, 228);
+            this.listBoxLog.Size = new System.Drawing.Size(966, 228);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(1623, 1085);
+            this.btnCopyLog.Location = new System.Drawing.Point(874, 1141);
             this.btnCopyLog.Name = "btnCopyLog";
-            this.btnCopyLog.Size = new System.Drawing.Size(229, 30);
+            this.btnCopyLog.Size = new System.Drawing.Size(281, 39);
             this.btnCopyLog.TabIndex = 11;
             this.btnCopyLog.Text = "Export Log";
             this.btnCopyLog.UseVisualStyleBackColor = true;
@@ -189,9 +189,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.balanceLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1151);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1207);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1864, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1167, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -221,15 +221,15 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.racecardTreeView.Location = new System.Drawing.Point(189, 12);
             this.racecardTreeView.Name = "racecardTreeView";
-            this.racecardTreeView.Size = new System.Drawing.Size(1663, 224);
+            this.racecardTreeView.Size = new System.Drawing.Size(966, 224);
             this.racecardTreeView.TabIndex = 14;
             // 
             // btnExportRacecard
             // 
             this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportRacecard.Location = new System.Drawing.Point(1623, 245);
+            this.btnExportRacecard.Location = new System.Drawing.Point(874, 242);
             this.btnExportRacecard.Name = "btnExportRacecard";
-            this.btnExportRacecard.Size = new System.Drawing.Size(229, 30);
+            this.btnExportRacecard.Size = new System.Drawing.Size(281, 39);
             this.btnExportRacecard.TabIndex = 15;
             this.btnExportRacecard.Text = "Export Racecard";
             this.btnExportRacecard.UseVisualStyleBackColor = true;
@@ -255,7 +255,7 @@
             this.columnHeader12});
             this.listView1.Location = new System.Drawing.Point(189, 319);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1663, 477);
+            this.listView1.Size = new System.Drawing.Size(966, 533);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -312,7 +312,7 @@
             // 
             this.checkBoxHideRawComms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxHideRawComms.AutoSize = true;
-            this.checkBoxHideRawComms.Location = new System.Drawing.Point(189, 1085);
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(189, 1141);
             this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
             this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
             this.checkBoxHideRawComms.TabIndex = 17;
@@ -381,9 +381,9 @@
             // btnExportBets
             // 
             this.btnExportBets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportBets.Location = new System.Drawing.Point(1623, 802);
+            this.btnExportBets.Location = new System.Drawing.Point(874, 858);
             this.btnExportBets.Name = "btnExportBets";
-            this.btnExportBets.Size = new System.Drawing.Size(229, 30);
+            this.btnExportBets.Size = new System.Drawing.Size(281, 39);
             this.btnExportBets.TabIndex = 24;
             this.btnExportBets.Text = "Export Bets";
             this.btnExportBets.UseVisualStyleBackColor = true;
@@ -393,7 +393,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1864, 1173);
+            this.ClientSize = new System.Drawing.Size(1167, 1229);
             this.Controls.Add(this.btnExportBets);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.numNextBetId);
