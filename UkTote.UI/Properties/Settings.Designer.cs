@@ -37,7 +37,7 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8036")]
+        [global::System.Configuration.DefaultSettingValueAttribute("8032")]
         public int HostPort {
             get {
                 return ((int)(this["HostPort"]));
@@ -49,7 +49,7 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("HKATCentrum02")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ATCentrum5")]
         public string Username {
             get {
                 return ((string)(this["Username"]));

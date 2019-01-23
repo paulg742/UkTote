@@ -99,6 +99,7 @@ namespace UkTote.UI
                     else
                     {
                         btnGetRacecard.Enabled = true;
+                        numNextBetId.Enabled = true;
                     }
                 }
                 catch (Exception ex)
@@ -330,7 +331,9 @@ namespace UkTote.UI
                         bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
                         bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
                         bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections),
-                        !bet.IsValid ? bet.Error : string.Empty
+                        !bet.IsValid ? bet.Error : string.Empty,
+                        string.Empty, // BetId
+                        string.Empty    // TSN
                     }));
                     item.Tag = bet.Request?.Ref;
                 }
@@ -366,6 +369,19 @@ namespace UkTote.UI
             {
                 txtBetFolder.Text = dlg.SelectedPath;
                 StartWatchingFolder();
+            }
+        }
+
+        private void numNextBetId_ValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _gateway.NextBetId = (int)numNextBetId.Value;
+                Log($"Changed next bet id to: {(int)numNextBetId.Value}");
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
             }
         }
     }

@@ -63,8 +63,11 @@
             this.txtBetFolder = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnChangeBetFolder = new System.Windows.Forms.Button();
+            this.numNextBetId = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numNextBetId)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -148,7 +151,7 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(23, 284);
+            this.btnConnect.Location = new System.Drawing.Point(23, 387);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(156, 34);
             this.btnConnect.TabIndex = 9;
@@ -204,7 +207,7 @@
             // 
             // btnGetRacecard
             // 
-            this.btnGetRacecard.Location = new System.Drawing.Point(23, 324);
+            this.btnGetRacecard.Location = new System.Drawing.Point(23, 427);
             this.btnGetRacecard.Name = "btnGetRacecard";
             this.btnGetRacecard.Size = new System.Drawing.Size(156, 34);
             this.btnGetRacecard.TabIndex = 13;
@@ -317,7 +320,7 @@
             // 
             // btnGetBalance
             // 
-            this.btnGetBalance.Location = new System.Drawing.Point(23, 364);
+            this.btnGetBalance.Location = new System.Drawing.Point(23, 467);
             this.btnGetBalance.Name = "btnGetBalance";
             this.btnGetBalance.Size = new System.Drawing.Size(156, 34);
             this.btnGetBalance.TabIndex = 18;
@@ -354,11 +357,36 @@
             this.btnChangeBetFolder.UseVisualStyleBackColor = true;
             this.btnChangeBetFolder.Click += new System.EventHandler(this.btnChangeBetFolder_Click);
             // 
+            // numNextBetId
+            // 
+            this.numNextBetId.Enabled = false;
+            this.numNextBetId.Location = new System.Drawing.Point(23, 318);
+            this.numNextBetId.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numNextBetId.Name = "numNextBetId";
+            this.numNextBetId.Size = new System.Drawing.Size(156, 26);
+            this.numNextBetId.TabIndex = 22;
+            this.numNextBetId.ValueChanged += new System.EventHandler(this.numNextBetId_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(23, 284);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(91, 20);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "Next Bet ID";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1864, 1173);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.numNextBetId);
             this.Controls.Add(this.btnChangeBetFolder);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtBetFolder);
@@ -386,6 +414,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numNextBetId)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -428,6 +457,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;
         private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.NumericUpDown numNextBetId;
+        private System.Windows.Forms.Label label6;
     }
 }
 

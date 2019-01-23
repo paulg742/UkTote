@@ -6,10 +6,10 @@
       <Value Profile="(Default)">217.46.202.209</Value>
     </Setting>
     <Setting Name="HostPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8036</Value>
+      <Value Profile="(Default)">8032</Value>
     </Setting>
     <Setting Name="Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)">HKATCentrum02</Value>
+      <Value Profile="(Default)">ATCentrum5</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">password</Value>
