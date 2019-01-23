@@ -323,6 +323,7 @@ namespace UkTote.UI
             }
             else
             {
+                listView1.Items.Clear();
                 _watcherLog[e.FullPath] = DateTime.UtcNow;
                 Log($"{e.FullPath} was found, processing");
                 var bets = ProcessBetFile(e.FullPath);
