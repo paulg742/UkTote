@@ -55,7 +55,7 @@ namespace UkTote
         Task<bool> Logout(string username);
         Task<PayEnquiryReply> PayEnquiry(string tsn);
         Task<IList<BetReply>> SellBatch(IList<BetRequest> batch);
-        Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, int[] selections);
-        Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, Selection[] selections, int? betId = null);
+        Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, int[] selections, int? betId = null);
+        //Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, int unitStake, int totalStake, Enums.BetCode betCode, Enums.BetOption betOption, Selection[] selections, int? betId = null);
     }
 }
