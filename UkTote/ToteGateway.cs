@@ -45,6 +45,7 @@ namespace UkTote
         public event Action<byte[]> OnRawPacketSent;
 
         // update events
+        public event Action<MeetingUpdate> OnMeetingUpdate;
         public event Action<MeetingSalesUpdate> OnMeetingSalesUpdate;
         public event Action<RaceUpdate> OnRaceUpdate;
         public event Action<RacePoolUpdate> OnRacePoolUpdate;
@@ -403,6 +404,10 @@ namespace UkTote
                 else if (pType == typeof(RacePoolUpdate))
                 {
                     OnRacePoolUpdate?.Invoke(packet as RacePoolUpdate);
+                }
+                else if (pType == typeof(MeetingUpdate))
+                {
+                    OnMeetingUpdate?.Invoke(packet as MeetingUpdate);
                 }
                 else if (pType == typeof(MeetingSalesUpdate))
                 {

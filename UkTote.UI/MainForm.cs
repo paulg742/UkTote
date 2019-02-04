@@ -33,7 +33,63 @@ namespace UkTote.UI
             _gateway.OnRawPacketReceived += _gateway_OnRawPacketReceived;
             _gateway.OnRawPacketSent += _gateway_OnRawPacketSent;
 
+            // update messages
+            _gateway.OnMeetingUpdate += _gateway_OnMeetingUpdate;
+            _gateway.OnMeetingSalesUpdate += _gateway_OnMeetingSalesUpdate;
+            _gateway.OnRacePoolDividendUpdate += _gateway_OnRacePoolDividendUpdate;
+            _gateway.OnRacePoolSalesUpdate += _gateway_OnRacePoolSalesUpdate;
+            _gateway.OnRacePoolUpdate += _gateway_OnRacePoolUpdate;
+            _gateway.OnRaceSalesUpdate += _gateway_OnRaceSalesUpdate;
+            _gateway.OnRaceUpdate += _gateway_OnRaceUpdate;
+            _gateway.OnRaceWillPayUpdate += _gateway_OnRaceWillPayUpdate;
+            _gateway.OnRunnerUpdate += _gateway_OnRunnerUpdate;
+
             UpdateButtons();
+        }
+
+        private void _gateway_OnMeetingUpdate(Message.MeetingUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRunnerUpdate(Message.RunnerUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRaceWillPayUpdate(Message.RaceWillPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRaceUpdate(Message.RaceUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRaceSalesUpdate(Message.RaceSalesUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRacePoolUpdate(Message.RacePoolUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRacePoolSalesUpdate(Message.RacePoolSalesUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnRacePoolDividendUpdate(Message.RacePoolDividendUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+        }
+
+        private void _gateway_OnMeetingSalesUpdate(Message.MeetingSalesUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
         }
 
         private void _gateway_OnRawPacketSent(byte[] buffer)
