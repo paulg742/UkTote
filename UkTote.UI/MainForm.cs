@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using UkTote.Message;
 
 namespace UkTote.UI
 {
@@ -48,9 +49,16 @@ namespace UkTote.UI
             UpdateButtons();
         }
 
+        private void LogFeed<T>(string type, T obj) where T: MessageBase
+        {
+            var str = JsonConvert.SerializeObject(obj);
+            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow.Ticks}.json", str);
+        }
+
         private void _gateway_OnMeetingUpdate(Message.MeetingUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingUpdate", obj);
         }
 
         private void _gateway_OnRunnerUpdate(Message.RunnerUpdate obj)
@@ -61,36 +69,43 @@ namespace UkTote.UI
         private void _gateway_OnRaceWillPayUpdate(Message.RaceWillPayUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RaceWillPayUpdate", obj);
         }
 
         private void _gateway_OnRaceUpdate(Message.RaceUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RaceUpdate", obj);
         }
 
         private void _gateway_OnRaceSalesUpdate(Message.RaceSalesUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RaceSalesUpdate", obj);
         }
 
         private void _gateway_OnRacePoolUpdate(Message.RacePoolUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RacePoolUpdate", obj);
         }
 
         private void _gateway_OnRacePoolSalesUpdate(Message.RacePoolSalesUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RacePoolSalesUpdate", obj);
         }
 
         private void _gateway_OnRacePoolDividendUpdate(Message.RacePoolDividendUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RacePoolDividendUpdate", obj);
         }
 
         private void _gateway_OnMeetingSalesUpdate(Message.MeetingSalesUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingSalesUpdate", obj);
         }
 
         private void _gateway_OnRawPacketSent(byte[] buffer)
@@ -504,7 +519,24 @@ namespace UkTote.UI
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtFeedFolder.Text = dlg.SelectedPath;
-                //StartWatchingFolder();
+            }
+        }
+
+        private async void btnMsnRequest_Click(object sender, EventArgs e)
+        {
+            btnGetBalance.Enabled = false;
+            try
+            {
+                Log("MSN request sent");
+                var reply = await _gateway.GetMsn(0);
+                if (reply != null)
+                {
+                    Log(JsonConvert.SerializeObject(reply));
+                }
+            }
+            catch (Exception ex)
+            {
+                Log(ex.Message);
             }
         }
     }

@@ -69,6 +69,7 @@
             this.btnChangeFeedFolder = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.txtFeedFolder = new System.Windows.Forms.TextBox();
+            this.btnMsnRequest = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNextBetId)).BeginInit();
@@ -445,11 +446,23 @@
             this.txtFeedFolder.Size = new System.Drawing.Size(256, 20);
             this.txtFeedFolder.TabIndex = 25;
             // 
+            // btnMsnRequest
+            // 
+            this.btnMsnRequest.Location = new System.Drawing.Point(15, 330);
+            this.btnMsnRequest.Margin = new System.Windows.Forms.Padding(2);
+            this.btnMsnRequest.Name = "btnMsnRequest";
+            this.btnMsnRequest.Size = new System.Drawing.Size(104, 22);
+            this.btnMsnRequest.TabIndex = 28;
+            this.btnMsnRequest.Text = "MSN Request";
+            this.btnMsnRequest.UseVisualStyleBackColor = true;
+            this.btnMsnRequest.Click += new System.EventHandler(this.btnMsnRequest_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 690);
+            this.Controls.Add(this.btnMsnRequest);
             this.Controls.Add(this.btnChangeFeedFolder);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtFeedFolder);
@@ -534,6 +547,7 @@
         private System.Windows.Forms.Button btnChangeFeedFolder;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtFeedFolder;
+        private System.Windows.Forms.Button btnMsnRequest;
     }
 }
 
