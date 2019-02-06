@@ -26,6 +26,7 @@ namespace UkTote.UI
             txtUsername.Text = Properties.Settings.Default.Username;
             txtPassword.Text = Properties.Settings.Default.Password;
             txtBetFolder.Text = Properties.Settings.Default.BetFolder;
+            txtFeedFolder.Text = Properties.Settings.Default.FeedFolder;
 
             _gateway.OnConnected += _gateway_OnConnected;
             _gateway.OnDisconnected += _gateway_OnDisconnected;
@@ -481,6 +482,30 @@ namespace UkTote.UI
             }
             Clipboard.SetText(sb);
 
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // create folders if they dont exist
+            if (!Directory.Exists(txtBetFolder.Text))
+            {
+                Directory.CreateDirectory(txtBetFolder.Text);
+            }
+            if (!Directory.Exists(txtFeedFolder.Text))
+            {
+                Directory.CreateDirectory(txtFeedFolder.Text);
+            }
+
+        }
+
+        private void btnChangeFeedFolder_Click(object sender, EventArgs e)
+        {
+            var dlg = new FolderBrowserDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                txtFeedFolder.Text = dlg.SelectedPath;
+                //StartWatchingFolder();
+            }
         }
     }
 }

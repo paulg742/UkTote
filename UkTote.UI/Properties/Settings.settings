@@ -15,7 +15,10 @@
       <Value Profile="(Default)">password</Value>
     </Setting>
     <Setting Name="BetFolder" Type="System.String" Scope="User">
-      <Value Profile="(Default)">c:\Bets</Value>
+      <Value Profile="(Default)">c:\UkTote\Bets</Value>
+    </Setting>
+    <Setting Name="FeedFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\UkTote\Feed</Value>
     </Setting>
   </Settings>
 </SettingsFile>

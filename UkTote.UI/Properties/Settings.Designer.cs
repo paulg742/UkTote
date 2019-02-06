@@ -73,13 +73,25 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("c:\\Bets")]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\UkTote\\Bets")]
         public string BetFolder {
             get {
                 return ((string)(this["BetFolder"]));
             }
             set {
                 this["BetFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\UkTote\\Feed")]
+        public string FeedFolder {
+            get {
+                return ((string)(this["FeedFolder"]));
+            }
+            set {
+                this["FeedFolder"] = value;
             }
         }
     }
