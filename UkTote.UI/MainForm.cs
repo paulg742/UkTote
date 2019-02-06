@@ -52,7 +52,7 @@ namespace UkTote.UI
         private void LogFeed<T>(string type, T obj) where T: MessageBase
         {
             var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ss}.json", str);
+            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssmmm}.json", str);
         }
 
         private void _gateway_OnMeetingUpdate(Message.MeetingUpdate obj)
