@@ -51,8 +51,8 @@ namespace UkTote.UI
 
         private void LogFeed<T>(string type, T obj) where T: MessageBase
         {
-            var str = JsonConvert.SerializeObject(obj);
-            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow.Ticks}.json", str);
+            var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ss}.json", str);
         }
 
         private void _gateway_OnMeetingUpdate(Message.MeetingUpdate obj)
@@ -155,6 +155,7 @@ namespace UkTote.UI
                 btnGetRacecard.Enabled = _connected && _racecard == null;
                 btnExportRacecard.Enabled = _racecard != null;
                 btnGetBalance.Enabled = _connected;
+                btnMsnRequest.Enabled = _connected;
             }
         }
 
