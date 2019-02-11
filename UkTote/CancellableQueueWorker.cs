@@ -105,9 +105,7 @@ namespace UkTote
                 {
                     while (!_queue.IsEmpty && !_cancellationToken.IsCancellationRequested)
                     {
-                        T t;
-
-                        if (_queue.TryDequeue(out t))
+                        if (_queue.TryDequeue(out T t))
                         {
                             Process(t);
                         }

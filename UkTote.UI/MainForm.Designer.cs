@@ -70,6 +70,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtFeedFolder = new System.Windows.Forms.TextBox();
             this.btnMsnRequest = new System.Windows.Forms.Button();
+            this.btnPayEnquiry = new System.Windows.Forms.Button();
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNextBetId)).BeginInit();
@@ -257,7 +259,8 @@
             this.columnHeader8,
             this.columnHeader9,
             this.columnHeader11,
-            this.columnHeader12});
+            this.columnHeader12,
+            this.columnHeader13});
             this.listView1.Location = new System.Drawing.Point(189, 360);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(966, 436);
@@ -386,9 +389,9 @@
             // btnExportBets
             // 
             this.btnExportBets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportBets.Location = new System.Drawing.Point(874, 802);
+            this.btnExportBets.Location = new System.Drawing.Point(951, 802);
             this.btnExportBets.Name = "btnExportBets";
-            this.btnExportBets.Size = new System.Drawing.Size(280, 38);
+            this.btnExportBets.Size = new System.Drawing.Size(203, 38);
             this.btnExportBets.TabIndex = 24;
             this.btnExportBets.Text = "Export Bets";
             this.btnExportBets.UseVisualStyleBackColor = true;
@@ -430,11 +433,28 @@
             this.btnMsnRequest.UseVisualStyleBackColor = true;
             this.btnMsnRequest.Click += new System.EventHandler(this.btnMsnRequest_Click);
             // 
+            // btnPayEnquiry
+            // 
+            this.btnPayEnquiry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPayEnquiry.Location = new System.Drawing.Point(740, 802);
+            this.btnPayEnquiry.Name = "btnPayEnquiry";
+            this.btnPayEnquiry.Size = new System.Drawing.Size(205, 38);
+            this.btnPayEnquiry.TabIndex = 29;
+            this.btnPayEnquiry.Text = "Pay Enquiry";
+            this.btnPayEnquiry.UseVisualStyleBackColor = true;
+            this.btnPayEnquiry.Click += new System.EventHandler(this.btnPayEnquiry_Click);
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Pay Enquiry Result";
+            this.columnHeader13.Width = 158;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 1083);
+            this.Controls.Add(this.btnPayEnquiry);
             this.Controls.Add(this.btnMsnRequest);
             this.Controls.Add(this.btnChangeFeedFolder);
             this.Controls.Add(this.label7);
@@ -520,6 +540,8 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtFeedFolder;
         private System.Windows.Forms.Button btnMsnRequest;
+        private System.Windows.Forms.Button btnPayEnquiry;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
     }
 }
 

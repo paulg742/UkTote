@@ -156,6 +156,7 @@ namespace UkTote.UI
                 btnExportRacecard.Enabled = _racecard != null;
                 btnGetBalance.Enabled = _connected;
                 btnMsnRequest.Enabled = _connected;
+                btnPayEnquiry.Enabled = _connected;
             }
         }
 
@@ -415,7 +416,8 @@ namespace UkTote.UI
                         bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections),
                         !bet.IsValid ? bet.Error : string.Empty,
                         string.Empty, // BetId
-                        string.Empty    // TSN
+                        string.Empty, // TSN
+                        string.Empty // pay enquiry result
                     }));
                     item.Tag = bet.Request?.Ref;
                 }
@@ -469,23 +471,6 @@ namespace UkTote.UI
 
         private void btnExportBets_Click(object sender, EventArgs e)
         {
-            /*
-             * var item = listView1.Items.Add(new ListViewItem(new string[]
-                    {
-                        bet.Raw,
-                        bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
-                        bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
-                        bet.Request == null ? string.Empty : bet.Request.RaceNumber.ToString(),
-                        bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
-                        bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
-                        bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
-                        bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
-                        bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections),
-                        !bet.IsValid ? bet.Error : string.Empty,
-                        string.Empty, // BetId
-                        string.Empty    // TSN
-             */
-
             var sb = "RAW,ForDate,MeetingNumber,RaceNumber,UnitStake,TotalStake,BetCode,BetOption,Selections,Status,BetId,TSN\r\n";
             foreach (ListViewItem item in listView1.Items)
             {
@@ -538,6 +523,42 @@ namespace UkTote.UI
             catch (Exception ex)
             {
                 Log(ex.Message);
+            }
+        }
+
+        private async void btnPayEnquiry_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                btnPayEnquiry.Enabled = false;
+                foreach (ListViewItem item in listView1.Items)
+                {
+                    var tsn = item.SubItems[11].Text.Replace("\0", "");
+                    if (!string.IsNullOrEmpty(tsn))
+                    {
+                        var result = await _gateway.PayEnquiry(tsn);
+                        if (result == null)
+                        {
+                            item.SubItems[12].Text = "No reply";
+                        }
+                        else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                        {
+                            item.SubItems[12].Text = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
+                        }
+                        else
+                        {
+                            item.SubItems[12].Text = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                UpdateButtons();
             }
         }
     }
