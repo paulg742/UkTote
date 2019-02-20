@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetReply.cs" />
+    <Compile Include="MultiLegBetRequest.cs" />
     <Compile Include="BetRequest.cs" />
     <Compile Include="CancellableQueueWorker.cs" />
     <Compile Include="CancellableTask.cs" />

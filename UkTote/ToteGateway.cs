@@ -558,7 +558,7 @@ namespace UkTote
             QueueWork(req);
         }
 
-        protected int SellBetAsync(DateTime forDate, int meetingNumber, int raceNumber,
+        protected int SellBetAsync(DateTime forDate, int meetingNumber,
             int unitStake, int totalStake,
             Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, Selection[] selections, int? useBetId)
         {
@@ -766,6 +766,13 @@ namespace UkTote
             int unitStake, int totalStake, 
             Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, int[] selections, int? betId=null)
         {
+            return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (raceNumber, s)).ToArray(), betId);
+        }
+
+        public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, 
+            int unitStake, int totalStake,
+            Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, (int race, int selection)[] selections, int? betId = null)
+        {
             var tcs = new TaskCompletionSource<BetReply>();
             Action<SellBetSuccess> successHandler = null;
             Action<SellBetFailed> failedHandler = null;
@@ -800,25 +807,28 @@ namespace UkTote
             OnSellBetSuccess += successHandler;
             OnSellBetFailed += failedHandler;
 
-            // copy pasta, exists a better way to do this!
-            switch (betCode)
-            {
-                case Enums.BetCode.WIN:
-                case Enums.BetCode.PLACE:
-                case Enums.BetCode.QUINELLA:
-                case Enums.BetCode.EXACTA:
-                case Enums.BetCode.SWINGER:
-                case Enums.BetCode.TRIFECTA:
-                    // single race
-                    SellBetAsync(forDate, meetingNumber, raceNumber, unitStake, totalStake, betCode, betOption,
-                        Selection.Create((ushort)meetingNumber, (ushort)raceNumber, selections), betId);
-                    break;
-                default:
-                    // multi race
-                    SellBetAsync(forDate, meetingNumber, raceNumber, unitStake, totalStake, betCode, betOption,
-                        Selection.Create((ushort)meetingNumber, (ushort)raceNumber, selections), betId);
-                    break;
-            }
+            SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
+                       Selection.Create((ushort)meetingNumber, selections), betId);
+
+            //// copy pasta, exists a better way to do this!
+            //switch (betCode)
+            //{
+            //    case Enums.BetCode.WIN:
+            //    case Enums.BetCode.PLACE:
+            //    case Enums.BetCode.QUINELLA:
+            //    case Enums.BetCode.EXACTA:
+            //    case Enums.BetCode.SWINGER:
+            //    case Enums.BetCode.TRIFECTA:
+            //        // single race
+            //        SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
+            //            Selection.Create((ushort)meetingNumber, selections), betId);
+            //        break;
+            //    default:
+            //        // multi race
+            //        SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
+            //            Selection.Create((ushort)meetingNumber, (ushort)raceNumber, selections), betId);
+            //        break;
+            //}
 
             return tcs.Task;
         }
@@ -891,13 +901,11 @@ namespace UkTote
                     case Enums.BetCode.SWINGER:
                     case Enums.BetCode.TRIFECTA:
                         // single race
-                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.RaceNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption,
-                            Selection.Create((ushort)bet.MeetingNumber, (ushort)bet.RaceNumber, bet.Selections), bet.BetId);
+                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
                         break;
                     default:
                         // multi race
-                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.RaceNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption,
-                            Selection.Create((ushort)bet.MeetingNumber, bet.Selections), bet.BetId);
+                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
                         break;
 
                 }

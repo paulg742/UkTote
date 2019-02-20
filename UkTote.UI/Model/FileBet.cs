@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UkTote.Message;
 
 namespace UkTote.UI.Model
@@ -49,11 +51,12 @@ namespace UkTote.UI.Model
                 }
             }
 
+            int raceNumber = 0;
             if (fileBet.IsValid)
             {
-                if (int.TryParse(fields[2], out int raceNumber))
+                if (int.TryParse(fields[2], out raceNumber))
                 {
-                    request.RaceNumber = raceNumber;
+                    //request.RaceNumber = raceNumber;
                 }
                 else
                 {
@@ -116,12 +119,75 @@ namespace UkTote.UI.Model
 
             if (fileBet.IsValid)
             {
-                var selections = fields[7].Split(',');
-                request.Selections = Array.ConvertAll(selections, int.Parse);
+                //var selections = fields[7].Split(',');
+                request.Selections = ParseSelections(request, raceNumber, fields[7]);
                 fileBet.Request = request;
             }
 
             return fileBet;
+        }
+
+        public static Selection[] ParseSelections(BetRequest betRequest, int raceNumber, int[] selections, int raceOffset = 0)
+        {
+            return selections.Select(s => new Selection()
+            {
+                MeetingNumber = (ushort)betRequest.MeetingNumber,
+                RaceNumber = (ushort)(raceNumber + raceOffset),
+                HorseNumber = (ushort)(s > 900 ? s - 900 : s),
+                IsBanker = (byte) (s > 900 ? 1 : 0)
+            }).ToArray();
+        }
+
+        public static Selection[] ParseMultiRaceSelections(BetRequest betRequest, int[] selections)
+        {
+            return selections.Select(s => new Selection()
+            {
+                MeetingNumber = (ushort)betRequest.MeetingNumber,
+                RaceNumber = (ushort)(s / 100),
+                HorseNumber = (ushort)(s % 100),
+                IsBanker = 0
+            }).ToArray();
+        }
+
+        public static Selection[] ParseSelections(BetRequest betRequest, int raceNumber, string selections)
+        {
+            var ret = new List<Selection>();
+            switch(betRequest.BetCode)
+            {
+                // multi-race, multi-selection
+                case Enums.BetCode.TRIO:
+                case Enums.BetCode.DOUBLETRIO:
+                case Enums.BetCode.TRIPLETRIO:
+                    var legs = selections.Split('/');
+                    for (var i=0; i<legs.Length; ++i)
+                    {
+                        ret.AddRange(ParseSelections(betRequest, raceNumber, Array.ConvertAll(legs[i].Split(','), int.Parse), i));
+                    }
+                    break;
+
+                // multi-race:
+                case Enums.BetCode.SCOOP6:
+                case Enums.BetCode.SUPER7:
+                case Enums.BetCode.JACKPOT:
+                case Enums.BetCode.PLACEPOT:
+                case Enums.BetCode.QUADPOT:
+                case Enums.BetCode.QUADDIE:
+                case Enums.BetCode.TOTEDOUBLE:
+                case Enums.BetCode.TOTETREBLE:
+                case Enums.BetCode.SUPERJACKPOT7:
+                case Enums.BetCode.PLACEPOT7:
+                case Enums.BetCode.SUPERJACKPOT8:
+                case Enums.BetCode.PLACEPOT8:
+                case Enums.BetCode.SIXUP:
+                    ret.AddRange(ParseMultiRaceSelections(betRequest, Array.ConvertAll(selections.Split(','), int.Parse)));
+                    break;
+
+                default:
+                    ret.AddRange(ParseSelections(betRequest, raceNumber, Array.ConvertAll(selections.Split(','), int.Parse)));
+                    break;
+
+            }
+            return ret.ToArray();
         }
     }
 }

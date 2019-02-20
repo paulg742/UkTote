@@ -450,17 +450,27 @@ namespace TBS.ARK.Tests
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.TSN, reply.BetId, betStr, reply.ErrorText);
         }
 
-        //[TestMethod]
-        //public async Task RunHkBatchTest()
-        //{
-        //    gateway.NextBetId = 400;
+        [TestMethod]
+        public async Task RunHkBatchTest()
+        {
+            gateway.NextBetId = 400;
 
-        //    var batch = new List<BetRequest>()
-        //    {
-        //        new BetRequest(DateTime.UtcNow, 1, 1, 100, 4000, Enums.BetCode.DOUBLETRIO, Enums.BetOption.PERMUTATION, new[] { 103, 110, 106, 107, 108, 204, 202, 209, 212 }),
-        //        new BetRequest(DateTime.UtcNow, 1, 1, 100, 2400, Enums.BetCode.DOUBLETRIO, Enums.BetOption.BANKER, new[] { Tuple.Create(, 110, 106, 107, 108, 204, 202, 209, 212 }),
-        //    }
-        //}
+            var batch = new List<BetRequest>()
+            {
+                //HK_Tote039	Happy Valley	1	Double Trio	1	40	40	Permutation	3,10,6,7,8 / 4,2,9,12		Permutation - Void = 0, Paid <> 0 (win)							
+                new BetRequest(DateTime.UtcNow, 1, 100, 4000, Enums.BetCode.DOUBLETRIO, Enums.BetOption.PERMUTATION, new[] { (1, 3), (1, 10), (1, 6), (1, 7), (1, 8), (2, 4), (2, 2), (2, 9), (2, 12) }),
+                //HK_Tote040	Happy Valley	1	Double Trio	1	24	24	Banker	901,902,7,8,9 / 905,903,4,5,6,7,8,9,10,11	9nn = banker	Losing Bet							
+                new BetRequest(DateTime.UtcNow, 1, 100, 2400, Enums.BetCode.DOUBLETRIO, Enums.BetOption.BANKER, new[] { (1, 901), (1, 902), (1, 7), (1, 8), (1, 9), (2, 905), (2, 903), (2, 4), (2, 5), (2, 6), (2, 7), (2, 8), (2, 9), (2, 10), (2, 11) }), 
+                //HK_Tote041	Happy Valley	1	Double Trio	10	10	1	Normal	3,6,10 / 2,4,9		Winning bet  							
+
+            };
+
+            var reply = await gateway.SellBatch(batch);
+
+            Assert.AreEqual(reply.Count(), batch.Count);
+        }
+
+
         [TestMethod]
         public async Task RunBatchTest()
         {

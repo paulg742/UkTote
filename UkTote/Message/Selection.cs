@@ -28,33 +28,33 @@ namespace UkTote.Message
         [FieldOrder(4)]
         public byte IsBanker { get; set; }
 
-        public static Selection[] Create(ushort meetingNumber, ushort raceNumber, int[] selections)
+        public static Selection[] Create(int meetingNumber, int raceNumber, int[] selections)
         {
             return selections.Select(s => new Selection()
             {
-                MeetingNumber = meetingNumber,
-                RaceNumber = raceNumber,
+                MeetingNumber = (ushort)meetingNumber,
+                RaceNumber = (ushort)raceNumber,
                 HorseNumber = (ushort)((s > 900) ? s - 900 : s),
                 IsBanker = (byte)((s > 900) ? 1 : 0)
             }).ToArray();
         }
 
-        public static Selection[] Create(ushort meetingNumber, Tuple<ushort, int>[] selections)
+        public static Selection[] Create(int meetingNumber, (int raceNumber, int selection)[] selections)
         {
             return selections.Select(s => new Selection()
             {
-                MeetingNumber = meetingNumber,
-                RaceNumber = s.Item1,
-                HorseNumber = (ushort)((s.Item2 > 900) ? s.Item2 - 900 : s.Item2),
-                IsBanker = (byte)((s.Item2 > 900) ? 1 : 0)
+                MeetingNumber = (ushort)meetingNumber,
+                RaceNumber = (ushort)s.raceNumber,
+                HorseNumber = (ushort)((s.selection > 900) ? s.selection - 900 : s.selection),
+                IsBanker = (byte)((s.selection > 900) ? 1 : 0)
             }).ToArray();
         }
 
-        public static Selection[] Create(ushort meetingNumber, int[] selections)
+        public static Selection[] Create(int meetingNumber, int[] selections)
         {
             return selections.Select(s => new Selection()
             {
-                MeetingNumber = meetingNumber,
+                MeetingNumber = (ushort)meetingNumber,
                 RaceNumber = (ushort)(s / 100),
                 HorseNumber = (ushort)(s % 100),
                 IsBanker = 0
