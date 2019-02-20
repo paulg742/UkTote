@@ -28,6 +28,7 @@ namespace UkTote.UI
             txtPassword.Text = Properties.Settings.Default.Password;
             txtBetFolder.Text = Properties.Settings.Default.BetFolder;
             txtFeedFolder.Text = Properties.Settings.Default.FeedFolder;
+            txtBetOutputFolder.Text = Properties.Settings.Default.BetOutputFolder;
 
             _gateway.OnConnected += _gateway_OnConnected;
             _gateway.OnDisconnected += _gateway_OnDisconnected;
@@ -45,8 +46,15 @@ namespace UkTote.UI
             _gateway.OnRaceUpdate += _gateway_OnRaceUpdate;
             _gateway.OnRaceWillPayUpdate += _gateway_OnRaceWillPayUpdate;
             _gateway.OnRunnerUpdate += _gateway_OnRunnerUpdate;
+            _gateway.OnMeetingPoolDividendUpdate += _gateway_OnMeetingPoolDividendUpdate;
 
             UpdateButtons();
+        }
+
+        private void _gateway_OnMeetingPoolDividendUpdate(MeetingPoolDividendUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolDividendUpdate", obj);
         }
 
         private void LogFeed<T>(string type, T obj) where T: MessageBase
@@ -447,8 +455,20 @@ namespace UkTote.UI
                         }
                     }
                 }
+                DumpBetsOutput(results);
                 Log($"{bets.Count} bets processed");
             }
+        }
+
+        void DumpBetsOutput(IList<BetReply> output)
+        {
+            var filename = $"{DateTime.Now.ToString("yyyy-MM-ddThh-mm-ss")}.out";
+            foreach (var x in output)
+            {
+                var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
+                File.AppendAllText($"{txtBetOutputFolder.Text}\\{filename}", outputLine);
+            }
+            
         }
 
         private void btnChangeBetFolder_Click(object sender, EventArgs e)
@@ -501,7 +521,10 @@ namespace UkTote.UI
             {
                 Directory.CreateDirectory(txtFeedFolder.Text);
             }
-
+            if (!Directory.Exists(txtBetOutputFolder.Text))
+            {
+                Directory.CreateDirectory(txtBetOutputFolder.Text);
+            }
         }
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
@@ -564,6 +587,15 @@ namespace UkTote.UI
             finally
             {
                 UpdateButtons();
+            }
+        }
+
+        private void btnChangeBetOutputFolder_Click(object sender, EventArgs e)
+        {
+            var dlg = new FolderBrowserDialog();
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                txtBetOutputFolder.Text = dlg.SelectedPath;
             }
         }
     }

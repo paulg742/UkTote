@@ -20,5 +20,8 @@
     <Setting Name="FeedFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\UkTote\Feed</Value>
     </Setting>
+    <Setting Name="BetOutputFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\UkTote\BetsOutput</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

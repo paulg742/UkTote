@@ -94,5 +94,17 @@ namespace UkTote.UI.Properties {
                 this["FeedFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c:\\UkTote\\BetsOutput")]
+        public string BetOutputFolder {
+            get {
+                return ((string)(this["BetOutputFolder"]));
+            }
+            set {
+                this["BetOutputFolder"] = value;
+            }
+        }
     }
 }

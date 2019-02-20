@@ -58,6 +58,7 @@
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.checkBoxHideRawComms = new System.Windows.Forms.CheckBox();
             this.btnGetBalance = new System.Windows.Forms.Button();
             this.txtBetFolder = new System.Windows.Forms.TextBox();
@@ -71,7 +72,9 @@
             this.txtFeedFolder = new System.Windows.Forms.TextBox();
             this.btnMsnRequest = new System.Windows.Forms.Button();
             this.btnPayEnquiry = new System.Windows.Forms.Button();
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnChangeBetOutputFolder = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtBetOutputFolder = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numNextBetId)).BeginInit();
@@ -261,9 +264,9 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
-            this.listView1.Location = new System.Drawing.Point(189, 360);
+            this.listView1.Location = new System.Drawing.Point(189, 388);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(966, 436);
+            this.listView1.Size = new System.Drawing.Size(966, 408);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -315,6 +318,11 @@
             // columnHeader12
             // 
             this.columnHeader12.Text = "TSN";
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Pay Enquiry Result";
+            this.columnHeader13.Width = 158;
             // 
             // checkBoxHideRawComms
             // 
@@ -399,7 +407,7 @@
             // 
             // btnChangeFeedFolder
             // 
-            this.btnChangeFeedFolder.Location = new System.Drawing.Point(728, 323);
+            this.btnChangeFeedFolder.Location = new System.Drawing.Point(728, 349);
             this.btnChangeFeedFolder.Name = "btnChangeFeedFolder";
             this.btnChangeFeedFolder.Size = new System.Drawing.Size(33, 32);
             this.btnChangeFeedFolder.TabIndex = 27;
@@ -410,7 +418,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(184, 326);
+            this.label7.Location = new System.Drawing.Point(184, 352);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(152, 20);
             this.label7.TabIndex = 26;
@@ -418,7 +426,7 @@
             // 
             // txtFeedFolder
             // 
-            this.txtFeedFolder.Location = new System.Drawing.Point(339, 323);
+            this.txtFeedFolder.Location = new System.Drawing.Point(339, 349);
             this.txtFeedFolder.Name = "txtFeedFolder";
             this.txtFeedFolder.Size = new System.Drawing.Size(382, 26);
             this.txtFeedFolder.TabIndex = 25;
@@ -444,16 +452,40 @@
             this.btnPayEnquiry.UseVisualStyleBackColor = true;
             this.btnPayEnquiry.Click += new System.EventHandler(this.btnPayEnquiry_Click);
             // 
-            // columnHeader13
+            // btnChangeBetOutputFolder
             // 
-            this.columnHeader13.Text = "Pay Enquiry Result";
-            this.columnHeader13.Width = 158;
+            this.btnChangeBetOutputFolder.Location = new System.Drawing.Point(728, 317);
+            this.btnChangeBetOutputFolder.Name = "btnChangeBetOutputFolder";
+            this.btnChangeBetOutputFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetOutputFolder.TabIndex = 32;
+            this.btnChangeBetOutputFolder.Text = "...";
+            this.btnChangeBetOutputFolder.UseVisualStyleBackColor = true;
+            this.btnChangeBetOutputFolder.Click += new System.EventHandler(this.btnChangeBetOutputFolder_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(184, 320);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(140, 20);
+            this.label8.TabIndex = 31;
+            this.label8.Text = "Bet Output Folder:";
+            // 
+            // txtBetOutputFolder
+            // 
+            this.txtBetOutputFolder.Location = new System.Drawing.Point(339, 317);
+            this.txtBetOutputFolder.Name = "txtBetOutputFolder";
+            this.txtBetOutputFolder.Size = new System.Drawing.Size(382, 26);
+            this.txtBetOutputFolder.TabIndex = 30;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 1083);
+            this.Controls.Add(this.btnChangeBetOutputFolder);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.txtBetOutputFolder);
             this.Controls.Add(this.btnPayEnquiry);
             this.Controls.Add(this.btnMsnRequest);
             this.Controls.Add(this.btnChangeFeedFolder);
@@ -542,6 +574,9 @@
         private System.Windows.Forms.Button btnMsnRequest;
         private System.Windows.Forms.Button btnPayEnquiry;
         private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.Button btnChangeBetOutputFolder;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtBetOutputFolder;
     }
 }
 
