@@ -558,26 +558,59 @@ namespace UkTote.UI
         {
             try
             {
-                btnPayEnquiry.Enabled = false;
-                foreach (ListViewItem item in listView1.Items)
+                var dlg = new OpenFileDialog()
                 {
-                    var tsn = item.SubItems[11].Text.Replace("\0", "");
-                    if (!string.IsNullOrEmpty(tsn))
+                    DefaultExt = "*.out",
+                    InitialDirectory = txtBetOutputFolder.Text
+                };
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    btnPayEnquiry.Enabled = false;
+                    var lines = File.ReadAllLines(dlg.FileName);
+                    foreach (var line in lines)
                     {
-                        var result = await _gateway.PayEnquiry(tsn);
-                        if (result == null)
+                        var fields = line.Split(',');
+                        var betId = fields[0];
+                        var tsn = fields[1];
+                        if (!string.IsNullOrEmpty(tsn))
                         {
-                            item.SubItems[12].Text = "No reply";
-                        }
-                        else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
-                        {
-                            item.SubItems[12].Text = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
-                        }
-                        else
-                        {
-                            item.SubItems[12].Text = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                            var result = await _gateway.PayEnquiry(tsn);
+                            var txt = "";
+                            if (result == null)
+                            {
+                                txt = "No reply";
+                            }
+                            else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                            {
+                                txt = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
+                            }
+                            else
+                            {
+                                txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                            }
+                            File.AppendAllText($"{dlg.FileName}.pay", $"{betId},{tsn.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
                         }
                     }
+                    //foreach (ListViewItem item in listView1.Items)
+                    //{
+                    //    var tsn = item.SubItems[11].Text.Replace("\0", "");
+                    //    if (!string.IsNullOrEmpty(tsn))
+                    //    {
+                    //        var result = await _gateway.PayEnquiry(tsn);
+                    //        if (result == null)
+                    //        {
+                    //            item.SubItems[12].Text = "No reply";
+                    //        }
+                    //        else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                    //        {
+                    //            item.SubItems[12].Text = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
+                    //        }
+                    //        else
+                    //        {
+                    //            item.SubItems[12].Text = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                    //        }
+                    //    }
+                    //}
                 }
             }
             catch (Exception)
