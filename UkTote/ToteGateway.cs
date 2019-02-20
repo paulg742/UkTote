@@ -12,7 +12,7 @@ using UkTote.Message;
 
 namespace UkTote
 {
-    public partial class ToteGateway : CancellableQueueWorker<Message.MessageBase>, IDisposable, IToteGateway
+    public partial class ToteGateway : CancellableQueueWorker<MessageBase>, IDisposable, IToteGateway
     {
         readonly ILog _logger = LogManager.GetLogger(typeof(ToteGateway));
 
@@ -54,6 +54,7 @@ namespace UkTote
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
         public event Action<RunnerUpdate> OnRunnerUpdate;
+        public event Action<MeetingPoolDividendUpdate> OnMeetingPoolDividendUpdate;
 
         private bool _shuttingDown = false;
         private int _nextBetId = 0; // TODO - this gets set to 0 at start of day and persisted
@@ -61,8 +62,8 @@ namespace UkTote
         private BinarySerializer _serializer;
         private CircularBuffer<byte> _circularBuffer;
         private byte[] _buffer = new byte[BUFFER_SIZE];
-        private Dictionary<Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>, Type> _lookup = new Dictionary<Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>, Type>();
-        private Dictionary<Message.Enums.MessageType, bool> _ignoreUpdates = new Dictionary<Message.Enums.MessageType, bool>();
+        private Dictionary<Tuple<Enums.MessageType, Enums.ActionCode>, Type> _lookup = new Dictionary<Tuple<Enums.MessageType, Enums.ActionCode>, Type>();
+        private Dictionary<Enums.MessageType, bool> _ignoreUpdates = new Dictionary<Enums.MessageType, bool>();
         private WatchdogTimer _watchdogTimer;
         private readonly int _watchdogTimeoutMs;
         private ConcurrentDictionary<int, Guid> _refLookup = new ConcurrentDictionary<int, Guid>();
@@ -90,86 +91,87 @@ namespace UkTote
             };
             _circularBuffer = new CircularBuffer<byte>(BUFFER_SIZE * 4);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.ACCOUNT_LOGIN, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(AccountLoginSuccess);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.ACCOUNT_LOGIN, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(AccountLoginError);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.ACCOUNT_LOGIN, Enums.ActionCode.ACTION_SUCCESS)] = typeof(AccountLoginSuccess);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.ACCOUNT_LOGIN, Enums.ActionCode.ACTION_FAIL)] = typeof(AccountLoginError);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.ACCOUNT_LOGOUT, Message.Enums.ActionCode.ACTION_LOGOUT)] = typeof(AccountLogoutSuccess);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.ACCOUNT_LOGOUT, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(AccountLogoutError);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.ACCOUNT_LOGOUT, Enums.ActionCode.ACTION_LOGOUT)] = typeof(AccountLogoutSuccess);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.ACCOUNT_LOGOUT, Enums.ActionCode.ACTION_FAIL)] = typeof(AccountLogoutError);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACECARD_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacecardReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACECARD_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(RacecardReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACECARD_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacecardReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACECARD_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(RacecardReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(MeetingReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_REQ_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(MeetingReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(MeetingReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_REQ_MSG, Enums.ActionCode.ACTION_ON)] = typeof(MeetingReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(RaceReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_REQ_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(RaceReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(RaceReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_REQ_MSG, Enums.ActionCode.ACTION_ON)] = typeof(RaceReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RunnerReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(RunnerReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_REQ_MSG, Message.Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_REQ_MSG, Message.Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RunnerReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(RunnerReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_REQ_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_REQ_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.POOL_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.POOL_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(RacePoolReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.POOL_REQ_MSG, Message.Enums.ActionCode.ACTION_NORMAL)] = typeof(RacePoolReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(RacePoolReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_NORMAL)] = typeof(RacePoolReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.SELL_BET_REQ_MSG, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(SellBetSuccess);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.SELL_BET_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(SellBetFailed);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SELL_BET_REQ_MSG, Enums.ActionCode.ACTION_SUCCESS)] = typeof(SellBetSuccess);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SELL_BET_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(SellBetFailed);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.PAY_BET_REQ_MSG, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(PayEnquirySuccess);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.PAY_BET_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(PayEnquiryFailed);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.PAY_BET_REQ_MSG, Enums.ActionCode.ACTION_SUCCESS)] = typeof(PayEnquirySuccess);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.PAY_BET_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(PayEnquiryFailed);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(MsnReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(MsnReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MSN_REQ_MSG, Enums.ActionCode.ACTION_SUCCESS)] = typeof(MsnReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MSN_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(MsnReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_SUCCESS)] = typeof(CurrentMsnReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_MSN_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentMsnReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.CURRENT_MSN_REQ_MSG, Enums.ActionCode.ACTION_SUCCESS)] = typeof(CurrentMsnReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.CURRENT_MSN_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentMsnReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(CurrentBalanceReply);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Message.Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentBalanceReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(CurrentBalanceReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.CURRENT_BALANCE_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(CurrentBalanceReply);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_UPDATE_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(MeetingUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_UPDATE_MSG, Message.Enums.ActionCode.ACTION_CANCELLED)] = typeof(MeetingUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_UPDATE_MSG, Message.Enums.ActionCode.ACTION_POSTPONED)] = typeof(MeetingUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_UPDATE_MSG, Enums.ActionCode.ACTION_ON)] = typeof(MeetingUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_UPDATE_MSG, Enums.ActionCode.ACTION_CANCELLED)] = typeof(MeetingUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_UPDATE_MSG, Enums.ActionCode.ACTION_POSTPONED)] = typeof(MeetingUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(RaceUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_OFF)] = typeof(RaceUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_CLOSED)] = typeof(RaceUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_CANCELLED)] = typeof(RaceUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_POSTPONED)] = typeof(RaceUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_UPDATE_MSG, Message.Enums.ActionCode.ACTION_VOID)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_ON)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_OFF)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_CLOSED)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_CANCELLED)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_POSTPONED)] = typeof(RaceUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_UPDATE_MSG, Enums.ActionCode.ACTION_VOID)] = typeof(RaceUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_UPDATE_MSG, Message.Enums.ActionCode.ACTION_RUNNING)] = typeof(Message.RunnerUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_UPDATE_MSG, Message.Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(Message.RunnerUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_UPDATE_MSG, Message.Enums.ActionCode.ACTION_ON)] = typeof(Message.RacePoolUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_UPDATE_MSG, Message.Enums.ActionCode.ACTION_CANCELLED)] = typeof(Message.RacePoolUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_ON)] = typeof(RacePoolUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_CANCELLED)] = typeof(RacePoolUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(Message.MeetingSalesUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.MEETING_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(Message.MeetingSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(MeetingSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(MeetingSalesUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(Message.RaceSalesUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(Message.RaceSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(RaceSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(RaceSalesUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(Message.RacePoolSalesUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_SALES_UPDATE, Message.Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(Message.RacePoolSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(RacePoolSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(RacePoolSalesUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUOk_REQUEST_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(Message.RuOkRequest);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUOk_REQUEST_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RuOkRequest);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_DIV_UPDATE_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(Message.RacePoolDividendUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG, Message.Enums.ActionCode.ACTION_UNKNOWN)] = typeof(Message.RaceWillPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolDividendUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceWillPayUpdate);
 
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_UPDATE_MSG, Message.Enums.ActionCode.ACTION_RUNNING)] = typeof(Message.RunnerUpdate);
-            _lookup[new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(Message.Enums.MessageType.RUNNER_UPDATE_MSG, Message.Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(Message.RunnerUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolDividendUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
 
             // set up updates to ignore (gets noisy in the log)
-            _ignoreUpdates[Message.Enums.MessageType.MEET_POOL_WILL_PAY_UPDATE_MSG] = true;
+            _ignoreUpdates[Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG] = true;
             //_ignoreUpdates[Message.Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG] = true;
-            _ignoreUpdates[Message.Enums.MessageType.RESULT_UPDATE_MSG] = true;
-            _ignoreUpdates[Message.Enums.MessageType.WEIGHED_IN_MSG] = true;
+            _ignoreUpdates[Enums.MessageType.RESULT_UPDATE_MSG] = true;
+            _ignoreUpdates[Enums.MessageType.WEIGHED_IN_MSG] = true;
 
         }
 
@@ -186,7 +188,7 @@ namespace UkTote
             }
         }
 
-        protected void SendRequest(Message.MessageBase message)
+        protected void SendRequest(MessageBase message)
         {
             var stream = new MemoryStream();
             _serializer.Serialize(stream, message);
@@ -266,7 +268,7 @@ namespace UkTote
                 }
 
                 var buf1 = _circularBuffer.Peek(MessageBase.HEADER_LENGTH); 
-                var header = _serializer.Deserialize<Message.Header>(buf1);
+                var header = _serializer.Deserialize<Header>(buf1);
 
                 if (header.Marker == MessageBase.MARKER)
                 {
@@ -318,14 +320,14 @@ namespace UkTote
             OnIdle?.Invoke(obj);
         }
 
-        void ProcessPacket(Message.Header header, byte[] buffer)
+        void ProcessPacket(Header header, byte[] buffer)
         {
             if (_ignoreUpdates.ContainsKey(header.MessageType))
             {
                 return;
             }
 
-            var key = new Tuple<Message.Enums.MessageType, Message.Enums.ActionCode>(header.MessageType, header.ActionCode);
+            var key = new Tuple<Enums.MessageType, Enums.ActionCode>(header.MessageType, header.ActionCode);
             if (_lookup.ContainsKey(key))
             {
                 var pType = _lookup[key];
@@ -445,6 +447,10 @@ namespace UkTote
                 {
                     OnCurrentBalanceReply?.Invoke(packet as CurrentBalanceReply);
                 }
+                else if (pType == typeof(MeetingPoolDividendUpdate))
+                {
+                    OnMeetingPoolDividendUpdate?.Invoke(packet as MeetingPoolDividendUpdate);
+                }
             }
             else
             {
@@ -560,7 +566,7 @@ namespace UkTote
 
         protected int SellBetAsync(DateTime forDate, int meetingNumber,
             int unitStake, int totalStake,
-            Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, Selection[] selections, int? useBetId)
+            Enums.BetCode betCode, Enums.BetOption betOption, Selection[] selections, int? useBetId)
         {
             var betId = GetNextBetId(useBetId);
             var req = new SellBetRequest()
@@ -763,15 +769,15 @@ namespace UkTote
         }
 
         public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, int raceNumber, 
-            int unitStake, int totalStake, 
-            Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, int[] selections, int? betId=null)
+            int unitStake, int totalStake,
+            Enums.BetCode betCode, Enums.BetOption betOption, int[] selections, int? betId=null)
         {
             return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (raceNumber, s)).ToArray(), betId);
         }
 
         public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, 
             int unitStake, int totalStake,
-            Message.Enums.BetCode betCode, Message.Enums.BetOption betOption, (int race, int selection)[] selections, int? betId = null)
+            Enums.BetCode betCode, Enums.BetOption betOption, (int race, int selection)[] selections, int? betId = null)
         {
             var tcs = new TaskCompletionSource<BetReply>();
             Action<SellBetSuccess> successHandler = null;
@@ -784,7 +790,7 @@ namespace UkTote
                 {
                     TSN = reply.TSN,
                     BetId = reply.BetId,
-                    ErrorCode = Message.Enums.ErrorCode.SUCCESS,
+                    ErrorCode = Enums.ErrorCode.SUCCESS,
                     ErrorText = string.Empty
                 });
                 OnSellBetSuccess -= successHandler;
@@ -852,7 +858,7 @@ namespace UkTote
                     {
                         TSN = reply.TSN,
                         BetId = reply.BetId,
-                        ErrorCode = Message.Enums.ErrorCode.SUCCESS,
+                        ErrorCode = Enums.ErrorCode.SUCCESS,
                         ErrorText = string.Empty,
                         Ref = _refLookup.ContainsKey((int)reply.BetId) ? _refLookup[(int)reply.BetId] : (Guid?)null
                     };
@@ -930,7 +936,7 @@ namespace UkTote
                     TSN = reply.TSN,
                     PayoutAmount = reply.PayoutAmount,
                     VoidAmount = reply.VoidAmount,
-                    ErrorCode = Message.Enums.ErrorCode.SUCCESS,
+                    ErrorCode = Enums.ErrorCode.SUCCESS,
                     ErrorText = string.Empty
                 });
                 OnPayEnquirySuccess -= successHandler;

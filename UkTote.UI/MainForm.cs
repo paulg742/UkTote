@@ -384,6 +384,11 @@ namespace UkTote.UI
             return ret;
         }
 
+        //private string DisplaySelections(Selection[] selections)
+        //{
+        //    selections.GroupBy(s => s.RaceNumber)
+        //}
+
         private async void OnChanged(object source, FileSystemEventArgs e)
         {
             if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 1)

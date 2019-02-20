@@ -72,6 +72,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="hkbets.bet" />
     <None Include="bets.bet" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
