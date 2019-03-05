@@ -19,8 +19,8 @@ namespace TBS.ARK.Tests
         //const int port = 8036;    // HK port
         // const string username = "HKATCentrum02";
         // const string password = "password";
-        const string username = "ATCentrum9";
-        const string password = "at9password";
+        const string username = "ATCentrum6";
+        const string password = "password";
         ToteGateway gateway = new ToteGateway(120000);
         public UkToteBetTests()
         {
@@ -51,6 +51,14 @@ namespace TBS.ARK.Tests
         public async Task TestSellWinBet()
         {
             var reply = await gateway.SellBet(DateTime.UtcNow, 1, 1, 1, 1, Enums.BetCode.WIN, Enums.BetOption.NO_OPTION, new[] { 1 });
+            Assert.IsTrue(!string.IsNullOrEmpty(reply.TSN));
+        }
+
+        [TestMethod]
+        public async Task TestSellToteDouble()
+        {
+            //var reply = await gateway.SellBet(DateTime.UtcNow, 1, 1, 1, Enums.BetCode.TOTEDOUBLE, Enums.BetOption.NO_OPTION, new[] { (1, 1), (2, 1) });
+            var reply = await gateway.SellBet(DateTime.UtcNow, 1,  1, 200, 800, Enums.BetCode.TOTEDOUBLE, Enums.BetOption.NO_OPTION, new[] { 102, 104, 205, 207 }, 2);
             Assert.IsTrue(!string.IsNullOrEmpty(reply.TSN));
         }
 

@@ -772,7 +772,19 @@ namespace UkTote
             int unitStake, int totalStake,
             Enums.BetCode betCode, Enums.BetOption betOption, int[] selections, int? betId=null)
         {
-            return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (raceNumber, s)).ToArray(), betId);
+            switch (betCode)
+            {
+                case Enums.BetCode.WIN:
+                case Enums.BetCode.PLACE:
+                case Enums.BetCode.QUINELLA:
+                case Enums.BetCode.EXACTA:
+                case Enums.BetCode.SWINGER:
+                case Enums.BetCode.TRIFECTA:
+                    return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (raceNumber, s)).ToArray(), betId);
+                default:
+                    return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (s / 100, s % 100)).ToArray(), betId);
+            }
+            
         }
 
         public Task<BetReply> SellBet(DateTime forDate, int meetingNumber, 
