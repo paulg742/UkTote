@@ -83,63 +83,71 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 12);
+            this.label1.Location = new System.Drawing.Point(15, 8);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 20);
+            this.label1.Size = new System.Drawing.Size(83, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Host IP Address";
             // 
             // txtHostIpAddress
             // 
-            this.txtHostIpAddress.Location = new System.Drawing.Point(22, 43);
+            this.txtHostIpAddress.Location = new System.Drawing.Point(15, 28);
+            this.txtHostIpAddress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtHostIpAddress.Name = "txtHostIpAddress";
-            this.txtHostIpAddress.Size = new System.Drawing.Size(156, 26);
+            this.txtHostIpAddress.Size = new System.Drawing.Size(105, 20);
             this.txtHostIpAddress.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 80);
+            this.label2.Location = new System.Drawing.Point(15, 52);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 20);
+            this.label2.Size = new System.Drawing.Size(51, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Host Port";
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(22, 178);
+            this.txtUsername.Location = new System.Drawing.Point(15, 116);
+            this.txtUsername.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(156, 26);
+            this.txtUsername.Size = new System.Drawing.Size(105, 20);
             this.txtUsername.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 148);
+            this.label3.Location = new System.Drawing.Point(15, 96);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 20);
+            this.label3.Size = new System.Drawing.Size(55, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Username";
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(22, 248);
+            this.txtPassword.Location = new System.Drawing.Point(15, 161);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(156, 26);
+            this.txtPassword.Size = new System.Drawing.Size(105, 20);
             this.txtPassword.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(22, 215);
+            this.label4.Location = new System.Drawing.Point(15, 140);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 20);
+            this.label4.Size = new System.Drawing.Size(53, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Password";
             // 
             // numHostPort
             // 
-            this.numHostPort.Location = new System.Drawing.Point(22, 111);
+            this.numHostPort.Location = new System.Drawing.Point(15, 72);
+            this.numHostPort.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numHostPort.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -151,7 +159,7 @@
             0,
             0});
             this.numHostPort.Name = "numHostPort";
-            this.numHostPort.Size = new System.Drawing.Size(156, 26);
+            this.numHostPort.Size = new System.Drawing.Size(104, 20);
             this.numHostPort.TabIndex = 8;
             this.numHostPort.Value = new decimal(new int[] {
             8000,
@@ -161,9 +169,10 @@
             // 
             // btnConnect
             // 
-            this.btnConnect.Location = new System.Drawing.Point(22, 388);
+            this.btnConnect.Location = new System.Drawing.Point(15, 252);
+            this.btnConnect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(156, 34);
+            this.btnConnect.Size = new System.Drawing.Size(104, 22);
             this.btnConnect.TabIndex = 9;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -175,18 +184,20 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxLog.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.ItemHeight = 16;
-            this.listBoxLog.Location = new System.Drawing.Point(189, 846);
+            this.listBoxLog.ItemHeight = 11;
+            this.listBoxLog.Location = new System.Drawing.Point(126, 654);
+            this.listBoxLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(966, 212);
+            this.listBoxLog.Size = new System.Drawing.Size(659, 103);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(874, 1163);
+            this.btnCopyLog.Location = new System.Drawing.Point(598, 761);
+            this.btnCopyLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCopyLog.Name = "btnCopyLog";
-            this.btnCopyLog.Size = new System.Drawing.Size(280, 38);
+            this.btnCopyLog.Size = new System.Drawing.Size(187, 25);
             this.btnCopyLog.TabIndex = 11;
             this.btnCopyLog.Text = "Export Log";
             this.btnCopyLog.UseVisualStyleBackColor = true;
@@ -198,10 +209,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.balanceLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1061);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 786);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1167, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 9, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(791, 22);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -217,9 +228,10 @@
             // 
             // btnGetRacecard
             // 
-            this.btnGetRacecard.Location = new System.Drawing.Point(22, 428);
+            this.btnGetRacecard.Location = new System.Drawing.Point(15, 278);
+            this.btnGetRacecard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGetRacecard.Name = "btnGetRacecard";
-            this.btnGetRacecard.Size = new System.Drawing.Size(156, 34);
+            this.btnGetRacecard.Size = new System.Drawing.Size(104, 22);
             this.btnGetRacecard.TabIndex = 13;
             this.btnGetRacecard.Text = "Get Racecard";
             this.btnGetRacecard.UseVisualStyleBackColor = true;
@@ -229,17 +241,19 @@
             // 
             this.racecardTreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.racecardTreeView.Location = new System.Drawing.Point(189, 12);
+            this.racecardTreeView.Location = new System.Drawing.Point(126, 8);
+            this.racecardTreeView.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.racecardTreeView.Name = "racecardTreeView";
-            this.racecardTreeView.Size = new System.Drawing.Size(966, 224);
+            this.racecardTreeView.Size = new System.Drawing.Size(659, 147);
             this.racecardTreeView.TabIndex = 14;
             // 
             // btnExportRacecard
             // 
             this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportRacecard.Location = new System.Drawing.Point(874, 242);
+            this.btnExportRacecard.Location = new System.Drawing.Point(596, 157);
+            this.btnExportRacecard.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnExportRacecard.Name = "btnExportRacecard";
-            this.btnExportRacecard.Size = new System.Drawing.Size(280, 38);
+            this.btnExportRacecard.Size = new System.Drawing.Size(187, 25);
             this.btnExportRacecard.TabIndex = 15;
             this.btnExportRacecard.Text = "Export Racecard";
             this.btnExportRacecard.UseVisualStyleBackColor = true;
@@ -264,9 +278,10 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
-            this.listView1.Location = new System.Drawing.Point(189, 388);
+            this.listView1.Location = new System.Drawing.Point(126, 252);
+            this.listView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(966, 408);
+            this.listView1.Size = new System.Drawing.Size(659, 371);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -328,18 +343,20 @@
             // 
             this.checkBoxHideRawComms.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBoxHideRawComms.AutoSize = true;
-            this.checkBoxHideRawComms.Location = new System.Drawing.Point(16, 846);
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(11, 653);
+            this.checkBoxHideRawComms.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
-            this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
+            this.checkBoxHideRawComms.Size = new System.Drawing.Size(110, 17);
             this.checkBoxHideRawComms.TabIndex = 17;
             this.checkBoxHideRawComms.Text = "Hide Raw Comms";
             this.checkBoxHideRawComms.UseVisualStyleBackColor = true;
             // 
             // btnGetBalance
             // 
-            this.btnGetBalance.Location = new System.Drawing.Point(22, 468);
+            this.btnGetBalance.Location = new System.Drawing.Point(15, 304);
+            this.btnGetBalance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGetBalance.Name = "btnGetBalance";
-            this.btnGetBalance.Size = new System.Drawing.Size(156, 34);
+            this.btnGetBalance.Size = new System.Drawing.Size(104, 22);
             this.btnGetBalance.TabIndex = 18;
             this.btnGetBalance.Text = "Get Balance";
             this.btnGetBalance.UseVisualStyleBackColor = true;
@@ -347,25 +364,28 @@
             // 
             // txtBetFolder
             // 
-            this.txtBetFolder.Location = new System.Drawing.Point(339, 285);
+            this.txtBetFolder.Location = new System.Drawing.Point(226, 185);
+            this.txtBetFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBetFolder.Name = "txtBetFolder";
-            this.txtBetFolder.Size = new System.Drawing.Size(382, 26);
+            this.txtBetFolder.Size = new System.Drawing.Size(256, 20);
             this.txtBetFolder.TabIndex = 19;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(184, 288);
+            this.label5.Location = new System.Drawing.Point(123, 187);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(128, 20);
+            this.label5.Size = new System.Drawing.Size(85, 13);
             this.label5.TabIndex = 20;
             this.label5.Text = "Bet Input Folder:";
             // 
             // btnChangeBetFolder
             // 
-            this.btnChangeBetFolder.Location = new System.Drawing.Point(728, 285);
+            this.btnChangeBetFolder.Location = new System.Drawing.Point(485, 185);
+            this.btnChangeBetFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnChangeBetFolder.Name = "btnChangeBetFolder";
-            this.btnChangeBetFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetFolder.Size = new System.Drawing.Size(22, 21);
             this.btnChangeBetFolder.TabIndex = 21;
             this.btnChangeBetFolder.Text = "...";
             this.btnChangeBetFolder.UseVisualStyleBackColor = true;
@@ -374,32 +394,35 @@
             // numNextBetId
             // 
             this.numNextBetId.Enabled = false;
-            this.numNextBetId.Location = new System.Drawing.Point(22, 318);
+            this.numNextBetId.Location = new System.Drawing.Point(15, 207);
+            this.numNextBetId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.numNextBetId.Maximum = new decimal(new int[] {
             100000,
             0,
             0,
             0});
             this.numNextBetId.Name = "numNextBetId";
-            this.numNextBetId.Size = new System.Drawing.Size(156, 26);
+            this.numNextBetId.Size = new System.Drawing.Size(104, 20);
             this.numNextBetId.TabIndex = 22;
             this.numNextBetId.ValueChanged += new System.EventHandler(this.numNextBetId_ValueChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(22, 285);
+            this.label6.Location = new System.Drawing.Point(15, 185);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 20);
+            this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 23;
             this.label6.Text = "Next Bet ID";
             // 
             // btnExportBets
             // 
             this.btnExportBets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportBets.Location = new System.Drawing.Point(951, 802);
+            this.btnExportBets.Location = new System.Drawing.Point(647, 626);
+            this.btnExportBets.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnExportBets.Name = "btnExportBets";
-            this.btnExportBets.Size = new System.Drawing.Size(203, 38);
+            this.btnExportBets.Size = new System.Drawing.Size(135, 25);
             this.btnExportBets.TabIndex = 24;
             this.btnExportBets.Text = "Export Bets";
             this.btnExportBets.UseVisualStyleBackColor = true;
@@ -407,9 +430,10 @@
             // 
             // btnChangeFeedFolder
             // 
-            this.btnChangeFeedFolder.Location = new System.Drawing.Point(728, 349);
+            this.btnChangeFeedFolder.Location = new System.Drawing.Point(485, 227);
+            this.btnChangeFeedFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnChangeFeedFolder.Name = "btnChangeFeedFolder";
-            this.btnChangeFeedFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeFeedFolder.Size = new System.Drawing.Size(22, 21);
             this.btnChangeFeedFolder.TabIndex = 27;
             this.btnChangeFeedFolder.Text = "...";
             this.btnChangeFeedFolder.UseVisualStyleBackColor = true;
@@ -418,24 +442,27 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(184, 352);
+            this.label7.Location = new System.Drawing.Point(123, 229);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(152, 20);
+            this.label7.Size = new System.Drawing.Size(101, 13);
             this.label7.TabIndex = 26;
             this.label7.Text = "Feed Output Folder:";
             // 
             // txtFeedFolder
             // 
-            this.txtFeedFolder.Location = new System.Drawing.Point(339, 349);
+            this.txtFeedFolder.Location = new System.Drawing.Point(226, 227);
+            this.txtFeedFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFeedFolder.Name = "txtFeedFolder";
-            this.txtFeedFolder.Size = new System.Drawing.Size(382, 26);
+            this.txtFeedFolder.Size = new System.Drawing.Size(256, 20);
             this.txtFeedFolder.TabIndex = 25;
             // 
             // btnMsnRequest
             // 
-            this.btnMsnRequest.Location = new System.Drawing.Point(22, 508);
+            this.btnMsnRequest.Location = new System.Drawing.Point(15, 330);
+            this.btnMsnRequest.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnMsnRequest.Name = "btnMsnRequest";
-            this.btnMsnRequest.Size = new System.Drawing.Size(156, 34);
+            this.btnMsnRequest.Size = new System.Drawing.Size(104, 22);
             this.btnMsnRequest.TabIndex = 28;
             this.btnMsnRequest.Text = "MSN Request";
             this.btnMsnRequest.UseVisualStyleBackColor = true;
@@ -444,9 +471,10 @@
             // btnPayEnquiry
             // 
             this.btnPayEnquiry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPayEnquiry.Location = new System.Drawing.Point(740, 802);
+            this.btnPayEnquiry.Location = new System.Drawing.Point(507, 626);
+            this.btnPayEnquiry.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnPayEnquiry.Name = "btnPayEnquiry";
-            this.btnPayEnquiry.Size = new System.Drawing.Size(205, 38);
+            this.btnPayEnquiry.Size = new System.Drawing.Size(137, 25);
             this.btnPayEnquiry.TabIndex = 29;
             this.btnPayEnquiry.Text = "Pay Enquiry";
             this.btnPayEnquiry.UseVisualStyleBackColor = true;
@@ -454,9 +482,10 @@
             // 
             // btnChangeBetOutputFolder
             // 
-            this.btnChangeBetOutputFolder.Location = new System.Drawing.Point(728, 317);
+            this.btnChangeBetOutputFolder.Location = new System.Drawing.Point(485, 206);
+            this.btnChangeBetOutputFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnChangeBetOutputFolder.Name = "btnChangeBetOutputFolder";
-            this.btnChangeBetOutputFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetOutputFolder.Size = new System.Drawing.Size(22, 21);
             this.btnChangeBetOutputFolder.TabIndex = 32;
             this.btnChangeBetOutputFolder.Text = "...";
             this.btnChangeBetOutputFolder.UseVisualStyleBackColor = true;
@@ -465,24 +494,26 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(184, 320);
+            this.label8.Location = new System.Drawing.Point(123, 208);
+            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(140, 20);
+            this.label8.Size = new System.Drawing.Size(93, 13);
             this.label8.TabIndex = 31;
             this.label8.Text = "Bet Output Folder:";
             // 
             // txtBetOutputFolder
             // 
-            this.txtBetOutputFolder.Location = new System.Drawing.Point(339, 317);
+            this.txtBetOutputFolder.Location = new System.Drawing.Point(226, 206);
+            this.txtBetOutputFolder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBetOutputFolder.Name = "txtBetOutputFolder";
-            this.txtBetOutputFolder.Size = new System.Drawing.Size(382, 26);
+            this.txtBetOutputFolder.Size = new System.Drawing.Size(256, 20);
             this.txtBetOutputFolder.TabIndex = 30;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1167, 1083);
+            this.ClientSize = new System.Drawing.Size(791, 808);
             this.Controls.Add(this.btnChangeBetOutputFolder);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtBetOutputFolder);
@@ -515,6 +546,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtHostIpAddress);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MainForm";
             this.Text = "UkTote.UI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);

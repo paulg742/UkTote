@@ -158,6 +158,7 @@ namespace UkTote.UI.Model
                 case Enums.BetCode.TRIO:
                 case Enums.BetCode.DOUBLETRIO:
                 case Enums.BetCode.TRIPLETRIO:
+                case Enums.BetCode.SIXUP:
                     var legs = selections.Split('/');
                     for (var i=0; i<legs.Length; ++i)
                     {
@@ -178,7 +179,6 @@ namespace UkTote.UI.Model
                 case Enums.BetCode.PLACEPOT7:
                 case Enums.BetCode.SUPERJACKPOT8:
                 case Enums.BetCode.PLACEPOT8:
-                case Enums.BetCode.SIXUP:
                     ret.AddRange(ParseMultiRaceSelections(betRequest, Array.ConvertAll(selections.Split(','), int.Parse)));
                     break;
 
