@@ -582,7 +582,7 @@ namespace UkTote.UI
                             }
                             else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
                             {
-                                txt = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
+                                txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2}";
                             }
                             else
                             {
