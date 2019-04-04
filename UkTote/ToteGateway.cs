@@ -30,6 +30,7 @@ namespace UkTote
         public event Action<RacePoolReply> OnRacePool;
         public event Action<RaceReply> OnRace;
         public event Action<RunnerReply> OnRunner;
+        public event Action<MeetingPoolReply> OnMeetingPool;
         public event Action<SellBetFailed> OnSellBetFailed;
         public event Action<SellBetSuccess> OnSellBetSuccess;
         public event Action<PayEnquirySuccess> OnPayEnquirySuccess;
@@ -116,6 +117,10 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolReply);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(RacePoolReply);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_NORMAL)] = typeof(RacePoolReply);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(MeetingPoolReply);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_REQ_MSG, Enums.ActionCode.ACTION_NORMAL)] = typeof(MeetingPoolReply);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SELL_BET_REQ_MSG, Enums.ActionCode.ACTION_SUCCESS)] = typeof(SellBetSuccess);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SELL_BET_REQ_MSG, Enums.ActionCode.ACTION_FAIL)] = typeof(SellBetFailed);
@@ -383,6 +388,10 @@ namespace UkTote
                 {
                     OnRunner?.Invoke(packet as RunnerReply);
                 }
+                else if (pType == typeof(MeetingPoolReply))
+                {
+                    OnMeetingPool?.Invoke(packet as MeetingPoolReply);
+                }
                 else if (pType == typeof(SellBetFailed))
                 {
                     OnSellBetFailed?.Invoke(packet as SellBetFailed);
@@ -546,6 +555,17 @@ namespace UkTote
             {
                 MeetingNumber = (ushort)meetingNumber,
                 RaceNumber = (ushort)raceNumber,
+                PoolNumber = (ushort)poolNumber
+            };
+
+            QueueWork(req);
+        }
+
+        protected void GetMeetingPoolAsync(int meetingNumber, int poolNumber)
+        {
+            var req = new MeetingPoolRequest()
+            {
+                MeetingNumber = (ushort)meetingNumber,
                 PoolNumber = (ushort)poolNumber
             };
 

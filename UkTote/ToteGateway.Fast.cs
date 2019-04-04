@@ -17,6 +17,7 @@ namespace UkTote
             Action<RaceReply> raceHandler = null;
             Action<RacePoolReply> racePoolHandler = null;
             Action<RunnerReply> runnerHandler = null;
+            Action<MeetingPoolReply> meetingPoolHandler = null;
             RacecardReply racecard = null;
 
             racecardHandler += (reply) =>
@@ -40,6 +41,14 @@ namespace UkTote
                     for (int i = 1; i <= reply.NumberOfRaces; ++i)
                     {
                         GetRaceAsync(reply.MeetingNumber, i);
+                    }
+
+                    if (includePools)
+                    {
+                        for (int i = 1; i <= reply.NumberOfMultiLegPools; ++i)
+                        {
+                            GetMeetingPoolAsync(reply.MeetingNumber, i);
+                        }
                     }
                 }
             };
@@ -99,6 +108,7 @@ namespace UkTote
                         OnRace -= raceHandler;
                         OnRunner -= runnerHandler;
                         OnRacePool -= racePoolHandler;
+                        OnMeetingPool -= meetingPoolHandler;
                         tcs.TrySetResult(racecard);
                     }
                     else
@@ -149,10 +159,42 @@ namespace UkTote
                         OnRace -= raceHandler;
                         OnRunner -= runnerHandler;
                         OnRacePool -= racePoolHandler;
+                        OnMeetingPool -= meetingPoolHandler;
                         tcs.TrySetResult(racecard);
                     }
                 }
 
+            };
+
+            meetingPoolHandler += (reply) =>
+            {
+                if (!racecard.Meetings.ContainsKey(reply.MeetingNumber)) return; // this is an error, we should have the meeting reply before the meeting pool reply
+                if (racecard.Meetings[reply.MeetingNumber].MeetingPools == null) racecard.Meetings[reply.MeetingNumber].MeetingPools = new Dictionary<int, MeetingPoolReply>();
+                if (!racecard.Meetings[reply.MeetingNumber].MeetingPools.ContainsKey(reply.MeetingPoolNumber))
+                {
+                    racecard.Meetings[reply.MeetingNumber].MeetingPools[reply.MeetingPoolNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                        ? null
+                        : reply;
+                }
+                if (racecard.Meetings[reply.MeetingNumber].IsComplete)
+                {
+                    _logger.DebugFormat("Meeting:{0} complete", reply.MeetingNumber);
+                    if (racecard.IsComplete)
+                    {
+                        _logger.DebugFormat("Racecard complete!");
+                        OnRacecard -= racecardHandler;
+                        OnMeeting -= meetingHandler;
+                        OnRace -= raceHandler;
+                        OnRunner -= runnerHandler;
+                        OnRacePool -= racePoolHandler;
+                        OnMeetingPool -= meetingPoolHandler;
+                        tcs.TrySetResult(racecard);
+                    }
+                    else
+                    {
+                        _logger.DebugFormat("Racecard not complete :(");
+                    }
+                }
             };
 
             OnRacecard += racecardHandler;
@@ -160,6 +202,7 @@ namespace UkTote
             OnRace += raceHandler;
             OnRunner += runnerHandler;
             OnRacePool += racePoolHandler;
+            OnMeetingPool += meetingPoolHandler;
 
             GetRacecardAsync(forDate);
             return tcs.Task;

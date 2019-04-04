@@ -313,6 +313,14 @@ namespace UkTote.UI
                         }
                     }
                 }
+                if (meeting.Value.MeetingPools != null)
+                {
+                    var multiLegRootNode = meetingNode.Nodes.Add($"Multi Leg Pools");
+                    foreach (var meetingPool in meeting.Value.MeetingPools)
+                    {
+                        multiLegRootNode.Nodes.Add($"{meetingPool.Value.MeetingPoolNumber}: {meetingPool.Value.PoolName} {meetingPool.Value.GetRaces()}");
+                    }
+                }
             }
         }
 

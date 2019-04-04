@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="BetReply.cs" />
     <Compile Include="Message\MeetingPoolDividendUpdate.cs" />
+    <Compile Include="Message\MeetingPoolRequest.cs" />
+    <Compile Include="Message\MeetingPoolReply.cs" />
     <Compile Include="MultiLegBetRequest.cs" />
     <Compile Include="BetRequest.cs" />
     <Compile Include="CancellableQueueWorker.cs" />

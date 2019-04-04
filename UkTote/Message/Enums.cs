@@ -6,7 +6,7 @@
         {
             RACECARD_REQ_MSG = 0x02,
             MEETING_REQ_MSG = 0x03,
-            MEETPOOL_REQ_MSG = 0x05,
+            MEETING_POOL_REQ_MSG = 0x05,
             RACE_REQ_MSG = 0x06,
             POOL_REQ_MSG = 0x07,
             RUNNER_REQ_MSG = 0x09,

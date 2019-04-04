@@ -52,12 +52,16 @@ namespace UkTote.Message
         public IDictionary<int, RaceReply> Races { get; set; }
 
         [Ignore]
+        public IDictionary<int, MeetingPoolReply> MeetingPools { get; set; }
+
+        [Ignore]
         public bool IsComplete
         {
             get
             {
-                _logger.DebugFormat("MeetingNumber:{0} Races.Count:{1} NumberOfRaces:{2} #Incomplete:{3}", MeetingNumber, Races?.Count, NumberOfRaces, Races.Count(m => !m.Value.IsComplete));
-                return (Races != null) && (Races.Count == NumberOfRaces) && Races.All(m => m.Value.IsComplete);
+                _logger.DebugFormat("MeetingNumber:{0} Races.Count:{1} NumberOfRaces:{2} #Incomplete:{3} MeetingPools.Count:{4} NumberOfMultiLegPools:{4}", 
+                    MeetingNumber, Races?.Count, NumberOfRaces, Races.Count(m => !m.Value.IsComplete), NumberOfMultiLegPools, MeetingPools?.Count);
+                return (Races != null) && (Races.Count == NumberOfRaces) && Races.All(m => m.Value.IsComplete) && ((MeetingPools?.Count??0) == NumberOfMultiLegPools);
             }
         }
     }

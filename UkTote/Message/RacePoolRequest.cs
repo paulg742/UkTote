@@ -20,7 +20,7 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         [Ignore]
-protected override ushort BodyLength
+        protected override ushort BodyLength
         {
             get
             {
