@@ -72,6 +72,24 @@ namespace UkTote.UI
         private void _gateway_OnRunnerUpdate(Message.RunnerUpdate obj)
         {
             Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RunnerUpdate", obj);
+            if (_racecard != null && _racecard.Meetings.ContainsKey(obj.MeetingNumber))
+            {
+                var meeting = _racecard.Meetings[obj.MeetingNumber];
+                if (meeting.Races.ContainsKey(obj.RaceNumber))
+                {
+                    var race = meeting.Races[obj.RaceNumber];
+                    for (var i=0; i < obj.NonRunnerMap.Count; ++i)
+                    {
+                        if (obj.NonRunnerMap[i] == 1 && race.Runners.ContainsKey(i + 1))
+                        {
+                            race.Runners[i + 1].IsScratched = true;
+                            UpdateRacecardTree(race.Runners[i + 1]);
+                        }
+                    }
+                }
+            }
+            //DisplayRacecardTree();
         }
 
         private void _gateway_OnRaceWillPayUpdate(Message.RaceWillPayUpdate obj)
@@ -289,19 +307,32 @@ namespace UkTote.UI
         void DisplayRacecardTree()
         {
             if (_racecard == null) return;
+            if (racecardTreeView.InvokeRequired)
+            {
+                Invoke(new Action(() => DisplayRacecardTree()));
+                return;
+            }
+            racecardTreeView.Nodes.Clear();
             foreach (var meeting in _racecard.Meetings)
             {
                 var meetingNode = racecardTreeView.Nodes.Add($"{meeting.Key} - {meeting.Value.MeetingName} ({meeting.Value.NumberOfRaces} races)");
+                meetingNode.Tag = meeting.Value;
                 foreach (var race in meeting.Value.Races)
                 {
                     var raceNode = meetingNode.Nodes.Add($"R{race.Key} - {race.Value.RaceName} {race.Value.DistanceMeters}m");
+                    raceNode.Tag = race.Value;
                     if (race.Value.Runners != null)
                     {
                         var runnersNode = raceNode.Nodes.Add("Runners");
-
                         foreach (var runner in race.Value.Runners)
                         {
-                            runnersNode.Nodes.Add($"{runner.Key}. {runner.Value.RunnerName}");
+                            var txt = $"{runner.Key}. {runner.Value.RunnerName.Replace("\0", string.Empty)}";
+                            if (runner.Value.IsScratched)
+                            {
+                                txt += " [SCR]";
+                            }
+                            var runnerNode = runnersNode.Nodes.Add(txt);
+                            runnerNode.Tag = runner.Value;
                         }
                     }
                     if (race.Value.RacePools != null)
@@ -318,9 +349,61 @@ namespace UkTote.UI
                     var multiLegRootNode = meetingNode.Nodes.Add($"Multi Leg Pools");
                     foreach (var meetingPool in meeting.Value.MeetingPools)
                     {
-                        multiLegRootNode.Nodes.Add($"{meetingPool.Value.MeetingPoolNumber}: {meetingPool.Value.PoolName} {meetingPool.Value.GetRaces()}");
+                        multiLegRootNode.Nodes.Add($"{meetingPool.Value.MeetingPoolNumber}: {meetingPool.Value.PoolName.Replace("\0", string.Empty)} {meetingPool.Value.GetRaces()}");
                     }
                 }
+            }
+        }
+
+        public bool IsTagged(TreeNode node, RunnerReply runner)
+        {
+            if (node.Tag == null) return false;
+            if (!(node.Tag is RunnerReply tag)) return false;
+            return tag.MeetingNumber == runner.MeetingNumber && tag.RaceNumber == runner.RaceNumber && tag.RunnerNumber == runner.RunnerNumber;
+        }
+
+        public TreeNode GetNode(RunnerReply tag, TreeNode rootNode)
+        {
+            foreach (TreeNode node in rootNode.Nodes)
+            {
+                if (IsTagged(node, tag)) return node;
+
+                //recursion
+                var next = GetNode(tag, node);
+                if (next != null) return next;
+            }
+            return null;
+        }
+
+        public TreeNode GetNode(RunnerReply tag)
+        {
+            TreeNode itemNode = null;
+            foreach (TreeNode node in racecardTreeView.Nodes)
+            {
+                if (IsTagged(node, tag)) return node;
+
+                itemNode = GetNode(tag, node);
+                if (itemNode != null) break;
+            }
+            return itemNode;
+        }
+
+        void UpdateRacecardTree(RunnerReply runner)
+        {
+            if (racecardTreeView.InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateRacecardTree(runner)));
+                return;
+            }
+            var node = GetNode(runner);
+            if (node != null)
+            {
+                var txt = $"{runner.RunnerNumber}. {runner.RunnerName.Replace("\0", string.Empty)}";
+                if (runner.IsScratched)
+                {
+                    txt += " [SCR]";
+                }
+                node.Text = txt;
             }
         }
 

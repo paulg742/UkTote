@@ -23,6 +23,9 @@ namespace UkTote.Message
         public byte[] Reserved { get; set; }
 
         [Ignore]
+        public bool IsScratched { get; set; }
+
+        [Ignore]
         protected override ushort BodyLength
         {
             get
