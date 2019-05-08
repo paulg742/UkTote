@@ -54,5 +54,22 @@ namespace UkTote.Message
             }
             return ret;
         }
+
+        [Ignore]
+        public int[] Races
+        {
+            get
+            {
+                var ret = new List<int>();
+                for (var i = 0; i < RaceMap.Count; ++i)
+                {
+                    if (RaceMap[i] > 0)
+                    {
+                        ret.Add(i + 1);
+                    }
+                }
+                return ret.ToArray();
+            }
+        }
     }
 }

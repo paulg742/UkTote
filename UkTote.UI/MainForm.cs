@@ -344,7 +344,17 @@ namespace UkTote.UI
                         var poolsNode = raceNode.Nodes.Add("Pools");
                         foreach (var pool in race.Value.RacePools)
                         {
-                            poolsNode.Nodes.Add($"{pool.Key} - {pool.Value.PoolName}");
+                            poolsNode.Nodes.Add($"P{pool.Key} - {pool.Value.PoolName}");
+                        }
+                        if (meeting.Value.MeetingPools != null)
+                        {
+                            foreach (var meetingPool in meeting.Value.MeetingPools)
+                            {
+                                if (meetingPool.Value.Races.Contains(race.Value.RaceNumber))
+                                {
+                                    poolsNode.Nodes.Add($"MP{meetingPool.Key}.{Array.IndexOf(meetingPool.Value.Races, race.Value.RaceNumber) + 1} - {meetingPool.Value.PoolName}");
+                                }
+                            }
                         }
                     }
                 }
