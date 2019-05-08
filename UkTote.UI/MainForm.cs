@@ -83,13 +83,17 @@ namespace UkTote.UI
                     {
                         if (obj.NonRunnerMap[i] == 1 && race.Runners.ContainsKey(i + 1))
                         {
-                            race.Runners[i + 1].IsScratched = true;
+                            if (!race.Runners[i + 1].IsScratched)
+                            {
+                                Log($"{race.MeetingNumber} R{race.RaceNumber}-{i + 1} SCR");
+                                race.Runners[i + 1].IsScratched = true;
+                            }
+                            
                             UpdateRacecardTree(race.Runners[i + 1]);
                         }
                     }
                 }
             }
-            //DisplayRacecardTree();
         }
 
         private void _gateway_OnRaceWillPayUpdate(Message.RaceWillPayUpdate obj)
