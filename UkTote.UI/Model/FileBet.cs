@@ -12,6 +12,7 @@ namespace UkTote.UI.Model
         public bool IsValid { get; set; }
         public string Error { get; set; }
         public BetRequest Request { get; set; }
+        public BetReply Result { get; set; }
 
         public static FileBet Parse(string text)
         {

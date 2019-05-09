@@ -12,6 +12,7 @@ namespace UkTote.UI
 {
     public partial class MainForm : Form
     {
+        const string LastBetIdFile = "lastbet.id";
         private readonly ToteGateway _gateway = new ToteGateway(5000);
         private bool _connected;
         private bool _loggedIn;
@@ -211,7 +212,11 @@ namespace UkTote.UI
                     else
                     {
                         btnGetRacecard.Enabled = true;
-                        numNextBetId.Enabled = true;
+                        numLastBetId.Enabled = true;
+                        if (numLastBetId.Value > 0)
+                        {
+                            numLastBetId_ValueChanged(this, null);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -559,21 +564,48 @@ namespace UkTote.UI
                             }
                         }
                     }
+                    foreach (var bet in bets)
+                    {
+                        if (bet.Request?.Ref == result.Ref)
+                        {
+                            bet.Result = result;
+                        }
+                    }
                 }
-                DumpBetsOutput(results);
+                var lastBetId = bets.Max(b => b.Result?.BetId);
+                if ((lastBetId ?? 0) > 0)
+                {
+                    numLastBetId.Value = lastBetId.Value;
+                }
+                DumpBetsOutput(e.FullPath, bets);
                 Log($"{bets.Count} bets processed");
             }
         }
 
-        void DumpBetsOutput(IList<BetReply> output)
+        private string GetOutputFilePath(string inputFilePath)
         {
-            var filename = $"{DateTime.Now.ToString("yyyy-MM-ddThh-mm-ss")}.out";
-            foreach (var x in output)
+            var filename = Path.GetFileName(inputFilePath);
+            var outputFilePath = $"{txtBetOutputFolder.Text}\\{filename}.out";
+            var counter = 0;
+            while (File.Exists(outputFilePath))
             {
-                var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
-                File.AppendAllText($"{txtBetOutputFolder.Text}\\{filename}", outputLine);
+                ++counter;
+                outputFilePath = $"{txtBetOutputFolder.Text}\\{filename}.{counter}.out";
             }
-            
+            return outputFilePath;
+        }
+
+        void DumpBetsOutput(string filePath, List<Model.FileBet> betsWithResults)
+        {
+            var filename = Path.GetFileName(filePath);
+            var outputFilePath = GetOutputFilePath(filePath);
+            foreach (var x in betsWithResults)
+            {
+                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result.ErrorText}\n".Replace("\0", string.Empty);
+                //var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
+                File.AppendAllText($"{outputFilePath}", outputLine);
+            }
+            File.Delete(filePath);
         }
 
         private void btnChangeBetFolder_Click(object sender, EventArgs e)
@@ -586,12 +618,17 @@ namespace UkTote.UI
             }
         }
 
-        private void numNextBetId_ValueChanged(object sender, EventArgs e)
+        private void numLastBetId_ValueChanged(object sender, EventArgs e)
         {
             try
             {
-                _gateway.NextBetId = (int)numNextBetId.Value;
-                Log($"Changed next bet id to: {(int)numNextBetId.Value}");
+                if (_gateway != null && _gateway.IsConnected)
+                {
+                    _gateway.NextBetId = (int)numLastBetId.Value;
+                    var lastBetId = (int)numLastBetId.Value;
+                    Log($"Changed last bet id to: {lastBetId}");
+                    File.WriteAllText(LastBetIdFile, lastBetId.ToString());
+                }
             }
             catch (Exception ex)
             {
@@ -629,6 +666,15 @@ namespace UkTote.UI
             if (!Directory.Exists(txtBetOutputFolder.Text))
             {
                 Directory.CreateDirectory(txtBetOutputFolder.Text);
+            }
+            if (!File.Exists(LastBetIdFile))
+            {
+                File.WriteAllLines(LastBetIdFile, new[] { "0" });
+            }
+            else
+            {
+                var txt = File.ReadAllText(LastBetIdFile);
+                numLastBetId.Value = int.Parse(txt);
             }
         }
 
@@ -674,26 +720,33 @@ namespace UkTote.UI
                     var lines = File.ReadAllLines(dlg.FileName);
                     foreach (var line in lines)
                     {
-                        var fields = line.Split(',');
-                        var betId = fields[0];
-                        var tsn = fields[1];
-                        if (!string.IsNullOrEmpty(tsn))
+                        var fields = line.Split('>');
+                        if (fields.Length == 2)
                         {
-                            var result = await _gateway.PayEnquiry(tsn);
-                            var txt = "";
-                            if (result == null)
+                            var raw = fields[0];
+                            var res = fields[1];
+
+                            fields = res.Split(',');
+                            var betId = fields[0];
+                            var tsn = fields[1];
+                            if (!string.IsNullOrEmpty(tsn))
                             {
-                                txt = "No reply";
+                                var result = await _gateway.PayEnquiry(tsn);
+                                var txt = "";
+                                if (result == null)
+                                {
+                                    txt = "No reply";
+                                }
+                                else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                                {
+                                    txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2} (RAW:{result.PayoutAmount} {result.VoidAmount})";
+                                }
+                                else
+                                {
+                                    txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                                }
+                                File.AppendAllText($"{dlg.FileName}.pay", $"{raw} > {betId},{tsn.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
                             }
-                            else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
-                            {
-                                txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2} (RAW:{result.PayoutAmount} {result.VoidAmount})";
-                            }
-                            else
-                            {
-                                txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
-                            }
-                            File.AppendAllText($"{dlg.FileName}.pay", $"{betId},{tsn.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
                         }
                     }
                     //foreach (ListViewItem item in listView1.Items)
