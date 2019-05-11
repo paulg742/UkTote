@@ -14,7 +14,7 @@ namespace UkTote.UI
     public partial class MainForm : Form
     {
         const string LastBetIdFile = "lastbet.id";
-        private readonly ToteGateway _gateway = new ToteGateway(5000);
+        private readonly ToteGateway _gateway = new ToteGateway(30000);
         private bool _connected;
         private bool _loggedIn;
         private Message.RacecardReply _racecard;
@@ -50,7 +50,24 @@ namespace UkTote.UI
             _gateway.OnRunnerUpdate += _gateway_OnRunnerUpdate;
             _gateway.OnMeetingPoolDividendUpdate += _gateway_OnMeetingPoolDividendUpdate;
 
+            _gateway.OnBatchProgress += _gateway_OnBatchProgress;
+
             UpdateButtons();
+        }
+
+        private void _gateway_OnBatchProgress(int complete, int total)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => _gateway_OnBatchProgress(complete, total)));
+            }
+            else
+            {
+                if (batchProgressBar.Maximum != total) batchProgressBar.Maximum = total;
+                batchProgressBar.Value = complete;
+                var percentComplete = ((double)complete) / total;
+                statusLabel.Text = $"{complete}/{total} {percentComplete:P0}";
+            }
         }
 
         private void _gateway_OnMeetingPoolDividendUpdate(MeetingPoolDividendUpdate obj)
@@ -59,7 +76,7 @@ namespace UkTote.UI
             LogFeed("MeetingPoolDividendUpdate", obj);
         }
 
-        private void LogFeed<T>(string type, T obj) where T: MessageBase
+        private void LogFeed<T>(string type, T obj) where T : MessageBase
         {
             var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
             File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json", str);
@@ -81,7 +98,7 @@ namespace UkTote.UI
                 if (meeting.Races.ContainsKey(obj.RaceNumber))
                 {
                     var race = meeting.Races[obj.RaceNumber];
-                    for (var i=0; i < obj.NonRunnerMap.Count; ++i)
+                    for (var i = 0; i < obj.NonRunnerMap.Count; ++i)
                     {
                         if (obj.NonRunnerMap[i] == 1 && race.Runners.ContainsKey(i + 1))
                         {
@@ -90,7 +107,7 @@ namespace UkTote.UI
                                 Log($"{race.MeetingNumber} R{race.RaceNumber}-{i + 1} SCR");
                                 race.Runners[i + 1].IsScratched = true;
                             }
-                            
+
                             UpdateRacecardTree(race.Runners[i + 1]);
                         }
                     }
@@ -472,7 +489,7 @@ namespace UkTote.UI
 
         void StartWatchingFolder()
         {
-            StopWatchingFolder();    
+            StopWatchingFolder();
 
             _watcher = new FileSystemWatcher
             {
@@ -489,19 +506,13 @@ namespace UkTote.UI
         List<Model.FileBet> ProcessBetFile(string path)
         {
             var ret = new List<Model.FileBet>();
-            try
+            var lines = File.ReadAllLines(path);
+            foreach (var line in lines)
             {
-                var lines = File.ReadAllLines(path);
-                foreach (var line in lines)
+                if (!string.IsNullOrEmpty(line.Trim()))
                 {
-                    if (!string.IsNullOrEmpty(line.Trim()))
-                    {
-                        ret.Add(Model.FileBet.Parse(line));
-                    }
+                    ret.Add(Model.FileBet.Parse(line));
                 }
-            }
-            catch (Exception)
-            {
             }
             return ret;
         }
@@ -518,20 +529,26 @@ namespace UkTote.UI
                 // ignore this dupe event
                 return;
             }
+            
             if (listView1.InvokeRequired)
             {
                 Invoke(new Action(() => OnChanged(source, e)));
             }
             else
             {
-                listView1.Items.Clear();
-                _watcherLog[e.FullPath] = DateTime.UtcNow;
-                Log($"{e.FullPath} was found, processing");
-                var bets = ProcessBetFile(e.FullPath);
-                foreach (var bet in bets)
+                try
                 {
-                    var item = listView1.Items.Add(new ListViewItem(new string[]
+                    Log($"{e.FullPath} was found, processing");
+                    var bets = ProcessBetFile(e.FullPath);
+                    listView1.Items.Clear();
+                    _watcherLog[e.FullPath] = DateTime.UtcNow;
+                    var itemMap = new Dictionary<Guid?, ListViewItem>();
+                    var betMap = new Dictionary<Guid?, Model.FileBet>();
+                    listView1.BeginUpdate();
+                    foreach (var bet in bets)
                     {
+                        var item = listView1.Items.Add(new ListViewItem(new string[]
+                        {
                             bet.Raw,
                             bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
                             bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
@@ -545,44 +562,59 @@ namespace UkTote.UI
                             string.Empty, // BetId
                             string.Empty, // TSN
                             string.Empty // pay enquiry result
-                    }));
-                    item.Tag = bet.Request?.Ref;
-                }
-                var batch = bets
-                    .Where(b => b.Request != null && b.IsValid)
-                    .Select(b => b.Request)
-                    .ToList();
-                var results = await _gateway.SellBatch(batch);
-                foreach (var result in results)
-                {
-                    foreach (ListViewItem item in listView1.Items)
+                        }));
+                        item.Tag = bet.Request?.Ref;
+                        itemMap[bet.Request?.Ref] = item;
+                        betMap[bet.Request?.Ref] = bet;
+                    }
+                    listView1.EndUpdate();
+                    var batch = bets
+                        .Where(b => b.Request != null && b.IsValid)
+                        .Select(b => b.Request)
+                        .ToList();
+                    var results = await _gateway.SellBatch(batch);
+                    //listView1.BeginUpdate();
+                    foreach (var result in results)
                     {
-                        if (item.Tag as Guid? == result.Ref)
-                        {
-                            item.SubItems[9].Text = result.ErrorCode.ToString();
+                        var item = itemMap[result.Ref];
+                        item.SubItems[9].Text = result.ErrorCode.ToString();
 
-                            if (result.ErrorCode == Message.Enums.ErrorCode.SUCCESS)
-                            {
-                                item.SubItems[10].Text = result.BetId.ToString();
-                                item.SubItems[11].Text = result.TSN;
-                            }
-                        }
-                    }
-                    foreach (var bet in bets)
-                    {
-                        if (bet.Request?.Ref == result.Ref)
+                        if (result.ErrorCode == Message.Enums.ErrorCode.SUCCESS)
                         {
-                            bet.Result = result;
+                            item.SubItems[10].Text = result.BetId.ToString();
+                            item.SubItems[11].Text = result.TSN;
                         }
+
+                        var bet = betMap[result.Ref];
+                        bet.Result = result;
+                        //foreach (ListViewItem item in listView1.Items)
+                        //{
+                        //    if (item.Tag as Guid? == result.Ref)
+                        //    {
+
+                        //    }
+                        //}
+                        //foreach (var bet in bets)
+                        //{
+                        //    if (bet.Request?.Ref == result.Ref)
+                        //    {
+                        //        bet.Result = result;
+                        //    }
+                        //}
                     }
+                    //listView1.EndUpdate();
+                    var lastBetId = bets.Max(b => b.Result?.BetId);
+                    if ((lastBetId ?? 0) > 0)
+                    {
+                        numLastBetId.Value = lastBetId.Value;
+                    }
+                    DumpBetsOutput(e.FullPath, bets);
+                    Log($"{bets.Count} bets processed");
                 }
-                var lastBetId = bets.Max(b => b.Result?.BetId);
-                if ((lastBetId ?? 0) > 0)
+                catch (Exception ex)
                 {
-                    numLastBetId.Value = lastBetId.Value;
+                    Log($"Error processing: {ex.Message}");
                 }
-                DumpBetsOutput(e.FullPath, bets);
-                Log($"{bets.Count} bets processed");
             }
         }
 

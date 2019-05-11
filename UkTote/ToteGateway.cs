@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BinarySerialization;
 using log4net;
 using UkTote.Message;
+using System.Diagnostics;
 
 namespace UkTote
 {
@@ -38,6 +39,7 @@ namespace UkTote
         public event Action<MsnReply> OnMsnReply;
         public event Action<CurrentMsnReply> OnCurrentMsnReply;
         public event Action<CurrentBalanceReply> OnCurrentBalanceReply;
+        public event Action<int, int> OnBatchProgress;
         public event Action OnConnected;
         public event Action<string> OnDisconnected;
         public event Action<string> OnIdle;
@@ -227,14 +229,15 @@ namespace UkTote
                 if (bytesRead > 0)
                 {
                     // a bit noisy with MSN's, would be nice to turn just this off
-                    //_logger.DebugFormat("Received {0} bytes: {1}", bytesRead, 
-                    //    string.Join(" ", Array.ConvertAll(_buffer.Take(bytesRead).ToArray(), b => b.ToString("X2"))));
+                    _logger.DebugFormat("Received {0} bytes: {1}", bytesRead, 
+                        string.Join(" ", Array.ConvertAll(_buffer.Take(bytesRead).ToArray(), b => b.ToString("X2"))));
 
                     _circularBuffer.Put(_buffer, 0, bytesRead);
                     _logger.DebugFormat("{0} bytes read circ buffer[{1}]", bytesRead, _circularBuffer.ToString());
                     ParseBuffer();
                 }
-                stream.BeginRead(_buffer, 0, BUFFER_SIZE, Callback, stream); // should be in finally
+                var sizeLeftInBuffer = Math.Min(_circularBuffer.Capacity - _circularBuffer.Size, BUFFER_SIZE);
+                stream.BeginRead(_buffer, 0, sizeLeftInBuffer, Callback, stream); // should be in finally
             }
             catch(IOException ex)
             {
@@ -277,7 +280,7 @@ namespace UkTote
 
                 if (header.Marker == MessageBase.MARKER)
                 {
-                    if (_circularBuffer.Size < (header.Length - MessageBase.HEADER_LENGTH))
+                    if (_circularBuffer.Size < header.Length)
                     {
                         // wait for the rest of the packet to arrive
                         break;
@@ -286,7 +289,7 @@ namespace UkTote
                     {
                         // pull the entire packet from the buffer
                         var packetBuffer = _circularBuffer.Get(header.Length);
-                        _watchdogTimer?.Kick();  // kick the dog whenever we receive a complete packet
+                        Watchdog.Kick();  // kick the dog whenever we receive a complete packet
                         OnRawPacketReceived?.Invoke(packetBuffer);
                         ProcessPacket(header, packetBuffer);
                     }
@@ -304,19 +307,24 @@ namespace UkTote
             action?.Invoke(message);
         }
 
+        private WatchdogTimer Watchdog
+        {
+            get
+            {
+                if (_watchdogTimer == null)
+                {
+                    _watchdogTimer = new WatchdogTimer(_watchdogTimeoutMs);
+                    _watchdogTimer.Start();
+                    _watchdogTimer.OnTimeout += _watchdogTimer_OnTimeout;
+                }
+                return _watchdogTimer;
+            }
+        }
+
         void ProcessRuok()
         {
             OnRuOk?.Invoke();
-            if (_watchdogTimer == null)
-            {
-                _watchdogTimer = new WatchdogTimer(_watchdogTimeoutMs);
-                _watchdogTimer.Start();
-                _watchdogTimer.OnTimeout += _watchdogTimer_OnTimeout;
-            }
-            else
-            {
-                _watchdogTimer.Kick();
-            }
+            Watchdog.Kick();
         }
 
         private void _watchdogTimer_OnTimeout(string obj)
@@ -398,6 +406,11 @@ namespace UkTote
                 }
                 else if (pType == typeof(SellBetSuccess))
                 {
+                    var test = packet as SellBetSuccess;
+                    if (test.BetId == 0)
+                    {
+                        Debugger.Break();
+                    }
                     OnSellBetSuccess?.Invoke(packet as SellBetSuccess);
                 }
                 else if (pType == typeof(PayEnquirySuccess))
@@ -900,6 +913,7 @@ namespace UkTote
                         OnSellBetFailed -= failedHandler;
                         tcs.TrySetResult(responses.Values.OrderBy(v => v?.BetId).ToList());
                     }
+                    OnBatchProgress?.Invoke(responseCount, betCount);
                 }
             };
             failedHandler += (reply) =>
@@ -922,6 +936,7 @@ namespace UkTote
                     OnSellBetFailed -= failedHandler;
                     tcs.TrySetResult(responses.Values.OrderBy(v => v?.BetId).ToList());
                 }
+                OnBatchProgress?.Invoke(responseCount, betCount);
             };
 
             OnSellBetSuccess += successHandler;
@@ -929,7 +944,10 @@ namespace UkTote
 
             foreach (var bet in batch)
             {
-                int betId = 0;
+                bet.BetId = GetNextBetId(bet.BetId);
+                responses[bet.BetId.Value] = null;
+                _refLookup[bet.BetId.Value] = bet.Ref;
+
                 switch (bet.BetCode)
                 {
                     case Enums.BetCode.WIN:
@@ -939,17 +957,14 @@ namespace UkTote
                     case Enums.BetCode.SWINGER:
                     case Enums.BetCode.TRIFECTA:
                         // single race
-                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
+                        SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
                         break;
                     default:
                         // multi race
-                        betId = SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
+                        SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
                         break;
 
                 }
-
-                responses[betId] = null;
-                _refLookup[betId] = bet.Ref;
             }
 
             return tcs.Task;
