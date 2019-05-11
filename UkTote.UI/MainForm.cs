@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -512,7 +513,7 @@ namespace UkTote.UI
 
         private async void OnChanged(object source, FileSystemEventArgs e)
         {
-            if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 1)
+            if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 30)
             {
                 // ignore this dupe event
                 return;
@@ -531,19 +532,19 @@ namespace UkTote.UI
                 {
                     var item = listView1.Items.Add(new ListViewItem(new string[]
                     {
-                        bet.Raw,
-                        bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
-                        bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
-                        bet.Request == null ? string.Empty : bet.Request.Selections[0].RaceNumber.ToString(),
-                        bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
-                        bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
-                        bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
-                        bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
-                        bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections.Select(s => s.IsBanker > 0 ? s.HorseNumber + 900 : s.HorseNumber)),
-                        !bet.IsValid ? bet.Error : string.Empty,
-                        string.Empty, // BetId
-                        string.Empty, // TSN
-                        string.Empty // pay enquiry result
+                            bet.Raw,
+                            bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
+                            bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
+                            bet.Request == null ? string.Empty : bet.Request.Selections[0].RaceNumber.ToString(),
+                            bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
+                            bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
+                            bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
+                            bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
+                            bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections.Select(s => s.IsBanker > 0 ? s.HorseNumber + 900 : s.HorseNumber)),
+                            !bet.IsValid ? bet.Error : string.Empty,
+                            string.Empty, // BetId
+                            string.Empty, // TSN
+                            string.Empty // pay enquiry result
                     }));
                     item.Tag = bet.Request?.Ref;
                 }

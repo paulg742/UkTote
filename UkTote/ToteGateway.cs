@@ -17,7 +17,7 @@ namespace UkTote
         readonly ILog _logger = LogManager.GetLogger(typeof(ToteGateway));
 
         const string DateFormat = "ddMMyyyy";
-        const int BUFFER_SIZE = 16384;
+        const int BUFFER_SIZE = 65536;
 
         public event Action<AccountLoginError> OnLoginError;
         public event Action<AccountLoginSuccess> OnLoginSuccess;
@@ -898,7 +898,7 @@ namespace UkTote
                     {
                         OnSellBetSuccess -= successHandler;
                         OnSellBetFailed -= failedHandler;
-                        tcs.TrySetResult(responses.Values.OrderBy(v => v.BetId).ToList());
+                        tcs.TrySetResult(responses.Values.OrderBy(v => v?.BetId).ToList());
                     }
                 }
             };
@@ -920,7 +920,7 @@ namespace UkTote
                 {
                     OnSellBetSuccess -= successHandler;
                     OnSellBetFailed -= failedHandler;
-                    tcs.TrySetResult(responses.Values.OrderBy(v => v.BetId).ToList());
+                    tcs.TrySetResult(responses.Values.OrderBy(v => v?.BetId).ToList());
                 }
             };
 
