@@ -493,7 +493,10 @@ namespace UkTote.UI
                 var lines = File.ReadAllLines(path);
                 foreach (var line in lines)
                 {
-                    ret.Add(Model.FileBet.Parse(line));
+                    if (!string.IsNullOrEmpty(line.Trim()))
+                    {
+                        ret.Add(Model.FileBet.Parse(line));
+                    }
                 }
             }
             catch (Exception)
@@ -601,7 +604,7 @@ namespace UkTote.UI
             var outputFilePath = GetOutputFilePath(filePath);
             foreach (var x in betsWithResults)
             {
-                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result.ErrorText}\n".Replace("\0", string.Empty);
+                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText}\n".Replace("\0", string.Empty);
                 //var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
                 File.AppendAllText($"{outputFilePath}", outputLine);
             }
