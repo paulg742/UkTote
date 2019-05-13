@@ -13,7 +13,6 @@ namespace UkTote.UI
 {
     public partial class MainForm : Form
     {
-        const string LastBetIdFile = "lastbet.id";
         private readonly ToteGateway _gateway = new ToteGateway(30000);
         private bool _connected;
         private bool _loggedIn;
@@ -651,9 +650,17 @@ namespace UkTote.UI
             {
                 txtBetFolder.Text = dlg.SelectedPath;
                 StartWatchingFolder();
+                SaveSettings();
             }
         }
 
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.BetFolder = txtBetFolder.Text;
+            Properties.Settings.Default.BetOutputFolder = txtBetOutputFolder.Text;
+            Properties.Settings.Default.FeedFolder = txtFeedFolder.Text;
+            Properties.Settings.Default.Save();
+        }
         private void numLastBetId_ValueChanged(object sender, EventArgs e)
         {
             try
@@ -663,7 +670,8 @@ namespace UkTote.UI
                     _gateway.NextBetId = (int)numLastBetId.Value;
                     var lastBetId = (int)numLastBetId.Value;
                     Log($"Changed last bet id to: {lastBetId}");
-                    File.WriteAllText(LastBetIdFile, lastBetId.ToString());
+                    Properties.Settings.Default.LastBetId = lastBetId;
+                    Properties.Settings.Default.Save();
                 }
             }
             catch (Exception ex)
@@ -703,15 +711,14 @@ namespace UkTote.UI
             {
                 Directory.CreateDirectory(txtBetOutputFolder.Text);
             }
-            if (!File.Exists(LastBetIdFile))
+            if (Properties.Settings.Default.LastRunTime.Date < DateTime.UtcNow.Date)
             {
-                File.WriteAllLines(LastBetIdFile, new[] { "0" });
+                // reset the bet ID
+                Properties.Settings.Default.LastBetId = 0;
             }
-            else
-            {
-                var txt = File.ReadAllText(LastBetIdFile);
-                numLastBetId.Value = int.Parse(txt);
-            }
+            numLastBetId.Value = Properties.Settings.Default.LastBetId;
+            Properties.Settings.Default.LastRunTime = DateTime.UtcNow;
+            Properties.Settings.Default.Save();
         }
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
@@ -720,6 +727,7 @@ namespace UkTote.UI
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtFeedFolder.Text = dlg.SelectedPath;
+                SaveSettings();
             }
         }
 
@@ -823,6 +831,7 @@ namespace UkTote.UI
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtBetOutputFolder.Text = dlg.SelectedPath;
+                SaveSettings();
             }
         }
     }

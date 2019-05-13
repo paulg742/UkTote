@@ -106,5 +106,28 @@ namespace UkTote.UI.Properties {
                 this["BetOutputFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastRunTime {
+            get {
+                return ((global::System.DateTime)(this["LastRunTime"]));
+            }
+            set {
+                this["LastRunTime"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastBetId {
+            get {
+                return ((int)(this["LastBetId"]));
+            }
+            set {
+                this["LastBetId"] = value;
+            }
+        }
     }
 }

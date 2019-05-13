@@ -23,5 +23,11 @@
     <Setting Name="BetOutputFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">c:\UkTote\BetsOutput</Value>
     </Setting>
+    <Setting Name="LastRunTime" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastBetId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

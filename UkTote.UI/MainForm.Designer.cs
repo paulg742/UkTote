@@ -42,6 +42,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.balanceLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.batchProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.btnGetRacecard = new System.Windows.Forms.Button();
             this.racecardTreeView = new System.Windows.Forms.TreeView();
             this.btnExportRacecard = new System.Windows.Forms.Button();
@@ -75,7 +76,6 @@
             this.btnChangeBetOutputFolder = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.txtBetOutputFolder = new System.Windows.Forms.TextBox();
-            this.batchProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLastBetId)).BeginInit();
@@ -216,6 +216,11 @@
             // 
             this.balanceLabel.Name = "balanceLabel";
             this.balanceLabel.Size = new System.Drawing.Size(0, 23);
+            // 
+            // batchProgressBar
+            // 
+            this.batchProgressBar.Name = "batchProgressBar";
+            this.batchProgressBar.Size = new System.Drawing.Size(100, 22);
             // 
             // btnGetRacecard
             // 
@@ -481,11 +486,6 @@
             this.txtBetOutputFolder.Name = "txtBetOutputFolder";
             this.txtBetOutputFolder.Size = new System.Drawing.Size(382, 26);
             this.txtBetOutputFolder.TabIndex = 30;
-            // 
-            // batchProgressBar
-            // 
-            this.batchProgressBar.Name = "batchProgressBar";
-            this.batchProgressBar.Size = new System.Drawing.Size(100, 22);
             // 
             // MainForm
             // 
