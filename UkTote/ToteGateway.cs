@@ -406,11 +406,6 @@ namespace UkTote
                 }
                 else if (pType == typeof(SellBetSuccess))
                 {
-                    var test = packet as SellBetSuccess;
-                    if (test.BetId == 0)
-                    {
-                        Debugger.Break();
-                    }
                     OnSellBetSuccess?.Invoke(packet as SellBetSuccess);
                 }
                 else if (pType == typeof(PayEnquirySuccess))

@@ -733,7 +733,7 @@ namespace UkTote.UI
 
         private async void btnMsnRequest_Click(object sender, EventArgs e)
         {
-            btnGetBalance.Enabled = false;
+            btnMsnRequest.Enabled = false;
             try
             {
                 Log("MSN request sent");
