@@ -552,8 +552,8 @@ namespace UkTote.UI
                             bet.Request == null ? string.Empty : bet.Request.ForDate.ToShortDateString(),
                             bet.Request == null ? string.Empty : bet.Request.MeetingNumber.ToString(),
                             bet.Request == null ? string.Empty : bet.Request.Selections[0].RaceNumber.ToString(),
-                            bet.Request == null ? string.Empty : $"{bet.Request.UnitStake/100:N2}",
-                            bet.Request == null ? string.Empty : $"{bet.Request.TotalStake/100:N2}",
+                            bet.Request == null ? string.Empty : $"{((decimal)bet.Request.UnitStake)/100:N2}",
+                            bet.Request == null ? string.Empty : $"{((decimal)bet.Request.TotalStake)/100:N2}",
                             bet.Request == null ? string.Empty : bet.Request.BetCode.ToString(),
                             bet.Request == null ? string.Empty : bet.Request.BetOption.ToString(),
                             bet.Request == null ? string.Empty : string.Join(",", bet.Request?.Selections.Select(s => s.IsBanker > 0 ? s.HorseNumber + 900 : s.HorseNumber)),
@@ -762,6 +762,8 @@ namespace UkTote.UI
                 {
                     btnPayEnquiry.Enabled = false;
                     var lines = File.ReadAllLines(dlg.FileName);
+                    var tsnList = new List<string>();
+                    var betMap = new Dictionary<string, (string raw, string betId)>();
                     foreach (var line in lines)
                     {
                         var fields = line.Split('>');
@@ -775,44 +777,32 @@ namespace UkTote.UI
                             var tsn = fields[1];
                             if (!string.IsNullOrEmpty(tsn))
                             {
-                                var result = await _gateway.PayEnquiry(tsn);
-                                var txt = "";
-                                if (result == null)
-                                {
-                                    txt = "No reply";
-                                }
-                                else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
-                                {
-                                    txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2} (RAW:{result.PayoutAmount} {result.VoidAmount})";
-                                }
-                                else
-                                {
-                                    txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
-                                }
-                                File.AppendAllText($"{dlg.FileName}.pay", $"{raw} > {betId},{tsn.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
+                                tsnList.Add(tsn);
+                                betMap[tsn] = (raw, betId);
                             }
                         }
                     }
-                    //foreach (ListViewItem item in listView1.Items)
-                    //{
-                    //    var tsn = item.SubItems[11].Text.Replace("\0", "");
-                    //    if (!string.IsNullOrEmpty(tsn))
-                    //    {
-                    //        var result = await _gateway.PayEnquiry(tsn);
-                    //        if (result == null)
-                    //        {
-                    //            item.SubItems[12].Text = "No reply";
-                    //        }
-                    //        else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
-                    //        {
-                    //            item.SubItems[12].Text = $"Paid:{result.PayoutAmount / 100:N2} Void:{result.VoidAmount / 100:N2}";
-                    //        }
-                    //        else
-                    //        {
-                    //            item.SubItems[12].Text = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
-                    //        }
-                    //    }
-                    //}
+                    if (tsnList.Count > 0)
+                    {
+                        var results = await _gateway.PayEnquiryBatch(tsnList);
+                        foreach (var result in results)
+                        {
+                            var txt = "";
+                            if (result == null)
+                            {
+                                txt = "No reply";
+                            }
+                            else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                            {
+                                txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2} (RAW:{result.PayoutAmount} {result.VoidAmount})";
+                            }
+                            else
+                            {
+                                txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
+                            }
+                            File.AppendAllText($"{dlg.FileName}.pay", $"{betMap[result.TSN].raw} > {betMap[result.TSN].betId},{result.TSN.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
+                        }
+                    }
                 }
             }
             catch (Exception)

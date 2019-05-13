@@ -884,6 +884,112 @@ namespace UkTote
             return tcs.Task;
         }
 
+        /*
+         *  public Task<PayEnquiryReply> PayEnquiry(string tsn)
+        {
+            var tcs = new TaskCompletionSource<PayEnquiryReply>();
+            Action<PayEnquirySuccess> successHandler = null;
+            Action<PayEnquiryFailed> failedHandler = null;
+
+            successHandler += (reply) =>
+            {
+                tcs.TrySetResult(new PayEnquiryReply()
+                {
+                    TSN = reply.TSN,
+                    PayoutAmount = reply.PayoutAmount,
+                    VoidAmount = reply.VoidAmount,
+                    ErrorCode = Enums.ErrorCode.SUCCESS,
+                    ErrorText = string.Empty
+                });
+                OnPayEnquirySuccess -= successHandler;
+                OnPayEnquiryFailed -= failedHandler;
+            };
+            failedHandler += (reply) =>
+            {
+                tcs.TrySetResult(new PayEnquiryReply()
+                {
+                    TSN = string.Empty,
+                    ErrorCode = reply.ErrorCode2,
+                    ErrorText = reply.ErrorText
+                });
+                OnPayEnquirySuccess -= successHandler;
+                OnPayEnquiryFailed -= failedHandler;
+            };
+
+            OnPayEnquirySuccess += successHandler;
+            OnPayEnquiryFailed += failedHandler;
+
+            PayEnquiryAsync(tsn);
+            return tcs.Task;
+        }
+         */
+        public Task<IList<PayEnquiryReply>> PayEnquiryBatch(IList<string> tsnList)
+        {
+            var tcs = new TaskCompletionSource<IList<PayEnquiryReply>>();
+            Action<PayEnquirySuccess> successHandler = null;
+            Action<PayEnquiryFailed> failedHandler = null;
+
+            var responses = new ConcurrentDictionary<string, PayEnquiryReply>();
+            int responseCount = 0;
+            int betCount = tsnList.Count();
+
+            successHandler += (reply) => 
+            {
+                var tsn = reply.TSN.Replace("\0", string.Empty);
+                _logger.DebugFormat("Pay enquiry {0} succeeded", tsn);
+                if (responses.ContainsKey(tsn))
+                {
+                    responses[tsn] = new PayEnquiryReply()
+                    {
+                        TSN = tsn,
+                        PayoutAmount = reply.PayoutAmount,
+                        VoidAmount = reply.VoidAmount,
+                        ErrorCode = Enums.ErrorCode.SUCCESS,
+                        ErrorText = string.Empty
+                    };
+                    if (Interlocked.Increment(ref responseCount) >= betCount)
+                    {
+                        OnPayEnquirySuccess -= successHandler;
+                        OnPayEnquiryFailed -= failedHandler;
+                        tcs.TrySetResult(responses.Values.OrderBy(v => v.TSN).ToList());
+                    }
+                    OnBatchProgress?.Invoke(responseCount, betCount);
+                }
+            };
+            failedHandler += (reply) =>
+            {
+                var tsn = reply.TSN.Replace("\0", string.Empty);
+                _logger.DebugFormat("Pay enquiry {0} failed", tsn);
+                if (responses.ContainsKey(tsn))
+                {
+                    responses[tsn] = new PayEnquiryReply()
+                    {
+                        TSN = tsn,
+                        ErrorCode = reply.ErrorCode2,
+                        ErrorText = reply.ErrorText.Replace("\0", string.Empty)
+                    };
+                }
+                if (Interlocked.Increment(ref responseCount) >= betCount)
+                {
+                    OnPayEnquirySuccess -= successHandler;
+                    OnPayEnquiryFailed -= failedHandler;
+                    tcs.TrySetResult(responses.Values.OrderBy(v => v.TSN).ToList());
+                }
+                OnBatchProgress?.Invoke(responseCount, betCount);
+            };
+
+            OnPayEnquirySuccess += successHandler;
+            OnPayEnquiryFailed += failedHandler;
+
+            foreach (var tsn in tsnList)
+            {
+                responses[tsn] = null;
+                PayEnquiryAsync(tsn);
+            }
+
+            return tcs.Task;
+        }
+
         public Task<IList<BetReply>> SellBatch(IList<BetRequest> batch)
         {
             var tcs = new TaskCompletionSource<IList<BetReply>>();
