@@ -516,11 +516,6 @@ namespace UkTote.UI
             return ret;
         }
 
-        //private string DisplaySelections(Selection[] selections)
-        //{
-        //    selections.GroupBy(s => s.RaceNumber)
-        //}
-
         private async void OnChanged(object source, FileSystemEventArgs e)
         {
             if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 30)
@@ -572,7 +567,7 @@ namespace UkTote.UI
                         .Select(b => b.Request)
                         .ToList();
                     var results = await _gateway.SellBatch(batch);
-                    //listView1.BeginUpdate();
+                    
                     foreach (var result in results)
                     {
                         var item = itemMap[result.Ref];
@@ -586,22 +581,8 @@ namespace UkTote.UI
 
                         var bet = betMap[result.Ref];
                         bet.Result = result;
-                        //foreach (ListViewItem item in listView1.Items)
-                        //{
-                        //    if (item.Tag as Guid? == result.Ref)
-                        //    {
-
-                        //    }
-                        //}
-                        //foreach (var bet in bets)
-                        //{
-                        //    if (bet.Request?.Ref == result.Ref)
-                        //    {
-                        //        bet.Result = result;
-                        //    }
-                        //}
                     }
-                    //listView1.EndUpdate();
+
                     var lastBetId = bets.Max(b => b.Result?.BetId);
                     if ((lastBetId ?? 0) > 0)
                     {
