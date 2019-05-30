@@ -19,6 +19,7 @@ namespace UkTote.UI
         private Message.RacecardReply _racecard;
         private FileSystemWatcher _watcher;
         private Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
+        private Dictionary<Guid?, ListViewItem> _itemMap = new Dictionary<Guid?, ListViewItem>();
 
         public MainForm()
         {
@@ -535,8 +536,9 @@ namespace UkTote.UI
                     Log($"{e.FullPath} was found, processing");
                     var bets = ProcessBetFile(e.FullPath);
                     listView1.Items.Clear();
+                    _itemMap.Clear();
                     _watcherLog[e.FullPath] = DateTime.UtcNow;
-                    var itemMap = new Dictionary<Guid?, ListViewItem>();
+                    
                     var betMap = new Dictionary<Guid?, Model.FileBet>();
                     listView1.BeginUpdate();
                     foreach (var bet in bets)
@@ -558,7 +560,7 @@ namespace UkTote.UI
                             string.Empty // pay enquiry result
                         }));
                         item.Tag = bet.Request?.Ref;
-                        itemMap[bet.Request?.Ref] = item;
+                        _itemMap[bet.Request?.Ref] = item;
                         betMap[bet.Request?.Ref] = bet;
                     }
                     listView1.EndUpdate();
@@ -567,10 +569,11 @@ namespace UkTote.UI
                         .Select(b => b.Request)
                         .ToList();
                     var results = await _gateway.SellBatch(batch);
-                    
+
+                    listView1.BeginUpdate();
                     foreach (var result in results)
                     {
-                        var item = itemMap[result.Ref];
+                        var item = _itemMap[result.Ref];
                         item.SubItems[9].Text = result.ErrorCode.ToString();
 
                         if (result.ErrorCode == Message.Enums.ErrorCode.SUCCESS)
@@ -582,6 +585,7 @@ namespace UkTote.UI
                         var bet = betMap[result.Ref];
                         bet.Result = result;
                     }
+                    listView1.EndUpdate();
 
                     var lastBetId = bets.Max(b => b.Result?.BetId);
                     if ((lastBetId ?? 0) > 0)
@@ -615,12 +619,14 @@ namespace UkTote.UI
         {
             var filename = Path.GetFileName(filePath);
             var outputFilePath = GetOutputFilePath(filePath);
+            var outputTxt = string.Empty;
             foreach (var x in betsWithResults)
             {
-                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText}\n".Replace("\0", string.Empty);
+                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText},{x.Request.Ref}\n".Replace("\0", string.Empty);
                 //var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
-                File.AppendAllText($"{outputFilePath}", outputLine);
+                outputTxt += outputLine;
             }
+            File.AppendAllText($"{outputFilePath}", outputTxt);
             File.Delete(filePath);
         }
 
@@ -744,7 +750,7 @@ namespace UkTote.UI
                     btnPayEnquiry.Enabled = false;
                     var lines = File.ReadAllLines(dlg.FileName);
                     var tsnList = new List<string>();
-                    var betMap = new Dictionary<string, (string raw, string betId)>();
+                    var betMap = new Dictionary<string, (string raw, long betId, Guid betRef)>();
                     foreach (var line in lines)
                     {
                         var fields = line.Split('>');
@@ -754,19 +760,23 @@ namespace UkTote.UI
                             var res = fields[1];
 
                             fields = res.Split(',');
-                            var betId = fields[0];
+                            var betId = long.Parse(fields[0]);
                             var tsn = fields[1];
+                            var betRef = Guid.Parse(fields.Last());
                             if (!string.IsNullOrEmpty(tsn))
                             {
                                 tsnList.Add(tsn);
-                                betMap[tsn] = (raw, betId);
+                                betMap[tsn] = (raw, betId, betRef);
                             }
                         }
                     }
                     if (tsnList.Count > 0)
                     {
                         var results = await _gateway.PayEnquiryBatch(tsnList);
-                        foreach (var result in results)
+                        var outputTxt = string.Empty;
+                        //listView1.Clear();
+                        listView1.BeginUpdate();
+                        foreach (var result in results.OrderBy(r => betMap[r.TSN].betId))
                         {
                             var txt = "";
                             if (result == null)
@@ -781,8 +791,12 @@ namespace UkTote.UI
                             {
                                 txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
                             }
-                            File.AppendAllText($"{dlg.FileName}.pay", $"{betMap[result.TSN].raw} > {betMap[result.TSN].betId},{result.TSN.Replace("\0", "")},{txt.Replace("\0", "")}\r\n");
+                            outputTxt += $"{betMap[result.TSN].raw} > {betMap[result.TSN].betId},{result.TSN.Replace("\0", "")},{txt.Replace("\0", "")}\r\n";
+
+                            _itemMap[betMap[result.TSN].betRef].SubItems[12].Text = txt;
                         }
+                        listView1.EndUpdate();
+                        File.AppendAllText($"{dlg.FileName}.pay", outputTxt);
                     }
                 }
             }
