@@ -793,7 +793,10 @@ namespace UkTote.UI
                             }
                             outputTxt += $"{betMap[result.TSN].raw} > {betMap[result.TSN].betId},{result.TSN.Replace("\0", "")},{txt.Replace("\0", "")}\r\n";
 
-                            _itemMap[betMap[result.TSN].betRef].SubItems[12].Text = txt;
+                            if (_itemMap.ContainsKey(betMap[result.TSN].betRef))
+                            {
+                                _itemMap[betMap[result.TSN].betRef].SubItems[12].Text = txt;
+                            }
                         }
                         listView1.EndUpdate();
                         File.AppendAllText($"{dlg.FileName}.pay", outputTxt);
