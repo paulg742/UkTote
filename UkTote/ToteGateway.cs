@@ -596,7 +596,7 @@ namespace UkTote
             int unitStake, int totalStake,
             Enums.BetCode betCode, Enums.BetOption betOption, Selection[] selections, int? useBetId)
         {
-            var betId = GetNextBetId(useBetId);
+            var betId = useBetId??GetNextBetId(useBetId);
             var req = new SellBetRequest()
             {
                 RacecardDate = forDate.ToString(DateFormat),
@@ -856,68 +856,9 @@ namespace UkTote
             SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
                        Selection.Create((ushort)meetingNumber, selections), betId);
 
-            //// copy pasta, exists a better way to do this!
-            //switch (betCode)
-            //{
-            //    case Enums.BetCode.WIN:
-            //    case Enums.BetCode.PLACE:
-            //    case Enums.BetCode.QUINELLA:
-            //    case Enums.BetCode.EXACTA:
-            //    case Enums.BetCode.SWINGER:
-            //    case Enums.BetCode.TRIFECTA:
-            //        // single race
-            //        SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
-            //            Selection.Create((ushort)meetingNumber, selections), betId);
-            //        break;
-            //    default:
-            //        // multi race
-            //        SellBetAsync(forDate, meetingNumber, unitStake, totalStake, betCode, betOption,
-            //            Selection.Create((ushort)meetingNumber, (ushort)raceNumber, selections), betId);
-            //        break;
-            //}
-
             return tcs.Task;
         }
 
-        /*
-         *  public Task<PayEnquiryReply> PayEnquiry(string tsn)
-        {
-            var tcs = new TaskCompletionSource<PayEnquiryReply>();
-            Action<PayEnquirySuccess> successHandler = null;
-            Action<PayEnquiryFailed> failedHandler = null;
-
-            successHandler += (reply) =>
-            {
-                tcs.TrySetResult(new PayEnquiryReply()
-                {
-                    TSN = reply.TSN,
-                    PayoutAmount = reply.PayoutAmount,
-                    VoidAmount = reply.VoidAmount,
-                    ErrorCode = Enums.ErrorCode.SUCCESS,
-                    ErrorText = string.Empty
-                });
-                OnPayEnquirySuccess -= successHandler;
-                OnPayEnquiryFailed -= failedHandler;
-            };
-            failedHandler += (reply) =>
-            {
-                tcs.TrySetResult(new PayEnquiryReply()
-                {
-                    TSN = string.Empty,
-                    ErrorCode = reply.ErrorCode2,
-                    ErrorText = reply.ErrorText
-                });
-                OnPayEnquirySuccess -= successHandler;
-                OnPayEnquiryFailed -= failedHandler;
-            };
-
-            OnPayEnquirySuccess += successHandler;
-            OnPayEnquiryFailed += failedHandler;
-
-            PayEnquiryAsync(tsn);
-            return tcs.Task;
-        }
-         */
         public Task<IList<PayEnquiryReply>> PayEnquiryBatch(IList<string> tsnList)
         {
             var tcs = new TaskCompletionSource<IList<PayEnquiryReply>>();
