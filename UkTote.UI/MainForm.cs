@@ -559,9 +559,12 @@ namespace UkTote.UI
                             string.Empty, // TSN
                             string.Empty // pay enquiry result
                         }));
-                        item.Tag = bet.Request?.Ref;
-                        _itemMap[bet.Request?.Ref] = item;
-                        betMap[bet.Request?.Ref] = bet;
+                        if (bet?.Request?.Ref != null)
+                        {
+                            item.Tag = bet.Request?.Ref;
+                            _itemMap[bet.Request?.Ref] = item;
+                            betMap[bet.Request?.Ref] = bet;
+                        }
                     }
                     listView1.EndUpdate();
                     var batch = bets
@@ -622,7 +625,7 @@ namespace UkTote.UI
             var outputTxt = string.Empty;
             foreach (var x in betsWithResults)
             {
-                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText},{x.Request.Ref}\n".Replace("\0", string.Empty);
+                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText},{x.Request?.Ref}\n".Replace("\0", string.Empty);
                 //var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
                 outputTxt += outputLine;
             }
@@ -743,7 +746,8 @@ namespace UkTote.UI
                 var dlg = new OpenFileDialog()
                 {
                     DefaultExt = "*.out",
-                    InitialDirectory = txtBetOutputFolder.Text
+                    InitialDirectory = txtBetOutputFolder.Text,
+                    Filter = "out files|*.out"
                 };
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
@@ -760,13 +764,20 @@ namespace UkTote.UI
                             var res = fields[1];
 
                             fields = res.Split(',');
-                            var betId = long.Parse(fields[0]);
-                            var tsn = fields[1];
-                            var betRef = Guid.Parse(fields.Last());
-                            if (!string.IsNullOrEmpty(tsn))
+                            try
                             {
-                                tsnList.Add(tsn);
-                                betMap[tsn] = (raw, betId, betRef);
+                                if (!long.TryParse(fields[0], out long betId)) continue;
+                                var tsn = fields[1].Trim();
+                                if (!Guid.TryParse(fields.Last(), out Guid betRef)) continue;
+                                if (!string.IsNullOrEmpty(tsn))
+                                {
+                                    tsnList.Add(tsn);
+                                    betMap[tsn] = (raw, betId, betRef);
+                                }
+                            }
+                            catch (Exception)
+                            {
+
                             }
                         }
                     }
