@@ -271,6 +271,7 @@
             this.columnHeader11,
             this.columnHeader12,
             this.columnHeader13});
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(189, 388);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(891, 137);
@@ -491,6 +492,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1091, 811);
             this.Controls.Add(this.btnChangeBetOutputFolder);
             this.Controls.Add(this.label8);

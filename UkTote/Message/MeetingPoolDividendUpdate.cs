@@ -44,8 +44,9 @@ namespace UkTote.Message
         [FieldOrder(12)]
         public ushort NumberLegs { get; set; }
 
-        [FieldCount(13)]
-        public List<Combination> CombinationMap { get; set; }
+        [FieldOrder(13)]
+        [FieldCount("NumberLegs")]
+        public List<MeetingPoolCombination> CombinationMap { get; set; }
 
         public MeetingPoolDividendUpdate()
             : base(Enums.MessageType.MEETING_POOL_DIV_UPDATE_MSG)
