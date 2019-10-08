@@ -54,6 +54,7 @@
     <Compile Include="Message\MeetingPoolSalesUpdate.cs" />
     <Compile Include="Message\PoolSubstituteUpdate.cs" />
     <Compile Include="Message\MeetingPoolUpdate.cs" />
+    <Compile Include="Message\EndOfRacingUpdate.cs" />
     <Compile Include="Message\WeighedInUpdate.cs" />
     <Compile Include="Message\SubstituteUpdate.cs" />
     <Compile Include="Message\ResultUpdate.cs" />

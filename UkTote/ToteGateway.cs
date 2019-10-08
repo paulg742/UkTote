@@ -59,6 +59,7 @@ namespace UkTote
         public event Action<ResultUpdate> OnResultUpdate;
         public event Action<SubstituteUpdate> OnSubstituteUpdate;
         public event Action<WeighedInUpdate> OnWeighedInUpdate;
+        public event Action<EndOfRacingUpdate> OnEndOfRacingUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
@@ -483,6 +484,10 @@ namespace UkTote
                 else if (pType == typeof(WeighedInUpdate))
                 {
                     OnWeighedInUpdate?.Invoke(packet as WeighedInUpdate);
+                }
+                else if (pType == typeof(EndOfRacingUpdate))
+                {
+                    OnEndOfRacingUpdate?.Invoke(packet as EndOfRacingUpdate);
                 }
                 else if (pType == typeof(MsnReply))
                 {
