@@ -66,7 +66,6 @@ namespace UkTote
         public event Action<SuperComplexPoolDividendUpdate> OnSuperComplexPoolDividendUpdate;
         public event Action<MatrixPoolDividendUpdate> OnMatrixPoolDividendUpdate;
         public event Action<ComplexRacePoolDividendUpdate> OnComplexRacePoolDividendUpdate;
-        
         public event Action<RunnerUpdate> OnRunnerUpdate;
 
         // pay update events

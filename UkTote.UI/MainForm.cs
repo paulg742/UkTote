@@ -41,18 +41,148 @@ namespace UkTote.UI
             // update messages
             _gateway.OnMeetingUpdate += _gateway_OnMeetingUpdate;
             _gateway.OnMeetingSalesUpdate += _gateway_OnMeetingSalesUpdate;
-            _gateway.OnRacePoolDividendUpdate += _gateway_OnRacePoolDividendUpdate;
-            _gateway.OnRacePoolSalesUpdate += _gateway_OnRacePoolSalesUpdate;
-            _gateway.OnRacePoolUpdate += _gateway_OnRacePoolUpdate;
-            _gateway.OnRaceSalesUpdate += _gateway_OnRaceSalesUpdate;
             _gateway.OnRaceUpdate += _gateway_OnRaceUpdate;
-            _gateway.OnRaceWillPayUpdate += _gateway_OnRaceWillPayUpdate;
-            _gateway.OnRunnerUpdate += _gateway_OnRunnerUpdate;
+            _gateway.OnRacePoolUpdate += _gateway_OnRacePoolUpdate;
+            _gateway.OnMeetingPoolUpdate += _gateway_OnMeetingPoolUpdate;
+            _gateway.OnPoolSubstituteUpdate += _gateway_OnPoolSubstituteUpdate;
+            _gateway.OnRaceSalesUpdate += _gateway_OnRaceSalesUpdate;
+            _gateway.OnMeetingPoolSalesUpdate += _gateway_OnMeetingPoolSalesUpdate;
+            _gateway.OnResultUpdate += _gateway_OnResultUpdate;
+            _gateway.OnSubstituteUpdate += _gateway_OnSubstituteUpdate;
+            _gateway.OnWeighedInUpdate += _gateway_OnWeighedInUpdate;
+            _gateway.OnEndOfRacingUpdate += _gateway_OnEndOfRacingUpdate;
+            _gateway.OnRacePoolSalesUpdate += _gateway_OnRacePoolSalesUpdate;
+            _gateway.OnRacePoolDividendUpdate += _gateway_OnRacePoolDividendUpdate;
             _gateway.OnMeetingPoolDividendUpdate += _gateway_OnMeetingPoolDividendUpdate;
+            _gateway.OnSuperComplexPoolDividendUpdate += _gateway_OnSuperComplexPoolDividendUpdate;
+            _gateway.OnMatrixPoolDividendUpdate += _gateway_OnMatrixPoolDividendUpdate;
+            _gateway.OnComplexRacePoolDividendUpdate += _gateway_OnComplexRacePoolDividendUpdate;
+            _gateway.OnRunnerUpdate += _gateway_OnRunnerUpdate;
+
+            // pay update messages
+            _gateway.OnMeetingPayUpdate += _gateway_OnMeetingPayUpdate;
+            _gateway.OnRacePayUpdate += _gateway_OnRacePayUpdate;
+            _gateway.OnMeetingPoolPayUpdate += _gateway_OnMeetingPoolPayUpdate;
+            _gateway.OnRacePoolPayUpdate += _gateway_OnRacePoolPayUpdate;
+
+            // will pay update messages
+            _gateway.OnMeetingPoolWillPayUpdate += _gateway_OnMeetingPoolWillPayUpdate;
+            _gateway.OnRaceWillPayUpdate += _gateway_OnRaceWillPayUpdate;
+            _gateway.OnLegBreakdownUpdate += _gateway_OnLegBreakdownUpdate;
+            _gateway.OnMeetingPoolTotalUpdate += _gateway_OnMeetingPoolTotalUpdate;
+            _gateway.OnComplexRacePoolTotalUpdate += _gateway_OnComplexRacePoolTotalUpdate;
 
             _gateway.OnBatchProgress += _gateway_OnBatchProgress;
 
             UpdateButtons();
+        }
+
+        private void _gateway_OnComplexRacePoolTotalUpdate(ComplexRacePoolTotalUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("ComplexRacePoolTotalUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPoolTotalUpdate(MeetingPoolTotalUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolTotalUpdate", obj);
+        }
+
+        private void _gateway_OnLegBreakdownUpdate(LegBreakdownUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("LegBreakdownUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPoolWillPayUpdate(MeetingPoolWillPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolWillPayUpdate", obj);
+        }
+
+        private void _gateway_OnRacePoolPayUpdate(RacePoolPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RacePoolPayUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPoolPayUpdate(MeetingPoolPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolPayUpdate", obj);
+        }
+
+        private void _gateway_OnRacePayUpdate(RacePayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RacePayUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPayUpdate(MeetingPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPayUpdate", obj);
+        }
+
+        private void _gateway_OnComplexRacePoolDividendUpdate(ComplexRacePoolDividendUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("ComplexRacePoolDividendUpdate", obj);
+        }
+
+        private void _gateway_OnMatrixPoolDividendUpdate(MatrixPoolDividendUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MatrixPoolDividendUpdate", obj);
+        }
+
+        private void _gateway_OnSuperComplexPoolDividendUpdate(SuperComplexPoolDividendUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("SuperComplexPoolDividendUpdate", obj);
+        }
+
+        private void _gateway_OnEndOfRacingUpdate(EndOfRacingUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("EndOfRacingUpdate", obj);
+        }
+
+        private void _gateway_OnWeighedInUpdate(WeighedInUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("WeighedInUpdate", obj);
+        }
+
+        private void _gateway_OnSubstituteUpdate(SubstituteUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("SubstituteUpdate", obj);
+        }
+
+        private void _gateway_OnResultUpdate(ResultUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("ResultUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPoolSalesUpdate(MeetingPoolSalesUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolSalesUpdate", obj);
+        }
+
+        private void _gateway_OnPoolSubstituteUpdate(PoolSubstituteUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("PoolSubstituteUpdate", obj);
+        }
+
+        private void _gateway_OnMeetingPoolUpdate(MeetingPoolUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("MeetingPoolUpdate", obj);
         }
 
         private void _gateway_OnBatchProgress(int complete, int total)
