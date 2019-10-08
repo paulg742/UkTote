@@ -57,6 +57,7 @@ namespace UkTote
         public event Action<RaceSalesUpdate> OnRaceSalesUpdate;
         public event Action<MeetingPoolSalesUpdate> OnMeetingPoolSalesUpdate;
         public event Action<ResultUpdate> OnResultUpdate;
+        public event Action<SubstituteUpdate> OnSubstituteUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
@@ -181,6 +182,8 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RESULT_UPDATE_MSG, Enums.ActionCode.ACTION_PARTIAL_RESULT)] = typeof(ResultUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RESULT_UPDATE_MSG, Enums.ActionCode.ACTION_FULL_RESULT)] = typeof(ResultUpdate);
 
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SUBSTITUTE_UPDATE_MSG, Enums.ActionCode.ACTION_TOTE_SUBSTITUTE)] = typeof(SubstituteUpdate);
+
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUOk_REQUEST_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RuOkRequest);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolDividendUpdate);
@@ -193,7 +196,6 @@ namespace UkTote
             // set up updates to ignore (gets noisy in the log)
             _ignoreUpdates[Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG] = true;
             //_ignoreUpdates[Message.Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG] = true;
-            _ignoreUpdates[Enums.MessageType.RESULT_UPDATE_MSG] = true;
             _ignoreUpdates[Enums.MessageType.WEIGHED_IN_MSG] = true;
 
         }
@@ -471,6 +473,10 @@ namespace UkTote
                 else if (pType == typeof(ResultUpdate))
                 {
                     OnResultUpdate?.Invoke(packet as ResultUpdate);
+                }
+                else if (pType == typeof(SubstituteUpdate))
+                {
+                    OnSubstituteUpdate?.Invoke(packet as SubstituteUpdate);
                 }
                 else if (pType == typeof(MsnReply))
                 {
