@@ -14,6 +14,7 @@
             RACE_UPDATE_MSG = 0x0B,
             RACE_POOL_UPDATE_MSG = 0x0C,
             MEET_POOL_UPDATE_MSG = 0x0E,
+            POOL_SUBSTITUTE_UPDATE = 0X45,
             RUNNER_UPDATE_MSG = 0x0F,
             MEETING_SALES_UPDATE = 0x12,
             RACE_SALES_UPDATE = 0x13,

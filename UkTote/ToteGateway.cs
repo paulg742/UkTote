@@ -52,6 +52,7 @@ namespace UkTote
         public event Action<MeetingSalesUpdate> OnMeetingSalesUpdate;
         public event Action<RaceUpdate> OnRaceUpdate;
         public event Action<RacePoolUpdate> OnRacePoolUpdate;
+        public event Action<PoolSubstituteUpdate> OnPoolSubstituteUpdate;
         public event Action<RaceSalesUpdate> OnRaceSalesUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
@@ -155,6 +156,9 @@ namespace UkTote
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_ON)] = typeof(RacePoolUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_CANCELLED)] = typeof(RacePoolUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_SUBSTITUTE_UPDATE, Enums.ActionCode.ACTION_ON)] = typeof(PoolSubstituteUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.POOL_SUBSTITUTE_UPDATE, Enums.ActionCode.ACTION_OFF)] = typeof(PoolSubstituteUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(MeetingSalesUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(MeetingSalesUpdate);
@@ -423,6 +427,10 @@ namespace UkTote
                 else if (pType == typeof(RacePoolUpdate))
                 {
                     OnRacePoolUpdate?.Invoke(packet as RacePoolUpdate);
+                }
+                else if (pType == typeof(PoolSubstituteUpdate))
+                {
+                    OnPoolSubstituteUpdate?.Invoke(packet as PoolSubstituteUpdate);
                 }
                 else if (pType == typeof(MeetingUpdate))
                 {
