@@ -23,6 +23,9 @@
             RESULT_UPDATE_MSG = 0x17,
             RACE_POOL_DIV_UPDATE_MSG = 0x1D,
             MEETING_POOL_DIV_UPDATE_MSG = 0x1F,
+            SUPER_COMPLEX_POOL_DIVIDEND_UPDATE = 0x2000,
+            MATRIX_POOL_DIVIDEND_UPDATE = 0x48,
+            COMPLEX_RACE_POOL_DIVIDEND_UPDATE = 0x47,
             MEETING_PAY_UPDATE_MSG = 0x25,
             RACE_PAY_UPDATE_MSG = 0x26,
             RACE_POOL_PAY_UPDATE_MSG = 0x27,
@@ -48,8 +51,9 @@
             CANCEL_BET_ID_REQ_MSG = 0x100B,
             MEETING_END_DATE_REQ_MSG = 0x100E,
             CURRENT_BALANCE_REQ_MSG = 0x100F,
-            SUPER_COMPLEX_POOL_DIVIDEND_UPDATE = 0x2000,
-            MATRIX_POOL_DIVIDEND_UPDATE = 0x48
+            
+            
+            
         }
 
         public enum ActionCode : ushort

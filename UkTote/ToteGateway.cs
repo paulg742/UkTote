@@ -65,6 +65,7 @@ namespace UkTote
         public event Action<MeetingPoolDividendUpdate> OnMeetingPoolDividendUpdate;
         public event Action<SuperComplexPoolDividendUpdate> OnSuperComplexPoolDividendUpdate;
         public event Action<MatrixPoolDividendUpdate> OnMatrixPoolDividendUpdate;
+        public event Action<ComplexRacePoolDividendUpdate> OnComplexRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
         public event Action<RunnerUpdate> OnRunnerUpdate;
 
@@ -200,6 +201,8 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SUPER_COMPLEX_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(SuperComplexPoolDividendUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MATRIX_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MatrixPoolDividendUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.COMPLEX_RACE_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(ComplexRacePoolDividendUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
@@ -531,6 +534,10 @@ namespace UkTote
                 else if (pType == typeof(MatrixPoolDividendUpdate))
                 {
                     OnMatrixPoolDividendUpdate?.Invoke(packet as MatrixPoolDividendUpdate);
+                }
+                else if (pType == typeof(ComplexRacePoolDividendUpdate))
+                {
+                    OnComplexRacePoolDividendUpdate?.Invoke(packet as ComplexRacePoolDividendUpdate);
                 }
             }
             else
