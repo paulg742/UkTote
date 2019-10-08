@@ -52,6 +52,7 @@
     <Compile Include="Message\MeetingPoolRequest.cs" />
     <Compile Include="Message\MeetingPoolReply.cs" />
     <Compile Include="Message\PoolSubstituteUpdate.cs" />
+    <Compile Include="Message\MeetingPoolUpdate.cs" />
     <Compile Include="MultiLegBetRequest.cs" />
     <Compile Include="BetRequest.cs" />
     <Compile Include="CancellableQueueWorker.cs" />

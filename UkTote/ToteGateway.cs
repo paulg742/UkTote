@@ -52,6 +52,7 @@ namespace UkTote
         public event Action<MeetingSalesUpdate> OnMeetingSalesUpdate;
         public event Action<RaceUpdate> OnRaceUpdate;
         public event Action<RacePoolUpdate> OnRacePoolUpdate;
+        public event Action<MeetingPoolUpdate> OnMeetingPoolUpdate;
         public event Action<PoolSubstituteUpdate> OnPoolSubstituteUpdate;
         public event Action<RaceSalesUpdate> OnRaceSalesUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
@@ -153,6 +154,9 @@ namespace UkTote
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_UPDATE, Enums.ActionCode.ACTION_ON)] = typeof(MeetingPoolUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_UPDATE, Enums.ActionCode.ACTION_CANCELLED)] = typeof(MeetingPoolUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_ON)] = typeof(RacePoolUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_UPDATE_MSG, Enums.ActionCode.ACTION_CANCELLED)] = typeof(RacePoolUpdate);
@@ -423,6 +427,10 @@ namespace UkTote
                 else if (pType == typeof(RaceUpdate))
                 {
                     OnRaceUpdate?.Invoke(packet as RaceUpdate);
+                }
+                else if (pType == typeof(MeetingPoolUpdate))
+                {
+                    OnMeetingPoolUpdate?.Invoke(packet as MeetingPoolUpdate);
                 }
                 else if (pType == typeof(RacePoolUpdate))
                 {
