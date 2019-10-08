@@ -33,7 +33,7 @@
             TIME_SYNC_MSG = 0x3B,
             LEG_BREAKDOWN_UPDATE_MSG = 0x40,
             MEET_POOL_TOTAL_UPDATE_MSG = 0x43,
-            WEIGHED_IN_MSG = 0x44,
+            WEIGHED_IN_UPDATE_MSG = 0x44,
             ACCOUNT_LOGIN = 0x1000,
             ACCOUNT_LOGOUT = 0x1001,
             SELL_BET_REQ_MSG = 0x1002,
