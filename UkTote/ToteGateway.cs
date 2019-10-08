@@ -66,7 +66,7 @@ namespace UkTote
         public event Action<SuperComplexPoolDividendUpdate> OnSuperComplexPoolDividendUpdate;
         public event Action<MatrixPoolDividendUpdate> OnMatrixPoolDividendUpdate;
         public event Action<ComplexRacePoolDividendUpdate> OnComplexRacePoolDividendUpdate;
-        public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
+        
         public event Action<RunnerUpdate> OnRunnerUpdate;
 
         // pay update events
@@ -74,6 +74,13 @@ namespace UkTote
         public event Action<RacePayUpdate> OnRacePayUpdate;
         public event Action<MeetingPoolPayUpdate> OnMeetingPoolPayUpdate;
         public event Action<RacePoolPayUpdate> OnRacePoolPayUpdate;
+
+        // will pay update events
+        public event Action<MeetingPoolWillPayUpdate> OnMeetingPoolWillPayUpdate;
+        public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
+        public event Action<LegBreakdownUpdate> OnLegBreakdownUpdate;
+        public event Action<MeetingPoolTotalUpdate> OnMeetingPoolTotalUpdate;
+        public event Action<ComplexRacePoolTotalUpdate> OnComplexRacePoolTotalUpdate;
 
         private bool _shuttingDown = false;
         private int _nextBetId = 0; // TODO - this gets set to 0 at start of day and persisted
@@ -200,14 +207,9 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUOk_REQUEST_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RuOkRequest);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RacePoolDividendUpdate);
-            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceWillPayUpdate);
-
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolDividendUpdate);
-
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SUPER_COMPLEX_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(SuperComplexPoolDividendUpdate);
-
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MATRIX_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MatrixPoolDividendUpdate);
-
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.COMPLEX_RACE_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(ComplexRacePoolDividendUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
@@ -219,9 +221,19 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_OPEN)] = typeof(RacePayUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_CLOSED)] = typeof(RacePayUpdate);
 
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_OPEN)] = typeof(MeetingPoolPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_CLOSED)] = typeof(MeetingPoolPayUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_OPEN)] = typeof(RacePoolPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_CLOSED)] = typeof(RacePoolPayUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolWillPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.LEG_BREAKDOWN_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(LegBreakdownUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceWillPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_TOTAL_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolTotalUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.COMPLEX_RACE_POOL_TOTAL_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(ComplexRacePoolTotalUpdate);
+
             // set up updates to ignore (gets noisy in the log)
-            _ignoreUpdates[Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG] = true;
-            //_ignoreUpdates[Message.Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG] = true;
 
         }
 
@@ -523,9 +535,25 @@ namespace UkTote
                 {
                     OnRacePoolDividendUpdate?.Invoke(packet as RacePoolDividendUpdate);
                 }
+                else if (pType == typeof(MeetingPoolWillPayUpdate))
+                {
+                    OnMeetingPoolWillPayUpdate?.Invoke(packet as MeetingPoolWillPayUpdate);
+                }
                 else if (pType == typeof(RaceWillPayUpdate))
                 {
                     OnRaceWillPayUpdate?.Invoke(packet as RaceWillPayUpdate);
+                }
+                else if (pType == typeof(LegBreakdownUpdate))
+                {
+                    OnLegBreakdownUpdate?.Invoke(packet as LegBreakdownUpdate);
+                }
+                else if (pType == typeof(MeetingPoolTotalUpdate))
+                {
+                    OnMeetingPoolTotalUpdate?.Invoke(packet as MeetingPoolTotalUpdate);
+                }
+                else if (pType == typeof(ComplexRacePoolTotalUpdate))
+                {
+                    OnComplexRacePoolTotalUpdate?.Invoke(packet as ComplexRacePoolTotalUpdate);
                 }
                 else if (pType == typeof(RunnerUpdate))
                 {
