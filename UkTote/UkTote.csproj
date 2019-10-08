@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="BetReply.cs" />
     <Compile Include="Message\MeetingPoolCombination.cs" />
+    <Compile Include="Message\SuperComplexPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolRequest.cs" />
     <Compile Include="Message\MeetingPoolReply.cs" />

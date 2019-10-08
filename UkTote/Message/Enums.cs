@@ -48,7 +48,7 @@
             CANCEL_BET_ID_REQ_MSG = 0x100B,
             MEETING_END_DATE_REQ_MSG = 0x100E,
             CURRENT_BALANCE_REQ_MSG = 0x100F,
-            SUPER_MEET_POOL_DIV_UPDATE_MSG = 0x2000
+            SUPER_COMPLEX_POOL_DIVIDEND_UPDATE = 0x2000
         }
 
         public enum ActionCode : ushort

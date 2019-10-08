@@ -7,6 +7,6 @@ namespace UkTote.Message
     {
         [FieldOrder(0)]
         [FieldCount(41)]
-        public List<ushort> Runners { get; set; }
+        public List<short> Runners { get; set; }
     }
 }

@@ -62,9 +62,10 @@ namespace UkTote
         public event Action<EndOfRacingUpdate> OnEndOfRacingUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
+        public event Action<MeetingPoolDividendUpdate> OnMeetingPoolDividendUpdate;
+        public event Action<SuperComplexPoolDividendUpdate> OnSuperComplexPoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
         public event Action<RunnerUpdate> OnRunnerUpdate;
-        public event Action<MeetingPoolDividendUpdate> OnMeetingPoolDividendUpdate;
 
         private bool _shuttingDown = false;
         private int _nextBetId = 0; // TODO - this gets set to 0 at start of day and persisted
@@ -194,6 +195,9 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RaceWillPayUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_DIV_UPDATE_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(MeetingPoolDividendUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.SUPER_COMPLEX_POOL_DIVIDEND_UPDATE, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(SuperComplexPoolDividendUpdate);
+
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
 
@@ -516,6 +520,10 @@ namespace UkTote
                 else if (pType == typeof(MeetingPoolDividendUpdate))
                 {
                     OnMeetingPoolDividendUpdate?.Invoke(packet as MeetingPoolDividendUpdate);
+                }
+                else if (pType == typeof(SuperComplexPoolDividendUpdate))
+                {
+                    OnSuperComplexPoolDividendUpdate?.Invoke(packet as SuperComplexPoolDividendUpdate);
                 }
             }
             else
