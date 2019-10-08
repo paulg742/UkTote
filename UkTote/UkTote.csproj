@@ -48,9 +48,13 @@
   <ItemGroup>
     <Compile Include="BetReply.cs" />
     <Compile Include="Message\MatrixPoolCombination.cs" />
+    <Compile Include="Message\MeetingPoolPayUpdate.cs" />
+    <Compile Include="Message\RacePoolPayUpdate.cs" />
+    <Compile Include="Message\RacePayUpdate.cs" />
     <Compile Include="Message\MeetingPoolCombination.cs" />
     <Compile Include="Message\MatrixPoolDividendUpdate.cs" />
     <Compile Include="Message\ComplexRacePoolDividendUpdate.cs" />
+    <Compile Include="Message\MeetingPayUpdate.cs" />
     <Compile Include="Message\SuperComplexPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolRequest.cs" />

@@ -69,6 +69,12 @@ namespace UkTote
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
         public event Action<RunnerUpdate> OnRunnerUpdate;
 
+        // pay update events
+        public event Action<MeetingPayUpdate> OnMeetingPayUpdate;
+        public event Action<RacePayUpdate> OnRacePayUpdate;
+        public event Action<MeetingPoolPayUpdate> OnMeetingPoolPayUpdate;
+        public event Action<RacePoolPayUpdate> OnRacePoolPayUpdate;
+
         private bool _shuttingDown = false;
         private int _nextBetId = 0; // TODO - this gets set to 0 at start of day and persisted
         private TcpClient _tcpClient = new TcpClient();
@@ -206,6 +212,12 @@ namespace UkTote
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_RUNNING)] = typeof(RunnerUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUNNER_UPDATE_MSG, Enums.ActionCode.ACTION_NON_RUNNER)] = typeof(RunnerUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_OPEN)] = typeof(MeetingPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_CLOSED)] = typeof(MeetingPayUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_OPEN)] = typeof(RacePayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_PAY_UPDATE_MSG, Enums.ActionCode.ACTION_PAY_CLOSED)] = typeof(RacePayUpdate);
 
             // set up updates to ignore (gets noisy in the log)
             _ignoreUpdates[Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG] = true;
@@ -538,6 +550,22 @@ namespace UkTote
                 else if (pType == typeof(ComplexRacePoolDividendUpdate))
                 {
                     OnComplexRacePoolDividendUpdate?.Invoke(packet as ComplexRacePoolDividendUpdate);
+                }
+                else if (pType == typeof(MeetingPayUpdate))
+                {
+                    OnMeetingPayUpdate?.Invoke(packet as MeetingPayUpdate);
+                }
+                else if (pType == typeof(RacePayUpdate))
+                {
+                    OnRacePayUpdate?.Invoke(packet as RacePayUpdate);
+                }
+                else if (pType == typeof(MeetingPoolPayUpdate))
+                {
+                    OnMeetingPoolPayUpdate?.Invoke(packet as MeetingPoolPayUpdate);
+                }
+                else if (pType == typeof(RacePoolPayUpdate))
+                {
+                    OnRacePoolPayUpdate?.Invoke(packet as RacePoolPayUpdate);
                 }
             }
             else
