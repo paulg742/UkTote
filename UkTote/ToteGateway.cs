@@ -56,6 +56,7 @@ namespace UkTote
         public event Action<PoolSubstituteUpdate> OnPoolSubstituteUpdate;
         public event Action<RaceSalesUpdate> OnRaceSalesUpdate;
         public event Action<MeetingPoolSalesUpdate> OnMeetingPoolSalesUpdate;
+        public event Action<ResultUpdate> OnResultUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
@@ -176,6 +177,9 @@ namespace UkTote
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(RacePoolSalesUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(RacePoolSalesUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RESULT_UPDATE_MSG, Enums.ActionCode.ACTION_PARTIAL_RESULT)] = typeof(ResultUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RESULT_UPDATE_MSG, Enums.ActionCode.ACTION_FULL_RESULT)] = typeof(ResultUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RUOk_REQUEST_MSG, Enums.ActionCode.ACTION_UNKNOWN)] = typeof(RuOkRequest);
 
@@ -463,6 +467,10 @@ namespace UkTote
                 else if (pType == typeof(RacePoolSalesUpdate))
                 {
                     OnRacePoolSalesUpdate?.Invoke(packet as RacePoolSalesUpdate);
+                }
+                else if (pType == typeof(ResultUpdate))
+                {
+                    OnResultUpdate?.Invoke(packet as ResultUpdate);
                 }
                 else if (pType == typeof(MsnReply))
                 {
