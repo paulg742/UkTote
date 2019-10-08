@@ -51,6 +51,7 @@
     <Compile Include="Message\MeetingPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolRequest.cs" />
     <Compile Include="Message\MeetingPoolReply.cs" />
+    <Compile Include="Message\MeetingPoolSalesUpdate.cs" />
     <Compile Include="Message\PoolSubstituteUpdate.cs" />
     <Compile Include="Message\MeetingPoolUpdate.cs" />
     <Compile Include="MultiLegBetRequest.cs" />

@@ -55,6 +55,7 @@ namespace UkTote
         public event Action<MeetingPoolUpdate> OnMeetingPoolUpdate;
         public event Action<PoolSubstituteUpdate> OnPoolSubstituteUpdate;
         public event Action<RaceSalesUpdate> OnRaceSalesUpdate;
+        public event Action<MeetingPoolSalesUpdate> OnMeetingPoolSalesUpdate;
         public event Action<RacePoolSalesUpdate> OnRacePoolSalesUpdate;
         public event Action<RacePoolDividendUpdate> OnRacePoolDividendUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
@@ -169,6 +170,9 @@ namespace UkTote
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(RaceSalesUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(RaceSalesUpdate);
+
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(MeetingPoolSalesUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MEETING_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(MeetingPoolSalesUpdate);
 
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_OPEN)] = typeof(RacePoolSalesUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RACE_POOL_SALES_UPDATE, Enums.ActionCode.ACTION_SALES_CLOSED)] = typeof(RacePoolSalesUpdate);
@@ -451,6 +455,10 @@ namespace UkTote
                 else if (pType == typeof(RaceSalesUpdate))
                 {
                     OnRaceSalesUpdate?.Invoke(packet as RaceSalesUpdate);
+                }
+                else if (pType == typeof(MeetingPoolSalesUpdate))
+                {
+                    OnMeetingPoolSalesUpdate?.Invoke(packet as MeetingPoolSalesUpdate);
                 }
                 else if (pType == typeof(RacePoolSalesUpdate))
                 {
