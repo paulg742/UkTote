@@ -14,8 +14,8 @@
             RACE_UPDATE_MSG = 0x0B,
             RACE_POOL_UPDATE_MSG = 0x0C,
             MEETING_POOL_UPDATE = 0x0E,
-            POOL_SUBSTITUTE_UPDATE = 0X45,
             RUNNER_UPDATE_MSG = 0x0F,
+
             MEETING_SALES_UPDATE = 0x12,
             RACE_SALES_UPDATE = 0x13,
             RACE_POOL_SALES_UPDATE = 0x14,
@@ -23,9 +23,7 @@
             RESULT_UPDATE_MSG = 0x17,
             RACE_POOL_DIV_UPDATE_MSG = 0x1D,
             MEETING_POOL_DIV_UPDATE_MSG = 0x1F,
-            SUPER_COMPLEX_POOL_DIVIDEND_UPDATE = 0x2000,
-            MATRIX_POOL_DIVIDEND_UPDATE = 0x48,
-            COMPLEX_RACE_POOL_DIVIDEND_UPDATE = 0x47,
+
             MEETING_PAY_UPDATE_MSG = 0x25,
             RACE_PAY_UPDATE_MSG = 0x26,
             RACE_POOL_PAY_UPDATE_MSG = 0x27,
@@ -33,12 +31,17 @@
             LEG_BREAKDOWN_UPDATE_MSG = 0x40,
             RACE_POOL_WILL_PAY_UPDATE_MSG = 0x2D,
             MEETING_POOL_WILL_PAY_UPDATE_MSG = 0x2E,
-            MEETING_POOL_TOTAL_UPDATE = 0x43,
-            COMPLEX_RACE_POOL_TOTAL_UPDATE = 0x46,
+
             SUBSTITUTE_UPDATE_MSG = 0x39,
             TIME_SYNC_MSG = 0x3B,
-            MEET_POOL_TOTAL_UPDATE_MSG = 0x43,
+
+            MEETING_POOL_TOTAL_UPDATE = 0x43,
             WEIGHED_IN_UPDATE_MSG = 0x44,
+            POOL_SUBSTITUTE_UPDATE = 0x45,
+            COMPLEX_RACE_POOL_TOTAL_UPDATE = 0x46,
+            COMPLEX_RACE_POOL_DIVIDEND_UPDATE = 0x47,
+            MATRIX_POOL_DIVIDEND_UPDATE = 0x48,
+
             ACCOUNT_LOGIN = 0x1000,
             ACCOUNT_LOGOUT = 0x1001,
             SELL_BET_REQ_MSG = 0x1002,
@@ -53,6 +56,8 @@
             CANCEL_BET_ID_REQ_MSG = 0x100B,
             MEETING_END_DATE_REQ_MSG = 0x100E,
             CURRENT_BALANCE_REQ_MSG = 0x100F,
+
+            SUPER_COMPLEX_POOL_DIVIDEND_UPDATE = 0x2000,
         }
 
         public enum ActionCode : ushort
