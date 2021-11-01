@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UkTote;
-using UkTote.Message;
-using log4net;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using log4net;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using UkTote.Message;
 
-namespace TBS.ARK.Tests
+namespace UkTote.Tests
 {
     [TestClass]
     public class UkToteBetTests
