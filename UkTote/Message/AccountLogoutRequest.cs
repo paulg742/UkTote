@@ -10,19 +10,12 @@ namespace UkTote.Message
         public string Username { get; set; }
 
         public AccountLogoutRequest()
-            : base(Enums.MessageType.ACCOUNT_LOGOUT, Enums.ActionCode.ACTION_LOGOUT)
+            : base(Enums.MessageType.AccountLogout, Enums.ActionCode.ActionLogout)
         {
 
         }
 
         [Ignore]
-protected override ushort BodyLength
-        {
-            get
-            {
-                return 20;
-            }
-        }
-
+protected override ushort BodyLength => 20;
     }
 }

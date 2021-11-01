@@ -25,19 +25,12 @@ namespace UkTote.Message
         public uint BonusPoolTotal { get; set; }
 
         public ComplexRacePoolTotalUpdate()
-            : base(Enums.MessageType.COMPLEX_RACE_POOL_TOTAL_UPDATE)
+            : base(Enums.MessageType.ComplexRacePoolTotalUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 52;
-            }
-        }
-
+        protected override ushort BodyLength => 52;
     }
 }

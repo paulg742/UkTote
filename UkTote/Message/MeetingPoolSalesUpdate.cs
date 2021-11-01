@@ -11,19 +11,12 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         public MeetingPoolSalesUpdate()
-            : base(Enums.MessageType.MEETING_POOL_SALES_UPDATE)
+            : base(Enums.MessageType.MeetingPoolSalesUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
+        protected override ushort BodyLength => 4;
     }
 }

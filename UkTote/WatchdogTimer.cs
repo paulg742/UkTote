@@ -15,13 +15,7 @@ namespace UkTote
             _timeoutMs = timeoutMs;
         }
 
-        public override int SleepMs
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public override int SleepMs => 0;
 
         protected override bool OnStart()
         {

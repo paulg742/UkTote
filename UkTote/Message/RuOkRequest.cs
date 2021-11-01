@@ -5,7 +5,7 @@ namespace UkTote.Message
     public class RuOkRequest : RequestMessage
     {
         public RuOkRequest()
-            : base(Enums.MessageType.RUOk_REQUEST_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.RuOkRequestMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -21,14 +21,6 @@ namespace UkTote.Message
         public string Password { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 40;
-            }
-        }
-
-
+        protected override ushort BodyLength => 40;
     }
 }

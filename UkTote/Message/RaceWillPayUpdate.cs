@@ -36,19 +36,12 @@ namespace UkTote.Message
         public List<uint> CombinationTotal { get; set; }
 
         public RaceWillPayUpdate()
-            : base(Enums.MessageType.RACE_POOL_WILL_PAY_UPDATE_MSG)
+            : base(Enums.MessageType.RacePoolWillPayUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 628;
-            }
-        }
-
+        protected override ushort BodyLength => 628;
     }
 }

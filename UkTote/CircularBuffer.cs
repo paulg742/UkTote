@@ -6,18 +6,18 @@ using log4net;
 
 namespace UkTote
 {
-    public class CircularBuffer<T> : ICollection<T>, IEnumerable<T>, ICollection, IEnumerable
+    public class CircularBuffer<T> : ICollection<T>, ICollection, IEnumerable
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(CircularBuffer<T>));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(CircularBuffer<T>));
 
-        private int capacity;
-        private int size;
-        private int head;
-        private int tail;
-        private T[] buffer;
+        private int _capacity;
+        private int _size;
+        private int _head;
+        private int _tail;
+        private T[] _buffer;
 
         [NonSerialized()]
-        private object syncRoot;
+        private object _syncRoot;
 
         public CircularBuffer(int capacity)
             : this(capacity, false)
@@ -29,11 +29,11 @@ namespace UkTote
             if (capacity < 0)
                 throw new ArgumentException("Zero capacity", "capacity");
 
-            this.capacity = capacity;
-            size = 0;
-            head = 0;
-            tail = 0;
-            buffer = new T[capacity];
+            this._capacity = capacity;
+            _size = 0;
+            _head = 0;
+            _tail = 0;
+            _buffer = new T[capacity];
             AllowOverflow = allowOverflow;
         }
 
@@ -45,42 +45,39 @@ namespace UkTote
 
         public int Capacity
         {
-            get { return capacity; }
+            get => _capacity;
             set
             {
-                if (value == capacity)
+                if (value == _capacity)
                     return;
 
-                if (value < size)
+                if (value < _size)
                     throw new ArgumentOutOfRangeException("value", "too small");
 
                 var dst = new T[value];
-                if (size > 0)
+                if (_size > 0)
                     CopyTo(dst);
-                buffer = dst;
+                _buffer = dst;
 
-                capacity = value;
+                _capacity = value;
             }
         }
 
-        public int Size
-        {
-            get { return size; }
-        }
+        public int Size => _size;
 
         public bool Contains(T item)
         {
-            int bufferIndex = head;
+            int bufferIndex = _head;
             var comparer = EqualityComparer<T>.Default;
-            for (int i = 0; i < size; i++, bufferIndex++)
+            for (int i = 0; i < _size; i++, bufferIndex++)
             {
-                if (bufferIndex == capacity)
+                if (bufferIndex == _capacity)
                     bufferIndex = 0;
 
-                if (item == null && buffer[bufferIndex] == null)
+                if (item == null && _buffer[bufferIndex] == null)
                     return true;
-                else if ((buffer[bufferIndex] != null) &&
-                    comparer.Equals(buffer[bufferIndex], item))
+                else if ((_buffer[bufferIndex] != null) &&
+                    comparer.Equals(_buffer[bufferIndex], item))
                     return true;
             }
 
@@ -89,9 +86,9 @@ namespace UkTote
 
         public void Clear()
         {
-            size = 0;
-            head = 0;
-            tail = 0;
+            _size = 0;
+            _head = 0;
+            _tail = 0;
         }
 
         public int Put(T[] src)
@@ -101,36 +98,36 @@ namespace UkTote
 
         public int Put(T[] src, int offset, int count)
         {
-            if (!AllowOverflow && count > capacity - size)
+            if (!AllowOverflow && count > _capacity - _size)
                 throw new InvalidOperationException("buffer overflow");
 
             int srcIndex = offset;
-            for (int i = 0; i < count; i++, tail++, srcIndex++)
+            for (int i = 0; i < count; i++, _tail++, srcIndex++)
             {
-                if (tail == capacity)
-                    tail = 0;
-                buffer[tail] = src[srcIndex];
+                if (_tail == _capacity)
+                    _tail = 0;
+                _buffer[_tail] = src[srcIndex];
             }
-            size = Math.Min(size + count, capacity);
+            _size = Math.Min(_size + count, _capacity);
             return count;
         }
 
         public void Put(T item)
         {
-            if (!AllowOverflow && size == capacity)
+            if (!AllowOverflow && _size == _capacity)
                 throw new InvalidOperationException("buffer overflow");
 
-            buffer[tail] = item;
-            if (++tail == capacity)
-                tail = 0;
-            size++;
+            _buffer[_tail] = item;
+            if (++_tail == _capacity)
+                _tail = 0;
+            _size++;
         }
 
         public void Skip(int count)
         {
-            head += count;
-            if (head >= capacity)
-                head -= capacity;
+            _head += count;
+            if (_head >= _capacity)
+                _head -= _capacity;
         }
 
         public T[] Get(int count)
@@ -153,14 +150,14 @@ namespace UkTote
         {
             _logger.DebugFormat("Peek({0}, {1}, {2}): {3}", dst.Length, offset, count, ToString());
 
-            int realCount = Math.Min(count, size);
+            int realCount = Math.Min(count, _size);
             int dstIndex = offset;
-            var curr = head;
+            var curr = _head;
             for (int i = 0; i < realCount; i++, curr++, dstIndex++)
             {
-                if (curr == capacity)
+                if (curr == _capacity)
                     curr = 0;
-                dst[dstIndex] = buffer[curr];
+                dst[dstIndex] = _buffer[curr];
             }
             
             return realCount;
@@ -173,39 +170,39 @@ namespace UkTote
 
         public int Get(T[] dst, int offset, int count)
         {
-            int realCount = Math.Min(count, size);
+            int realCount = Math.Min(count, _size);
             int dstIndex = offset;
-            for (int i = 0; i < realCount; i++, head++, dstIndex++)
+            for (int i = 0; i < realCount; i++, _head++, dstIndex++)
             {
-                if (head == capacity)
-                    head = 0;
-                dst[dstIndex] = buffer[head];
+                if (_head == _capacity)
+                    _head = 0;
+                dst[dstIndex] = _buffer[_head];
             }
-            if (head == capacity)
-                head = 0;
-            size -= realCount;
+            if (_head == _capacity)
+                _head = 0;
+            _size -= realCount;
             return realCount;
         }
 
         public T Get()
         {
-            if (size == 0)
+            if (_size == 0)
                 throw new InvalidOperationException("buffer empty");
 
-            var item = buffer[head];
-            if (++head == capacity)
-                head = 0;
-            size--;
+            var item = _buffer[_head];
+            if (++_head == _capacity)
+                _head = 0;
+            _size--;
             return item;
         }
 
         public T Peek()
         {
             _logger.DebugFormat("Peek: {0}", ToString());
-            if (size == 0)
+            if (_size == 0)
                 throw new InvalidOperationException("buffer empty");
 
-            return buffer[head];
+            return _buffer[_head];
         }
 
         public void CopyTo(T[] array)
@@ -215,58 +212,52 @@ namespace UkTote
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            CopyTo(0, array, arrayIndex, size);
+            CopyTo(0, array, arrayIndex, _size);
         }
 
         public void CopyTo(int index, T[] array, int arrayIndex, int count)
         {
-            if (count > size)
+            if (count > _size)
                 throw new ArgumentOutOfRangeException("count", "MessageReadCountTooLarge");
 
-            int bufferIndex = head;
+            int bufferIndex = _head;
             for (int i = 0; i < count; i++, bufferIndex++, arrayIndex++)
             {
-                if (bufferIndex == capacity)
+                if (bufferIndex == _capacity)
                     bufferIndex = 0;
-                array[arrayIndex] = buffer[bufferIndex];
+                array[arrayIndex] = _buffer[bufferIndex];
             }
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            int bufferIndex = head;
-            for (int i = 0; i < size; i++, bufferIndex++)
+            int bufferIndex = _head;
+            for (int i = 0; i < _size; i++, bufferIndex++)
             {
-                if (bufferIndex == capacity)
+                if (bufferIndex == _capacity)
                     bufferIndex = 0;
 
-                yield return buffer[bufferIndex];
+                yield return _buffer[bufferIndex];
             }
         }
 
         public T[] GetBuffer()
         {
-            return buffer;
+            return _buffer;
         }
 
         public T[] ToArray()
         {
-            var dst = new T[size];
+            var dst = new T[_size];
             CopyTo(dst);
             return dst;
         }
 
         #region ICollection<T> Members
 
-        int ICollection<T>.Count
-        {
-            get { return Size; }
-        }
+        int ICollection<T>.Count => Size;
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<T>.IsReadOnly => false;
 
         void ICollection<T>.Add(T item)
         {
@@ -275,7 +266,7 @@ namespace UkTote
 
         bool ICollection<T>.Remove(T item)
         {
-            if (size == 0)
+            if (_size == 0)
                 return false;
 
             Get();
@@ -295,23 +286,17 @@ namespace UkTote
 
         #region ICollection Members
 
-        int ICollection.Count
-        {
-            get { return Size; }
-        }
+        int ICollection.Count => Size;
 
-        bool ICollection.IsSynchronized
-        {
-            get { return false; }
-        }
+        bool ICollection.IsSynchronized => false;
 
         object ICollection.SyncRoot
         {
             get
             {
-                if (syncRoot == null)
-                    Interlocked.CompareExchange(ref syncRoot, new object(), null);
-                return syncRoot;
+                if (_syncRoot == null)
+                    Interlocked.CompareExchange(ref _syncRoot, new object(), null);
+                return _syncRoot;
             }
         }
 
@@ -333,7 +318,7 @@ namespace UkTote
 
         public override string ToString()
         {
-            return string.Format("capacity({0}) size({1}) head({2}) tail({3})", capacity, size, head, tail);
+            return string.Format("capacity({0}) size({1}) head({2}) tail({3})", _capacity, _size, _head, _tail);
         }
     }
 }

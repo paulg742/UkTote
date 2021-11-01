@@ -15,15 +15,9 @@ namespace UkTote.Message
         [FieldOrder(2)]
         [FieldLength(18)]
         [FieldEncoding("us-ascii")]
-        public string TSN { get; set; }
+        public string Tsn { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 26;
-            }
-        }
+        protected override ushort BodyLength => 26;
     }
 }

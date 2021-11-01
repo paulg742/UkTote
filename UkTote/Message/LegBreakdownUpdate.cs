@@ -29,19 +29,12 @@ namespace UkTote.Message
         public List<uint> ConsolationStakeBreakdowns { get; set; }
 
         public LegBreakdownUpdate()
-            : base(Enums.MessageType.LEG_BREAKDOWN_UPDATE_MSG)
+            : base(Enums.MessageType.LegBreakdownUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 342;
-            }
-        }
-
+        protected override ushort BodyLength => 342;
     }
 }

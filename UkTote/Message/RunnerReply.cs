@@ -26,12 +26,6 @@ namespace UkTote.Message
         public bool IsScratched { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 48;
-            }
-        }
+        protected override ushort BodyLength => 48;
     }
 }

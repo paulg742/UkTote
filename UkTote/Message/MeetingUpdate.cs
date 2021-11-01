@@ -11,19 +11,12 @@ namespace UkTote.Message
         public Enums.Going Going { get; set; }
 
         public MeetingUpdate()
-            : base(Enums.MessageType.MEETING_UPDATE_MSG)
+            : base(Enums.MessageType.MeetingUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
+        protected override ushort BodyLength => 4;
     }
 }

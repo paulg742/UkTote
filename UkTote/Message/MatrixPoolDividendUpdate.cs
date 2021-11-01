@@ -29,19 +29,12 @@ namespace UkTote.Message
         public uint CarriedForwardAmount { get; set; }
 
         public MatrixPoolDividendUpdate()
-            : base(Enums.MessageType.MATRIX_POOL_DIVIDEND_UPDATE)
+            : base(Enums.MessageType.MatrixPoolDividendUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 774;
-            }
-        }
-
+        protected override ushort BodyLength => 774;
     }
 }

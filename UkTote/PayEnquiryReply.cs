@@ -3,7 +3,7 @@
     using Message;
     public class PayEnquiryReply
     {
-        public string TSN { get; set; }
+        public string Tsn { get; set; }
         public uint PayoutAmount { get; set; }
         public uint VoidAmount { get; set; }
         public Enums.ErrorCode ErrorCode { get; set; }

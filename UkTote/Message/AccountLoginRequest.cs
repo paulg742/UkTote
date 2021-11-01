@@ -15,18 +15,11 @@ namespace UkTote.Message
         public string Password { get; set; }
 
         public AccountLoginRequest()
-            : base(Enums.MessageType.ACCOUNT_LOGIN, Enums.ActionCode.ACTION_LOGIN)
+            : base(Enums.MessageType.AccountLogin, Enums.ActionCode.ActionLogin)
         {
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 40;
-            }
-        }
-
+        protected override ushort BodyLength => 40;
     }
 }

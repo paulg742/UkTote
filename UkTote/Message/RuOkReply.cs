@@ -5,18 +5,12 @@ namespace UkTote.Message
     public class RuOkReply : ReplyMessage
     {
         public RuOkReply()
-            : base(Enums.MessageType.RUOk_REPLY_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.RuOkReplyMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        protected override ushort BodyLength => 0;
     }
 }

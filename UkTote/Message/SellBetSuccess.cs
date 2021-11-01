@@ -9,18 +9,12 @@ namespace UkTote.Message
         [FieldOrder(0)]
         [FieldLength(18)]
         [FieldEncoding("us-ascii")]
-        public string TSN { get; set; }
+        public string Tsn { get; set; }
 
         [FieldOrder(1)]
         public uint BetId { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 22;
-            }
-        }
+        protected override ushort BodyLength => 22;
     }
 }

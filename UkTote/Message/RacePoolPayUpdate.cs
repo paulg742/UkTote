@@ -14,19 +14,12 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         public RacePoolPayUpdate()
-            : base(Enums.MessageType.RACE_POOL_PAY_UPDATE_MSG)
+            : base(Enums.MessageType.RacePoolPayUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
-
+        protected override ushort BodyLength => 6;
     }
 }

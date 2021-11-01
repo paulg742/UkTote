@@ -9,19 +9,12 @@ namespace UkTote.Message
         public ushort MeetingNumber { get; set; }
 
         public MeetingRequest()
-            : base(Enums.MessageType.MEETING_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.MeetingReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 2;
-            }
-        }
-
+        protected override ushort BodyLength => 2;
     }
 }

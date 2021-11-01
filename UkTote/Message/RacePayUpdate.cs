@@ -14,19 +14,12 @@ namespace UkTote.Message
         public ushort Reserved { get; set; }
 
         public RacePayUpdate()
-            : base(Enums.MessageType.RACE_PAY_UPDATE_MSG)
+            : base(Enums.MessageType.RacePayUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
-
+        protected override ushort BodyLength => 6;
     }
 }

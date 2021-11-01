@@ -10,19 +10,12 @@ namespace UkTote.Message
         public string Date { get; set; }
 
         public RacecardRequest()
-            : base(Enums.MessageType.RACECARD_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.RacecardReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 8;
-            }
-        }
-
+        protected override ushort BodyLength => 8;
     }
 }

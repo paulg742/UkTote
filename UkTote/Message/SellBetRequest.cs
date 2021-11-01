@@ -6,7 +6,7 @@ namespace UkTote.Message
     public class SellBetRequest : RequestMessage
     {
         public SellBetRequest()
-            : base(Enums.MessageType.SELL_BET_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.SellBetReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -45,13 +45,6 @@ namespace UkTote.Message
         public List<Selection> Selections { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return (ushort) (30 + NumberOfSelections * 13);
-            }
-        }
-
+        protected override ushort BodyLength => (ushort) (30 + NumberOfSelections * 13);
     }
 }

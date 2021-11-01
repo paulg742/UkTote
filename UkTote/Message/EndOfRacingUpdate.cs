@@ -6,18 +6,12 @@ namespace UkTote.Message
     public class EndOfRacingUpdate : MessageBase
     {
         public EndOfRacingUpdate()
-            : base(Enums.MessageType.END_RACING_UPDATE_MSG)
+            : base(Enums.MessageType.EndRacingUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        protected override ushort BodyLength => 0;
     }
 }

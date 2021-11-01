@@ -11,13 +11,13 @@ namespace UkTote.Tests
     [TestClass]
     public class UkToteTests
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(UkToteTests));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(UkToteTests));
 
-        const string host = "217.46.202.209";
-        const int port = 8032;
-        const string username = "ATCentrum9";
-        const string password = "at9password";
-        ToteGateway gateway = new ToteGateway(120000);
+        private const string Host = "217.46.202.209";
+        private const int Port = 8032;
+        private const string Username = "ATCentrum9";
+        private const string Password = "at9password";
+        private ToteGateway _gateway = new ToteGateway(120000);
 
         public UkToteTests()
         {
@@ -29,87 +29,87 @@ namespace UkTote.Tests
         [TestMethod]
         public async Task TestLogin()
         {
-            var connected = gateway.Connect(host, port);
+            var connected = _gateway.Connect(Host, Port);
             Assert.IsTrue(connected);
-            var loggedIn = await gateway.Login(username, password);
+            var loggedIn = await _gateway.Login(Username, Password);
             Assert.IsTrue(loggedIn);
-            gateway.Disconnect();
+            _gateway.Disconnect();
         }
 
         [TestMethod]
         public async Task GetRaceday()
         {
-            var connected = gateway.Connect(host, port);
+            var connected = _gateway.Connect(Host, Port);
             Assert.IsTrue(connected);
-            var loggedIn = await gateway.Login(username, password);
+            var loggedIn = await _gateway.Login(Username, Password);
             Assert.IsTrue(loggedIn);
 
-            var raceCard = await gateway.GetRacecard(DateTime.UtcNow);
+            var raceCard = await _gateway.GetRacecard(DateTime.UtcNow);
             Assert.IsTrue(raceCard.NumMeetings > 0);
 
             for (var i = 1; i <= raceCard.NumMeetings; ++i)
             {
-                var meeting = await gateway.GetMeeting(i);
+                var meeting = await _gateway.GetMeeting(i);
 
                 Assert.IsTrue(meeting.NumberOfRaces > 0);
 
                 for (var j = 1; j <= meeting.NumberOfRaces; ++j)
                 {
-                    var race = await gateway.GetRace(i, j);
+                    var race = await _gateway.GetRace(i, j);
 
                     Assert.IsTrue(race.NumberOfDeclaredRunners > 0);
                     for (var k = 1; k <= race.NumberOfDeclaredRunners; ++k)
                     {
-                        var runner = await gateway.GetRunner(i, j, k);
+                        var runner = await _gateway.GetRunner(i, j, k);
                     }
                 }
             }
-            gateway.Disconnect();
+            _gateway.Disconnect();
         }
 
         [TestMethod]
         public async Task TestGetRacecardFast()
         {
-            var connected = gateway.Connect(host, port);
+            var connected = _gateway.Connect(Host, Port);
             Assert.IsTrue(connected);
-            var loggedIn = await gateway.Login(username, password);
+            var loggedIn = await _gateway.Login(Username, Password);
             Assert.IsTrue(loggedIn);
-            var racecard = await gateway.GetRacecardFast(DateTime.UtcNow, true);
+            var racecard = await _gateway.GetRacecardFast(DateTime.UtcNow, true);
         }
 
         [TestMethod]
         public async Task TestGetFastMeetings()
         {
-            var connected = gateway.Connect(host, port);
+            var connected = _gateway.Connect(Host, Port);
             Assert.IsTrue(connected);
-            var loggedIn = await gateway.Login(username, password);
+            var loggedIn = await _gateway.Login(Username, Password);
             Assert.IsTrue(loggedIn);
 
-            var raceCard = await gateway.GetRacecard(DateTime.UtcNow);
+            var raceCard = await _gateway.GetRacecard(DateTime.UtcNow);
             Assert.IsTrue(raceCard.NumMeetings > 0);
 
-            var meetings = await gateway.GetMeetings(raceCard.NumMeetings);
+            var meetings = await _gateway.GetMeetings(raceCard.NumMeetings);
             Assert.AreEqual(meetings.Count, raceCard.NumMeetings);
 
-            gateway.Disconnect();
+            _gateway.Disconnect();
         }
 
         [TestMethod]
         public async Task TestMsn()
         {
-            var connected = gateway.Connect(host, port);
+            var connected = _gateway.Connect(Host, Port);
             Assert.IsTrue(connected);
-            var loggedIn = await gateway.Login(username, password);
+            var loggedIn = await _gateway.Login(Username, Password);
             Assert.IsTrue(loggedIn);
 
-            var currentMsnReply = await gateway.GetCurrentMsn();
-            if (currentMsnReply.ActionCode == Enums.ActionCode.ACTION_FAIL)
+            var currentMsnReply = await _gateway.GetCurrentMsn();
+            if (currentMsnReply.ActionCode == Enums.ActionCode.ActionFail)
             {
                 Assert.Fail();
             }
 
-            var msnReply = await gateway.GetMsn(currentMsnReply.Sequence);
-            if (msnReply.ActionCode == Enums.ActionCode.ACTION_FAIL)
+            var msnReply = await _gateway.GetMsn(currentMsnReply.Sequence);
+            if (msnReply.ActionCode == Enums.ActionCode.ActionFail)
             {
                 Assert.Fail();
             }
@@ -127,9 +127,9 @@ namespace UkTote.Tests
             var req = new SellBetRequest()
             {
                 RacecardDate = DateTime.UtcNow.ToString("ddMMyyyy"),
-                BetCode = Enums.BetCode.WIN,
+                BetCode = Enums.BetCode.Win,
                 BetId = 1,
-                BetOption = Enums.BetOption.STRAIGHT,
+                BetOption = Enums.BetOption.Straight,
                 NumberOfSelections = (ushort)selections.Length,
                 Selections = selections.Select(s => new Selection()
                 {
@@ -222,9 +222,9 @@ namespace UkTote.Tests
             var req = new SellBetRequest()
             {
                 RacecardDate = DateTime.UtcNow.ToString("ddMMyyyy"),
-                BetCode = Enums.BetCode.WIN,
+                BetCode = Enums.BetCode.Win,
                 BetId = 1,
-                BetOption = Enums.BetOption.STRAIGHT,
+                BetOption = Enums.BetOption.Straight,
                 NumberOfSelections = (ushort)selections.Length,
                 Selections = selections.Select(s => new Selection()
                 {

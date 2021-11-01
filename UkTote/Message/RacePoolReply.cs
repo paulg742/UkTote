@@ -26,12 +26,6 @@ namespace UkTote.Message
         public byte[] Reserved2 { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 42;
-            }
-        }
+        protected override ushort BodyLength => 42;
     }
 }

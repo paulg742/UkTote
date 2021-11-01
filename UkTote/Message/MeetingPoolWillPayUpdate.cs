@@ -18,19 +18,12 @@ namespace UkTote.Message
         public uint TotalInvestment { get; set; }
 
         public MeetingPoolWillPayUpdate()
-            : base(Enums.MessageType.MEETING_POOL_WILL_PAY_UPDATE_MSG)
+            : base(Enums.MessageType.MeetingPoolWillPayUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 10;
-            }
-        }
-
+        protected override ushort BodyLength => 10;
     }
 }

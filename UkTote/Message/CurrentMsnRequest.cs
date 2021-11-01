@@ -5,19 +5,12 @@ namespace UkTote.Message
     public class CurrentMsnRequest : RequestMessage
     {
         public CurrentMsnRequest()
-            : base(Enums.MessageType.CURRENT_MSN_REQ_MSG, Enums.ActionCode.ACTION_FAIL)
+            : base(Enums.MessageType.CurrentMsnReqMsg, Enums.ActionCode.ActionFail)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
+        protected override ushort BodyLength => 0;
     }
 }

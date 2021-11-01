@@ -5,7 +5,7 @@ namespace UkTote.Message
     public class RunnerRequest : RequestMessage
     {
         public RunnerRequest()
-            : base(Enums.MessageType.RUNNER_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.RunnerReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -20,13 +20,6 @@ namespace UkTote.Message
         public ushort RunnerNumber { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
-
+        protected override ushort BodyLength => 6;
     }
 }

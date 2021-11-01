@@ -5,7 +5,7 @@
 
     public class BetReply
     {
-        public string TSN { get; set; }
+        public string Tsn { get; set; }
         public uint BetId { get; set; }
         public Guid? Ref { get; set; }
         public Enums.ErrorCode ErrorCode { get; set; }

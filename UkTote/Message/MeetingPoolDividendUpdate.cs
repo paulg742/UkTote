@@ -49,19 +49,12 @@ namespace UkTote.Message
         public List<MeetingPoolCombination> CombinationMap { get; set; }
 
         public MeetingPoolDividendUpdate()
-            : base(Enums.MessageType.MEETING_POOL_DIV_UPDATE_MSG)
+            : base(Enums.MessageType.MeetingPoolDivUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 1276;
-            }
-        }
-
+        protected override ushort BodyLength => 1276;
     }
 }

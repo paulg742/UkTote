@@ -17,14 +17,8 @@ namespace UkTote.Message
         [Ignore]
         public override ushort Length
         {
-            get
-            {
-                return (ushort)(HEADER_LENGTH + BodyLength);
-            }
-            set
-            {
-                base.Length = value;
-            }
+            get => (ushort)(HEADER_LENGTH + BodyLength);
+            set => base.Length = value;
         }
     }
 }

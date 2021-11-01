@@ -16,12 +16,6 @@ namespace UkTote.Message
         public string Time { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 14;
-            }
-        }
+        protected override ushort BodyLength => 14;
     }
 }

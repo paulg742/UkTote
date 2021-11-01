@@ -6,7 +6,7 @@ namespace UkTote.Message
     public class PayEnquiryRequest : RequestMessage
     {
         public PayEnquiryRequest()
-            : base(Enums.MessageType.PAY_BET_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.PayBetReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -14,16 +14,9 @@ namespace UkTote.Message
         [FieldOrder(0)]
         [FieldLength(18)]
         [FieldEncoding("us-ascii")]
-        public string TSN { get; set; }
+        public string Tsn { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 18;
-            }
-        }
-
+        protected override ushort BodyLength => 18;
     }
 }

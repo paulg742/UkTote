@@ -11,19 +11,12 @@ namespace UkTote.Message
         public ushort Reserved { get; set; }
 
         public MeetingPayUpdate()
-            : base(Enums.MessageType.MEETING_PAY_UPDATE_MSG)
+            : base(Enums.MessageType.MeetingPayUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
+        protected override ushort BodyLength => 4;
     }
 }

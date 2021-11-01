@@ -10,12 +10,6 @@ namespace UkTote.Message
         public string ErrorText { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 20;
-            }
-        }
+        protected override ushort BodyLength => 20;
     }
 }

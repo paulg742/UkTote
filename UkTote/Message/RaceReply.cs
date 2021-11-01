@@ -6,7 +6,7 @@ namespace UkTote.Message
 {
     public class RaceReply : ReplyMessage
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(RaceReply));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(RaceReply));
 
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }
@@ -52,13 +52,7 @@ namespace UkTote.Message
         public ushort DistanceMeters { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 88;
-            }
-        }
+        protected override ushort BodyLength => 88;
 
         [Ignore]
         public IDictionary<int, RunnerReply> Runners { get; set; }

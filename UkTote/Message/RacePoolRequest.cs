@@ -5,7 +5,7 @@ namespace UkTote.Message
     public class RacePoolRequest : RequestMessage
     {
         public RacePoolRequest()
-            : base(Enums.MessageType.POOL_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.PoolReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -20,13 +20,6 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
-
+        protected override ushort BodyLength => 6;
     }
 }

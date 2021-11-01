@@ -10,7 +10,7 @@ namespace UkTote
 {
     public abstract class CancellableQueueWorker<T> where T: class
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(CancellableQueueWorker<T>));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(CancellableQueueWorker<T>));
 
         public enum RunStateEnum
         {
@@ -21,29 +21,20 @@ namespace UkTote
             Stopped
         }
 
-        readonly List<Task> _taskList;
-        readonly CancellationTokenSource _ctSource = new CancellationTokenSource();
-        CancellationToken _cancellationToken;
-        RunStateEnum _runState = RunStateEnum.NotStarted;
+        private readonly List<Task> _taskList;
+        private readonly CancellationTokenSource _ctSource = new CancellationTokenSource();
+        private CancellationToken _cancellationToken;
+        private RunStateEnum _runState = RunStateEnum.NotStarted;
 
-        readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
-        readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim(false);
-        readonly int _timeoutMs;
+        private readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
+        private readonly ManualResetEventSlim _resetEvent = new ManualResetEventSlim(false);
+        private readonly int _timeoutMs;
         private readonly int _numThreads;
-        volatile bool _taskComplete;
+        private volatile bool _taskComplete;
 
-        public int QueueSize
-        {
-            get
-            {
-                return _queue != null ? _queue.Count : 0;
-            }
-        }
+        public int QueueSize => _queue != null ? _queue.Count : 0;
 
-        public bool Completed
-        {
-            get { return _runState == RunStateEnum.Stopped; }
-        }
+        public bool Completed => _runState == RunStateEnum.Stopped;
 
         protected CancellableQueueWorker(int timeoutMs, int numThreads)
         {
@@ -55,10 +46,7 @@ namespace UkTote
 
         public bool TaskComplete 
         {
-            get
-            {
-                return _taskComplete;
-            }
+            get => _taskComplete;
             set
             {
                 _taskComplete = value;

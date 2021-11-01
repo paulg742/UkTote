@@ -13,13 +13,6 @@ namespace UkTote.Message
         public string MeetingCode { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
+        protected override ushort BodyLength => 4;
     }
 }

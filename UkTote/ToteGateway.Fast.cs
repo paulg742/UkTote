@@ -35,7 +35,7 @@ namespace UkTote
 
                 if (!racecard.Meetings.ContainsKey(reply.MeetingNumber))
                 {
-                    racecard.Meetings[reply.MeetingNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    racecard.Meetings[reply.MeetingNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
                     for (int i = 1; i <= reply.NumberOfRaces; ++i)
@@ -59,7 +59,7 @@ namespace UkTote
                 if (racecard.Meetings[reply.MeetingNumber].Races == null) racecard.Meetings[reply.MeetingNumber].Races = new Dictionary<int, RaceReply>();
                 if (!racecard.Meetings[reply.MeetingNumber].Races.ContainsKey(reply.RaceNumber))
                 {
-                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
 
@@ -85,7 +85,7 @@ namespace UkTote
                 if (racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].Runners == null) racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].Runners = new Dictionary<int, RunnerReply>();
                 if (!racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].Runners.ContainsKey(reply.RunnerNumber))
                 {
-                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].Runners[reply.RunnerNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].Runners[reply.RunnerNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
                 }
@@ -138,7 +138,7 @@ namespace UkTote
                 }
                 if (!racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].RacePools.ContainsKey(reply.PoolNumber))
                 {
-                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].RacePools[reply.PoolNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    racecard.Meetings[reply.MeetingNumber].Races[reply.RaceNumber].RacePools[reply.PoolNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
                 }
@@ -172,7 +172,7 @@ namespace UkTote
                 if (racecard.Meetings[reply.MeetingNumber].MeetingPools == null) racecard.Meetings[reply.MeetingNumber].MeetingPools = new Dictionary<int, MeetingPoolReply>();
                 if (!racecard.Meetings[reply.MeetingNumber].MeetingPools.ContainsKey(reply.MeetingPoolNumber))
                 {
-                    racecard.Meetings[reply.MeetingNumber].MeetingPools[reply.MeetingPoolNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    racecard.Meetings[reply.MeetingNumber].MeetingPools[reply.MeetingPoolNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
                 }
@@ -218,7 +218,7 @@ namespace UkTote
             {
 				if (!responses.ContainsKey(reply.MeetingNumber))
                 {
-                    responses[reply.MeetingNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    responses[reply.MeetingNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
 						? null
 						: reply;
                 }
@@ -248,7 +248,7 @@ namespace UkTote
             {
                 if (!responses.ContainsKey(reply.RaceNumber))
                 {
-                    responses[reply.RaceNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    responses[reply.RaceNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
 						? null
 						: reply;
                 }
@@ -278,7 +278,7 @@ namespace UkTote
             {
                 if (!responses.ContainsKey(reply.RunnerNumber))
                 {
-                    responses[reply.RunnerNumber] = reply.ActionCode == Enums.ActionCode.ACTION_FAIL
+                    responses[reply.RunnerNumber] = reply.ActionCode == Enums.ActionCode.ActionFail
                         ? null
                         : reply;
                 }

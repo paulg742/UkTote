@@ -15,18 +15,12 @@ namespace UkTote.Message
         public ushort WeighedIn { get; set; }
 
         public WeighedInUpdate()
-            : base(Enums.MessageType.WEIGHED_IN_UPDATE_MSG)
+            : base(Enums.MessageType.WeighedInUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        protected override ushort BodyLength => 6;
     }
 }

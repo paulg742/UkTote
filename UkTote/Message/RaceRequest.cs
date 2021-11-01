@@ -5,7 +5,7 @@ namespace UkTote.Message
     public class RaceRequest : RequestMessage
     {
         public RaceRequest()
-            : base(Enums.MessageType.RACE_REQ_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.RaceReqMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
@@ -17,14 +17,6 @@ namespace UkTote.Message
         public ushort RaceNumber { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 4;
-            }
-        }
-
-
+        protected override ushort BodyLength => 4;
     }
 }

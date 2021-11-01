@@ -5,7 +5,7 @@ namespace UkTote.Message
     public class RaceUpdate: MessageBase
     {
         public RaceUpdate()
-            : base(Enums.MessageType.RACE_UPDATE_MSG)
+            : base(Enums.MessageType.RaceUpdateMsg)
         {
 
         }
@@ -20,13 +20,6 @@ namespace UkTote.Message
         public ushort WeighedIn{ get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
-
+        protected override ushort BodyLength => 6;
     }
 }

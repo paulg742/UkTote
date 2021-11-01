@@ -6,7 +6,7 @@ namespace UkTote.Message
     public class RunnerUpdate : MessageBase
     {
         public RunnerUpdate()
-            : base(Enums.MessageType.RUNNER_UPDATE_MSG)
+            : base(Enums.MessageType.RunnerUpdateMsg)
         {
 
         }
@@ -29,13 +29,6 @@ namespace UkTote.Message
         public List<ushort> NonRunnerMap { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 106;
-            }
-        }
-
+        protected override ushort BodyLength => 106;
     }
 }

@@ -7,7 +7,7 @@ namespace UkTote.Message
 {
     public class CurrentBalanceReply : ReplyMessage
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(CurrentBalanceReply));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(CurrentBalanceReply));
 
         [FieldOrder(0)]
         public ushort Active { get; set; }
@@ -37,12 +37,6 @@ namespace UkTote.Message
         public uint RemainingBalance { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 30;
-            }
-        }
+        protected override ushort BodyLength => 30;
     }
 }

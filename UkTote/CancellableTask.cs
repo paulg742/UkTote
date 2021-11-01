@@ -8,7 +8,7 @@ namespace UkTote
 {
     public abstract class CancellableTask
     {
-        readonly ILog _logger = LogManager.GetLogger(typeof(CancellableTask));
+        private readonly ILog _logger = LogManager.GetLogger(typeof(CancellableTask));
 
         public enum RunStateEnum
         {
@@ -19,33 +19,24 @@ namespace UkTote
             Stopped
         }
 
-        Task _task;
-        int _taskThreadId;
-        CancellationTokenSource _ctSource;
+        private Task _task;
+        private int _taskThreadId;
+        private CancellationTokenSource _ctSource;
         protected CancellationToken CancellationToken;
-        RunStateEnum _runState = RunStateEnum.NotStarted;
-        volatile bool _taskComplete;
+        private RunStateEnum _runState = RunStateEnum.NotStarted;
+        private volatile bool _taskComplete;
 
-        public Action OnUnexpectedCompletion { get; set; }
+        public Action UnexpectedCompletion { get; set; }
 
         public abstract int SleepMs { get; }
 
-        public bool Completed
-        {
-            get { return _runState == RunStateEnum.Stopped; }
-        }
+        public bool Completed => _runState == RunStateEnum.Stopped;
 
-        protected bool CanStart
-        {
-            get { return _runState == RunStateEnum.NotStarted || _runState == RunStateEnum.Stopped; }
-        }
+        protected bool CanStart => _runState == RunStateEnum.NotStarted || _runState == RunStateEnum.Stopped;
 
         public bool TaskComplete 
         {
-            get
-            {
-                return _taskComplete;
-            }
+            get => _taskComplete;
             set
             {
                 _taskComplete = value;
@@ -111,7 +102,7 @@ namespace UkTote
             if (_runState != RunStateEnum.Stopping)
             {
                 _logger.DebugFormat("Task unexpectedly stopping");
-                OnUnexpectedCompletion?.Invoke();
+                UnexpectedCompletion?.Invoke();
             }
             _runState = RunStateEnum.Stopped;
             _logger.DebugFormat("ThreadProc - exiting TaskComplete({0})", TaskComplete);

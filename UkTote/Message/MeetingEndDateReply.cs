@@ -28,12 +28,6 @@ namespace UkTote.Message
         public string EndDate { get; set; }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 40;
-            }
-        }
+        protected override ushort BodyLength => 40;
     }
 }

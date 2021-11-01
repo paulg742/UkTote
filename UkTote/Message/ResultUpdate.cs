@@ -33,19 +33,12 @@ namespace UkTote.Message
         public List<ushort> RunnerNumber { get; set; }
 
         public ResultUpdate()
-            : base(Enums.MessageType.RESULT_UPDATE_MSG)
+            : base(Enums.MessageType.ResultUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 130;
-            }
-        }
-
+        protected override ushort BodyLength => 130;
     }
 }

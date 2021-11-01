@@ -15,18 +15,12 @@ namespace UkTote.Message
         public ushort Substitute { get; set; }
 
         public SubstituteUpdate()
-            : base(Enums.MessageType.SUBSTITUTE_UPDATE_MSG)
+            : base(Enums.MessageType.SubstituteUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 6;
-            }
-        }
+        protected override ushort BodyLength => 6;
     }
 }

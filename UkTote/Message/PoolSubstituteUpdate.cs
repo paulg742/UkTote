@@ -22,19 +22,12 @@ namespace UkTote.Message
         public List<ushort> SubstitutionsMap { get; set; }
 
         public PoolSubstituteUpdate()
-            : base(Enums.MessageType.POOL_SUBSTITUTE_UPDATE)
+            : base(Enums.MessageType.PoolSubstituteUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 88;
-            }
-        }
-
+        protected override ushort BodyLength => 88;
     }
 }

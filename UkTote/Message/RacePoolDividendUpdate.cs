@@ -37,19 +37,12 @@ namespace UkTote.Message
         public byte[] Reserved2 { get; set; }
 
         public RacePoolDividendUpdate()
-            : base(Enums.MessageType.RACE_POOL_DIV_UPDATE_MSG)
+            : base(Enums.MessageType.RacePoolDivUpdateMsg)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 274;
-            }
-        }
-
+        protected override ushort BodyLength => 274;
     }
 }

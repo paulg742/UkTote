@@ -322,7 +322,7 @@ namespace UkTote.UI
             StartWatchingFolder();
         }
 
-        void UpdateButtons()
+        private void UpdateButtons()
         {
             if (btnConnect.InvokeRequired)
             {
@@ -461,7 +461,7 @@ namespace UkTote.UI
             DisplayRacecardTree();
         }
 
-        void DisplayRacecardTree()
+        private void DisplayRacecardTree()
         {
             if (_racecard == null) return;
             if (racecardTreeView.InvokeRequired)
@@ -555,7 +555,7 @@ namespace UkTote.UI
             return itemNode;
         }
 
-        void UpdateRacecardTree(RunnerReply runner)
+        private void UpdateRacecardTree(RunnerReply runner)
         {
             if (racecardTreeView.InvokeRequired)
             {
@@ -583,7 +583,7 @@ namespace UkTote.UI
             UpdateStatus("Copied racecard to clipboard!");
         }
 
-        void DisplayBalance(Message.CurrentBalanceReply currentBalance)
+        private void DisplayBalance(Message.CurrentBalanceReply currentBalance)
         {
             balanceLabel.Text = $"Remaining: {((double)currentBalance.RemainingBalance) / 100:N2} Stake Limit: {((double)currentBalance.StakeLimit) / 100:N2}";
         }
@@ -608,7 +608,7 @@ namespace UkTote.UI
             UpdateButtons();
         }
 
-        void StopWatchingFolder()
+        private void StopWatchingFolder()
         {
             if (_watcher != null)
             {
@@ -617,7 +617,7 @@ namespace UkTote.UI
             }
         }
 
-        void StartWatchingFolder()
+        private void StartWatchingFolder()
         {
             StopWatchingFolder();
 
@@ -633,7 +633,7 @@ namespace UkTote.UI
             Log($"Watching folder {txtBetFolder.Text} for .bet files");
         }
 
-        List<Model.FileBet> ProcessBetFile(string path)
+        private List<Model.FileBet> ProcessBetFile(string path)
         {
             var ret = new List<Model.FileBet>();
             var lines = File.ReadAllLines(path);
@@ -709,10 +709,10 @@ namespace UkTote.UI
                         var item = _itemMap[result.Ref];
                         item.SubItems[9].Text = result.ErrorCode.ToString();
 
-                        if (result.ErrorCode == Message.Enums.ErrorCode.SUCCESS)
+                        if (result.ErrorCode == Message.Enums.ErrorCode.Success)
                         {
                             item.SubItems[10].Text = result.BetId.ToString();
-                            item.SubItems[11].Text = result.TSN;
+                            item.SubItems[11].Text = result.Tsn;
                         }
 
                         var bet = betMap[result.Ref];
@@ -748,14 +748,14 @@ namespace UkTote.UI
             return outputFilePath;
         }
 
-        void DumpBetsOutput(string filePath, List<Model.FileBet> betsWithResults)
+        private void DumpBetsOutput(string filePath, List<Model.FileBet> betsWithResults)
         {
             var filename = Path.GetFileName(filePath);
             var outputFilePath = GetOutputFilePath(filePath);
             var outputTxt = string.Empty;
             foreach (var x in betsWithResults)
             {
-                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.TSN},{x.Result?.ErrorCode},{x.Result?.ErrorText},{x.Request?.Ref}\n".Replace("\0", string.Empty);
+                var outputLine = $"{x.Raw} > {x.Result?.BetId},{x.Result?.Tsn},{x.Result?.ErrorCode},{x.Result?.ErrorText},{x.Request?.Ref}\n".Replace("\0", string.Empty);
                 //var outputLine = $"{x.BetId},{x.TSN},{x.ErrorCode},{x.ErrorText}\r\n".Replace("\0", string.Empty);
                 outputTxt += outputLine;
             }
@@ -917,14 +917,14 @@ namespace UkTote.UI
                         var outputTxt = string.Empty;
                         //listView1.Clear();
                         listView1.BeginUpdate();
-                        foreach (var result in results.OrderBy(r => betMap[r.TSN].betId))
+                        foreach (var result in results.OrderBy(r => betMap[r.Tsn].betId))
                         {
                             var txt = "";
                             if (result == null)
                             {
                                 txt = "No reply";
                             }
-                            else if (result.ErrorCode == Enums.ErrorCode.SUCCESS)
+                            else if (result.ErrorCode == Enums.ErrorCode.Success)
                             {
                                 txt = $"Paid:{((double)result.PayoutAmount) / 100:N2} Void:{((double)result.VoidAmount) / 100:N2} (RAW:{result.PayoutAmount} {result.VoidAmount})";
                             }
@@ -932,11 +932,11 @@ namespace UkTote.UI
                             {
                                 txt = $"{result.ErrorCode.ToString()}: {result.ErrorText}";
                             }
-                            outputTxt += $"{betMap[result.TSN].raw} > {betMap[result.TSN].betId},{result.TSN.Replace("\0", "")},{txt.Replace("\0", "")}\r\n";
+                            outputTxt += $"{betMap[result.Tsn].raw} > {betMap[result.Tsn].betId},{result.Tsn.Replace("\0", "")},{txt.Replace("\0", "")}\r\n";
 
-                            if (_itemMap.ContainsKey(betMap[result.TSN].betRef))
+                            if (_itemMap.ContainsKey(betMap[result.Tsn].betRef))
                             {
-                                _itemMap[betMap[result.TSN].betRef].SubItems[12].Text = txt;
+                                _itemMap[betMap[result.Tsn].betRef].SubItems[12].Text = txt;
                             }
                         }
                         listView1.EndUpdate();

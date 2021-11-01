@@ -33,19 +33,12 @@ namespace UkTote.Message
         public List<MeetingPoolCombination> CombinationMap { get; set; }
 
         public SuperComplexPoolDividendUpdate()
-            : base(Enums.MessageType.SUPER_COMPLEX_POOL_DIVIDEND_UPDATE)
+            : base(Enums.MessageType.SuperComplexPoolDividendUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 1322;
-            }
-        }
-
+        protected override ushort BodyLength => 1322;
     }
 }

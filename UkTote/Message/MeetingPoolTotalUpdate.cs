@@ -38,19 +38,12 @@ namespace UkTote.Message
         public uint BonusPoolTotal { get; set; }
 
         public MeetingPoolTotalUpdate()
-            : base(Enums.MessageType.MEETING_POOL_TOTAL_UPDATE)
+            : base(Enums.MessageType.MeetingPoolTotalUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 40;
-            }
-        }
-
+        protected override ushort BodyLength => 40;
     }
 }

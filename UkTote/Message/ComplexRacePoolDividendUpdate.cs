@@ -40,18 +40,12 @@ namespace UkTote.Message
         public List<short> CombinationMap { get; set; }
 
         public ComplexRacePoolDividendUpdate()
-            : base(Enums.MessageType.COMPLEX_RACE_POOL_DIVIDEND_UPDATE)
+            : base(Enums.MessageType.ComplexRacePoolDividendUpdate)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 216;
-            }
-        }
+        protected override ushort BodyLength => 216;
     }
 }

@@ -5,19 +5,12 @@ namespace UkTote.Message
     public class TimeSyncRequest : RequestMessage
     {
         public TimeSyncRequest()
-            : base(Enums.MessageType.TIME_SYNC_MSG, Enums.ActionCode.ACTION_UNKNOWN)
+            : base(Enums.MessageType.TimeSyncMsg, Enums.ActionCode.ActionUnknown)
         {
 
         }
 
         [Ignore]
-        protected override ushort BodyLength
-        {
-            get
-            {
-                return 0;
-            }
-        }
-
+        protected override ushort BodyLength => 0;
     }
 }
