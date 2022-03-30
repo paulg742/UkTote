@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using BinarySerialization;
 using log4net;
 using UkTote.Message;
-using System.Diagnostics;
 
 namespace UkTote
 {
@@ -77,6 +76,7 @@ namespace UkTote
         // will pay update events
         public event Action<MeetingPoolWillPayUpdate> OnMeetingPoolWillPayUpdate;
         public event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
+        public event Action<RaceExtendedWillPayUpdate> OnRaceExtendedWillPayUpdate;
         public event Action<LegBreakdownUpdate> OnLegBreakdownUpdate;
         public event Action<MeetingPoolTotalUpdate> OnMeetingPoolTotalUpdate;
         public event Action<ComplexRacePoolTotalUpdate> OnComplexRacePoolTotalUpdate;
@@ -223,6 +223,7 @@ namespace UkTote
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MeetingPoolWillPayUpdateMsg, Enums.ActionCode.ActionUnknown)] = typeof(MeetingPoolWillPayUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.LegBreakdownUpdateMsg, Enums.ActionCode.ActionUnknown)] = typeof(LegBreakdownUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RacePoolWillPayUpdateMsg, Enums.ActionCode.ActionUnknown)] = typeof(RaceWillPayUpdate);
+            _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.RacePoolExtendedWillPayUpdateMsg, Enums.ActionCode.ActionUnknown)] = typeof(RaceExtendedWillPayUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.MeetingPoolTotalUpdate, Enums.ActionCode.ActionUnknown)] = typeof(MeetingPoolTotalUpdate);
             _lookup[new Tuple<Enums.MessageType, Enums.ActionCode>(Enums.MessageType.ComplexRacePoolTotalUpdate, Enums.ActionCode.ActionUnknown)] = typeof(ComplexRacePoolTotalUpdate);
 
@@ -535,6 +536,10 @@ namespace UkTote
                 else if (pType == typeof(RaceWillPayUpdate))
                 {
                     OnRaceWillPayUpdate?.Invoke(packet as RaceWillPayUpdate);
+                }
+                else if (pType == typeof(RaceExtendedWillPayUpdate))
+                {
+                    OnRaceExtendedWillPayUpdate?.Invoke(packet as RaceExtendedWillPayUpdate);
                 }
                 else if (pType == typeof(LegBreakdownUpdate))
                 {

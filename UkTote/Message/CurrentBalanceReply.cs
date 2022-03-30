@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BinarySerialization;
+﻿using BinarySerialization;
 using log4net;
 
 namespace UkTote.Message

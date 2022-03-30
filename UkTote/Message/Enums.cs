@@ -31,6 +31,7 @@
             LegBreakdownUpdateMsg = 0x40,
             RacePoolWillPayUpdateMsg = 0x2D,
             MeetingPoolWillPayUpdateMsg = 0x2E,
+            RacePoolExtendedWillPayUpdateMsg = 0x2F,
 
             SubstituteUpdateMsg = 0x39,
             TimeSyncMsg = 0x3B,

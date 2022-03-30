@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BinarySerialization;
+﻿using BinarySerialization;
 
 namespace UkTote.Message
 {

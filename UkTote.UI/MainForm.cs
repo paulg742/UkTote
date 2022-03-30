@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -68,6 +66,7 @@ namespace UkTote.UI
             // will pay update messages
             _gateway.OnMeetingPoolWillPayUpdate += _gateway_OnMeetingPoolWillPayUpdate;
             _gateway.OnRaceWillPayUpdate += _gateway_OnRaceWillPayUpdate;
+            _gateway.OnRaceExtendedWillPayUpdate += _gateway_OnRaceExtendedWillPayUpdate;
             _gateway.OnLegBreakdownUpdate += _gateway_OnLegBreakdownUpdate;
             _gateway.OnMeetingPoolTotalUpdate += _gateway_OnMeetingPoolTotalUpdate;
             _gateway.OnComplexRacePoolTotalUpdate += _gateway_OnComplexRacePoolTotalUpdate;
@@ -75,6 +74,12 @@ namespace UkTote.UI
             _gateway.OnBatchProgress += _gateway_OnBatchProgress;
 
             UpdateButtons();
+        }
+
+        private void _gateway_OnRaceExtendedWillPayUpdate(RaceExtendedWillPayUpdate obj)
+        {
+            Log(JsonConvert.SerializeObject(obj));
+            LogFeed("RaceExtendedWillPayUpdate", obj);
         }
 
         private void _gateway_OnComplexRacePoolTotalUpdate(ComplexRacePoolTotalUpdate obj)

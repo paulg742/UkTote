@@ -61,6 +61,7 @@
     <Compile Include="Message\MeetingPoolWillPayUpdate.cs" />
     <Compile Include="Message\LegBreakdownUpdate.cs" />
     <Compile Include="Message\MeetingPoolTotalUpdate.cs" />
+    <Compile Include="Message\RaceExtendedWillPayUpdate.cs" />
     <Compile Include="Message\SuperComplexPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolDividendUpdate.cs" />
     <Compile Include="Message\MeetingPoolRequest.cs" />

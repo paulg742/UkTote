@@ -34,6 +34,7 @@ namespace UkTote
         event Action<RaceSalesUpdate> OnRaceSalesUpdate;
         event Action<RaceUpdate> OnRaceUpdate;
         event Action<RaceWillPayUpdate> OnRaceWillPayUpdate;
+        event Action<RaceExtendedWillPayUpdate> OnRaceExtendedWillPayUpdate;
         event Action<RunnerReply> OnRunner;
         event Action<SellBetFailed> OnSellBetFailed;
         event Action<SellBetSuccess> OnSellBetSuccess;
