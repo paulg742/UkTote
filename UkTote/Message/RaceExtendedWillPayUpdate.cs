@@ -15,19 +15,16 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         [FieldOrder(3)]
-        public ushort Reserved { get; set; }
-
-        [FieldOrder(4)]
         public uint TotalInvestment { get; set; }
 
-        [FieldOrder(5)]
+        [FieldOrder(4)]
         public ushort NumberOfCombinations { get; set; }
 
-        [FieldOrder(6)]
+        [FieldOrder(5)]
         [FieldCount("NumberOfCombinations")]
         public List<ushort> Declarations { get; set; }
 
-        [FieldOrder(7)]
+        [FieldOrder(6)]
         [FieldCount("NumberOfCombinations")]
         public List<uint> CombinationTotal { get; set; }
 
