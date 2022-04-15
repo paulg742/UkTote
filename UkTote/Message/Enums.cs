@@ -205,7 +205,7 @@
             Superjackpot8 = 0x10,
             Placepot8 = 0x11,
             Quaddie = 0x12,
-            ThursdayMillions = 0x13,
+            Thursday_Millions = 0x13,
             Quinella = 0x14,
             Trio = 0x15,
             Doubletrio = 0x16,
@@ -215,13 +215,13 @@
 
         public enum BetOption : ushort
         {
-            UnknownOption = 0x000,
-            NoOption = 0x001,
+            Unknown_Option = 0x000,
+            No_Option = 0x001,
             Straight = 0x002,
             Permutation = 0x004,
             Banker = 0x008,
-            FloatingBanker = 0x010,
-            EachWay = 0x020
+            Floating_Banker = 0x010,
+            Each_Way = 0x020
         }
     }
 }

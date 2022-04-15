@@ -50,7 +50,7 @@ namespace UkTote.Tests
         [TestMethod]
         public async Task TestSellWinBet()
         {
-            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 1, 1, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 1 });
+            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 1, 1, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 1 });
             Assert.IsTrue(!string.IsNullOrEmpty(reply.Tsn));
         }
 
@@ -58,21 +58,21 @@ namespace UkTote.Tests
         public async Task TestSellToteDouble()
         {
             //var reply = await gateway.SellBet(DateTime.UtcNow, 1, 1, 1, Enums.BetCode.TOTEDOUBLE, Enums.BetOption.NO_OPTION, new[] { (1, 1), (2, 1) });
-            var reply = await _gateway.SellBet(DateTime.UtcNow, 1,  1, 200, 800, Enums.BetCode.Totedouble, Enums.BetOption.NoOption, new[] { 102, 104, 205, 207 }, 2);
+            var reply = await _gateway.SellBet(DateTime.UtcNow, 1,  1, 200, 800, Enums.BetCode.Totedouble, Enums.BetOption.No_Option, new[] { 102, 104, 205, 207 }, 2);
             Assert.IsTrue(!string.IsNullOrEmpty(reply.Tsn));
         }
 
         [TestMethod]
         public async Task TestSellPlaceBet()
         {
-            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 1 });
+            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 1 });
             Assert.IsTrue(!string.IsNullOrEmpty(reply.Tsn));
         }
 
         [TestMethod]
         public async Task TestEachWayBet()
         {
-            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 400, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 1 });
+            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 400, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 1 });
             Assert.IsTrue(!string.IsNullOrEmpty(reply.Tsn));
         }
 
@@ -97,92 +97,92 @@ namespace UkTote.Tests
 
             //Ascot   1   Win 5   5   1   No Option   1
             var betStr = "Ascot   1   Win 5   5   1   No Option   1";
-            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 500, 500, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 1 });
+            var reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 500, 500, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 1 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   1   Win 2   2   1   No Option   4
             betStr = "Ascot   1   Win 2   2   1   No Option   4";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 4 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 4 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   2   Win 10  10  1   No Option   29
             betStr = "//Ascot   2   Win 10  10  1   No Option   29";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 1000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 29 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 1000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 29 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Win 5   10  2   No Option   1,5
             betStr = "//Ascot   3   Win 5   10  2   No Option   1,5";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 1, 5 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 1, 5 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   4   Win 2   4   2   No Option   10,17
             betStr = "//Ascot   4   Win 2   4   2   No Option   10,17";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 4, 200, 400, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 10, 17 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 4, 200, 400, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 10, 17 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Win 20  20  1   No Option   2
             betStr = "//Bath    1   Win 20  20  1   No Option   2";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 2000, 2000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 2 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 2000, 2000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 2 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Place   5   5   1   No Option   9
             betStr = "//Bath    1   Place   5   5   1   No Option   9";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 500, 500, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 9 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 500, 500, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 9 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   6   Place   10  10  1   No Option   10
             betStr = "//Ascot   6   Place   10  10  1   No Option   10";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 6, 1000, 1000, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 10 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 6, 1000, 1000, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 10 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   2   Place   2   4   2   No Option   5,28
             betStr = "//Ascot   2   Place   2   4   2   No Option   5,28";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 200, 400, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 5, 28 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 200, 400, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 5, 28 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    5   Place   25  50  2   No Option   2,3
             betStr = "//Bath    5   Place   25  50  2   No Option   2,3";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 5, 2500, 5000, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 2, 3 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 5, 2500, 5000, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 2, 3 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    2   Eachway 2   4   2   Eachway 7
             betStr = "//Bath    2   Eachway 2   4   2   Eachway 7";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 2, 200, 400, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 7 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 2, 200, 400, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 7 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    3   Eachway 5   10  2   Eachway 10
             betStr = "//Bath    3   Eachway 5   10  2   Eachway 10";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 10 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 10 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Eachway 20  40  2   Eachway 5
             betStr = "//Ascot   3   Eachway 20  40  2   Eachway 5";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 2000, 4000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 5 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 2000, 4000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 5 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   2   Eachway 10  40  4   Eachway 5,27
             betStr = "//Ascot   2   Eachway 10  40  4   Eachway 5,27";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 4000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 5, 27 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 4000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 5, 27 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    3   Eachway 2   8   4   Eachway 8,11
             betStr = "//Bath    3   Eachway 2   8   4   Eachway 8,11";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 3, 200, 800, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 8, 11 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 3, 200, 800, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 8, 11 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    5   Eachway 2.5 5   2   Eachway 3
             betStr = "//Bath    5   Eachway 2.5 5   2   Eachway 3";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 5, 250, 500, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 3 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 5, 250, 500, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 3 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    7   Eachway 25  50  2   Eachway 10
             betStr = "//Bath    7   Eachway 25  50  2   Eachway 10";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 7, 2500, 5000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 10 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 7, 2500, 5000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 10 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   6   Eachway 2   8   4   Eachway 2,9
             betStr = "//Ascot   6   Eachway 2   8   4   Eachway 2,9";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 6, 200, 800, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 2, 9 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 6, 200, 800, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 2, 9 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   4   Exacta  2   2   1   Straight    17,18
@@ -304,17 +304,17 @@ namespace UkTote.Tests
 
             //Ascot   1   Trifecta    2   36  18  Floating Banker 901,3,4,5
             betStr = "//Ascot   1   Trifecta    2   36  18  Floating Banker 901,3,4,5";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 3600, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 901, 3, 4, 5 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 200, 3600, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 901, 3, 4, 5 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   1   Trifecta    12.5    225 18  Floating Banker 901,2,4,5
             betStr = "//Ascot   1   Trifecta    12.5    225 18  Floating Banker 901,2,4,5";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 1250, 22500, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 901, 2, 4, 5 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 1, 1250, 22500, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 901, 2, 4, 5 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   2   Trifecta    10  180 18  Floating Banker 904,4,5,6,7
             betStr = "//Ascot   2   Trifecta    10  180 18  Floating Banker 904,4,5,6,7";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 18000, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 904, 4, 5, 6, 7 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 2, 1000, 18000, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 904, 4, 5, 6, 7 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   4   Swinger 20  20  1   Straight    17,19
@@ -369,92 +369,92 @@ namespace UkTote.Tests
 
             //Jackpot 1   Jackpot 2   2   1   No Option   101,203,303,403,501,601
             betStr = "//Jackpot 1   Jackpot 2   2   1   No Option   101,203,303,403,501,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 200, 200, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 203, 303, 403, 501, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 200, 200, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 203, 303, 403, 501, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Jackpot 1   Jackpot 4   128 32  No Option   101,102,203,205,301,303,402,403,501,502,601
             betStr = "//Jackpot 1   Jackpot 4   128 32  No Option   101,102,203,205,301,303,402,403,501,502,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 400, 12800, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 102, 203, 205, 301, 303, 402, 403, 501, 502, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 400, 12800, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 102, 203, 205, 301, 303, 402, 403, 501, 502, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Jackpot 1   Jackpot 6   6   1   No Option   1FV,203,303,403,501,6FV
             betStr = "//Jackpot 1   Jackpot 6   6   1   No Option   1FV,203,303,403,501,6FV";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 600, 600, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 141, 203, 303, 403, 501, 641 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 600, 600, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 141, 203, 303, 403, 501, 641 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Jackpot 1   Jackpot 8   256 32  No Option   101,102,203,2FV,301,303,403,4FV,501,502,6FV
             betStr = "//Jackpot 1   Jackpot 8   256 32  No Option   101,102,203,2FV,301,303,403,4FV,501,502,6FV";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 800, 25600, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 102, 203, 241, 301, 303, 403, 441, 501, 502, 641 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 8, 1, 800, 25600, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 102, 203, 241, 301, 303, 403, 441, 501, 502, 641 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Placepot    10  10  1   No Option   102,205,311,401,502,601
             betStr = "//Bath    1   Placepot    10  10  1   No Option   102,205,311,401,502,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 1000, 1000, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 205, 311, 401, 502, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 1000, 1000, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 205, 311, 401, 502, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Placepot    2   64  32  No Option   102,104,205,207,311,320,401,402,502,504,601
             betStr = "//Bath    1   Placepot    2   64  32  No Option   102,104,205,207,311,320,401,402,502,504,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 200, 6400, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 104, 205, 207, 311, 320, 401, 402, 502, 504, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 200, 6400, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 104, 205, 207, 311, 320, 401, 402, 502, 504, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Placepot    4   4   1   No Option   1FV,205,3FV,401,5FV,601
             betStr = "//Bath    1   Placepot    4   4   1   No Option   1FV,205,3FV,401,5FV,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 400, 400, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 141, 205, 341, 401, 541, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 400, 400, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 141, 205, 341, 401, 541, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Bath    1   Placepot    6   48  8   No Option   102,1FV,205,311,3FV,401,502,5FV,601
             betStr = "//Bath    1   Placepot    6   48  8   No Option   102,1FV,205,311,3FV,401,502,5FV,601";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 600, 4800, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 141, 205, 311, 341, 401, 502, 541, 601 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 2, 1, 600, 4800, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 141, 205, 311, 341, 401, 502, 541, 601 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Goodwood    1   Placepot    8   8   1   No Option   110,211,306,410,508,612
             betStr = "//Goodwood    1   Placepot    8   8   1   No Option   110,211,306,410,508,612";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 5, 1, 800, 800, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 110, 211, 306, 410, 508, 612 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 5, 1, 800, 800, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 110, 211, 306, 410, 508, 612 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Quadpot 25  25  1   No Option   301,418,501,602
             betStr = "//Ascot   3   Quadpot 25  25  1   No Option   301,418,501,602";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 2500, 2500, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 418, 501, 602 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 2500, 2500, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 418, 501, 602 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Quadpot 10  80  8   No Option   301,302,417,418,501,601,602
             betStr = "//Ascot   3   Quadpot 10  80  8   No Option   301,302,417,418,501,601,602";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 1000, 8000, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 302, 417, 418, 501, 601, 602 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 1000, 8000, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 302, 417, 418, 501, 601, 602 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Quadpot 4   4   1   No Option   3FV,418,5FV,602
             betStr = "//Ascot   3   Quadpot 4   4   1   No Option   3FV,418,5FV,602";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 400, 400, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 341, 418, 541, 602 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 400, 400, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 341, 418, 541, 602 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Ascot   3   Quadpot 2   16  8   No Option   301,3FV,417,4FV,501,601,6FV
             betStr = "//Ascot   3   Quadpot 2   16  8   No Option   301,3FV,417,4FV,501,601,6FV";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 200, 1600, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 341, 417, 441, 501, 601, 641 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 1, 3, 200, 1600, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 341, 417, 441, 501, 601, 641 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Goodwood    3   Quadpot 2   2   1   No Option   306,410,508,612
             betStr = "//Goodwood    3   Quadpot 2   2   1   No Option   306,410,508,612";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 5, 3, 200, 200, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 306, 410, 508, 612 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 5, 3, 200, 200, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 306, 410, 508, 612 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Scoop 6 1   Scoop6  2   2   1   No Option   104,211,317,401,501,611
             betStr = "//Scoop 6 1   Scoop6  2   2   1   No Option   104,211,317,401,501,611";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 104, 211, 317, 401, 501, 611 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 104, 211, 317, 401, 501, 611 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Scoop 6 1   Scoop6  2   64  32  No Option   102,104,211,212,310,317,401,403,501,510,611
             betStr = "//Scoop 6 1   Scoop6  2   64  32  No Option   102,104,211,212,310,317,401,403,501,510,611";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 102, 104, 211, 212, 310, 317, 401, 403, 501, 510, 611 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 102, 104, 211, 212, 310, 317, 401, 403, 501, 510, 611 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Scoop 6 1   Scoop6  2   2   1   No Option   1FV,211,3FV,401,5FV,611
             betStr = "//Scoop 6 1   Scoop6  2   2   1   No Option   1FV,211,3FV,401,5FV,611";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 141, 211, 341, 401, 541, 611 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 141, 211, 341, 401, 541, 611 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
 
             //Scoop 6 1   Scoop6  2   64  32  No Option   104,1FV,212,2FV,317,3FV,401,403,501,5FV,611
             betStr = "//Scoop 6 1   Scoop6  2   64  32  No Option   104,1FV,212,2FV,317,3FV,401,403,501,5FV,611";
-            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 104, 141, 212, 241, 317, 341, 401, 403, 501, 541, 611 });
+            reply = await _gateway.SellBet(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 104, 141, 212, 241, 317, 341, 401, 403, 501, 541, 611 });
             _logger.InfoFormat("{0} : {1} : {2} : {3}", reply.Tsn, reply.BetId, betStr, reply.ErrorText);
         }
 
@@ -486,24 +486,24 @@ namespace UkTote.Tests
 
             var batch = new List<BetRequest>();
 
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 500, 500, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 1 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 4 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 1000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 29 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 1, 5 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 200, 400, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 10, 17 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 2000, 2000, Enums.BetCode.Win, Enums.BetOption.NoOption, new[] { 2 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 500, 500, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 9 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 1000, 1000, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 10 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 200, 400, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 5, 28 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 5, 2500, 5000, Enums.BetCode.Place, Enums.BetOption.NoOption, new[] { 2, 3 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 2, 200, 400, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 7 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 10 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 2000, 4000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 5 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 4000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 5, 27 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 3, 200, 800, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 8, 11 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 5, 250, 500, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 3 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 7, 2500, 5000, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 10 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 200, 800, Enums.BetCode.Win, Enums.BetOption.EachWay, new[] { 2, 9 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 500, 500, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 1 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 200, 200, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 4 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 1000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 29 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 1, 5 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 200, 400, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 10, 17 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 2000, 2000, Enums.BetCode.Win, Enums.BetOption.No_Option, new[] { 2 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 500, 500, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 9 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 1000, 1000, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 10 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 200, 400, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 5, 28 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 5, 2500, 5000, Enums.BetCode.Place, Enums.BetOption.No_Option, new[] { 2, 3 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 2, 200, 400, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 7 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 3, 500, 1000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 10 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 2000, 4000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 5 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 4000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 5, 27 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 3, 200, 800, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 8, 11 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 5, 250, 500, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 3 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 7, 2500, 5000, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 10 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 200, 800, Enums.BetCode.Win, Enums.BetOption.Each_Way, new[] { 2, 9 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 200, 200, Enums.BetCode.Exacta, Enums.BetOption.Straight, new[] { 117, 218 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 2, 2, 1000, 1000, Enums.BetCode.Exacta, Enums.BetOption.Straight, new[] { 106, 207 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 800, 800, Enums.BetCode.Exacta, Enums.BetOption.Straight, new[] { 109, 210 }));
@@ -527,9 +527,9 @@ namespace UkTote.Tests
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 2000, 12000, Enums.BetCode.Trifecta, Enums.BetOption.Banker, new[] { 901, 2, 3, 4 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 6, 500, 3000, Enums.BetCode.Trifecta, Enums.BetOption.Banker, new[] { 902, 1, 3, 4 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 1000, 6000, Enums.BetCode.Trifecta, Enums.BetOption.Banker, new[] { 903, 1, 2, 3, 4 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 200, 3600, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 901, 3, 4, 5 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 1250, 22500, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 901, 2, 4, 5 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 18000, Enums.BetCode.Trifecta, Enums.BetOption.FloatingBanker, new[] { 904, 4, 5, 6, 7 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 200, 3600, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 901, 3, 4, 5 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 1250, 22500, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 901, 2, 4, 5 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1000, 18000, Enums.BetCode.Trifecta, Enums.BetOption.Floating_Banker, new[] { 904, 4, 5, 6, 7 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 2000, 2000, Enums.BetCode.Swinger, Enums.BetOption.Straight, new[] { 17, 19 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 1, 1000, 1000, Enums.BetCode.Swinger, Enums.BetOption.Straight, new[] { 2, 6 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 2000, 2000, Enums.BetCode.Swinger, Enums.BetOption.Straight, new[] { 2, 10 }));
@@ -540,24 +540,24 @@ namespace UkTote.Tests
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 200, 600, Enums.BetCode.Swinger, Enums.BetOption.Banker, new[] { 918, 16, 17, 19 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 4, 1000, 3000, Enums.BetCode.Swinger, Enums.BetOption.Banker, new[] { 917, 15, 16, 18 }));
             batch.Add(new BetRequest(DateTime.UtcNow, 1, 2, 1200, 2400, Enums.BetCode.Swinger, Enums.BetOption.Banker, new[] { 905, 4, 5, 6 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 200, 200, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 203, 303, 403, 501, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 400, 12800, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 102, 203, 205, 301, 303, 402, 403, 501, 502, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 600, 600, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 141, 203, 303, 403, 501, 641 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 800, 25600, Enums.BetCode.Jackpot, Enums.BetOption.NoOption, new[] { 101, 102, 203, 241, 301, 303, 403, 441, 501, 502, 641 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 1000, 1000, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 205, 311, 401, 502, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 200, 6400, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 104, 205, 207, 311, 320, 401, 402, 502, 504, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 400, 400, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 141, 205, 341, 401, 541, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 600, 4800, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 102, 141, 205, 311, 341, 401, 502, 541, 601 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 5, 1, 800, 800, Enums.BetCode.Placepot, Enums.BetOption.NoOption, new[] { 110, 211, 306, 410, 508, 612 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 2500, 2500, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 418, 501, 602 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 1000, 8000, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 302, 417, 418, 501, 601, 602 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 400, 400, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 341, 418, 541, 602 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 200, 1600, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 301, 341, 417, 441, 501, 601, 641 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 5, 3, 200, 200, Enums.BetCode.Quadpot, Enums.BetOption.NoOption, new[] { 306, 410, 508, 612 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 104, 211, 317, 401, 501, 611 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 102, 104, 211, 212, 310, 317, 401, 403, 501, 510, 611 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 141, 211, 341, 401, 541, 611 }));
-            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.NoOption, new[] { 104, 141, 212, 241, 317, 341, 401, 403, 501, 541, 611 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 200, 200, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 203, 303, 403, 501, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 400, 12800, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 102, 203, 205, 301, 303, 402, 403, 501, 502, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 600, 600, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 141, 203, 303, 403, 501, 641 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 8, 1, 800, 25600, Enums.BetCode.Jackpot, Enums.BetOption.No_Option, new[] { 101, 102, 203, 241, 301, 303, 403, 441, 501, 502, 641 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 1000, 1000, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 205, 311, 401, 502, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 200, 6400, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 104, 205, 207, 311, 320, 401, 402, 502, 504, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 400, 400, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 141, 205, 341, 401, 541, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 2, 1, 600, 4800, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 102, 141, 205, 311, 341, 401, 502, 541, 601 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 5, 1, 800, 800, Enums.BetCode.Placepot, Enums.BetOption.No_Option, new[] { 110, 211, 306, 410, 508, 612 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 2500, 2500, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 418, 501, 602 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 1000, 8000, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 302, 417, 418, 501, 601, 602 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 400, 400, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 341, 418, 541, 602 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 1, 3, 200, 1600, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 301, 341, 417, 441, 501, 601, 641 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 5, 3, 200, 200, Enums.BetCode.Quadpot, Enums.BetOption.No_Option, new[] { 306, 410, 508, 612 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 104, 211, 317, 401, 501, 611 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 102, 104, 211, 212, 310, 317, 401, 403, 501, 510, 611 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 200, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 141, 211, 341, 401, 541, 611 }));
+            batch.Add(new BetRequest(DateTime.UtcNow, 9, 1, 200, 6400, Enums.BetCode.Scoop6, Enums.BetOption.No_Option, new[] { 104, 141, 212, 241, 317, 341, 401, 403, 501, 541, 611 }));
 
             var reply = await _gateway.SellBatch(batch);
 

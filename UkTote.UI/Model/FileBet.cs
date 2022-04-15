@@ -94,7 +94,7 @@ namespace UkTote.UI.Model
 
             if (fileBet.IsValid)
             {
-                if (Enum.TryParse(fields[5], out Enums.BetCode betCode))
+                if (Enum.TryParse(fields[5], true, out Enums.BetCode betCode))
                 {
                     request.BetCode = betCode;
                 }
@@ -107,7 +107,7 @@ namespace UkTote.UI.Model
 
             if (fileBet.IsValid)
             {
-                if (Enum.TryParse(fields[6], out Enums.BetOption betOption))
+                if (Enum.TryParse(fields[6], true, out Enums.BetOption betOption))
                 {
                     request.BetOption = betOption;
                 }
