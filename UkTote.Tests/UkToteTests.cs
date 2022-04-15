@@ -127,9 +127,9 @@ namespace UkTote.Tests
             var req = new SellBetRequest()
             {
                 RacecardDate = DateTime.UtcNow.ToString("ddMMyyyy"),
-                BetCode = Enums.BetCode.Win,
+                BetCode = Enums.BetCode.WIN,
                 BetId = 1,
-                BetOption = Enums.BetOption.Straight,
+                BetOption = Enums.BetOption.STRAIGHT,
                 NumberOfSelections = (ushort)selections.Length,
                 Selections = selections.Select(s => new Selection()
                 {
@@ -222,9 +222,9 @@ namespace UkTote.Tests
             var req = new SellBetRequest()
             {
                 RacecardDate = DateTime.UtcNow.ToString("ddMMyyyy"),
-                BetCode = Enums.BetCode.Win,
+                BetCode = Enums.BetCode.WIN,
                 BetId = 1,
-                BetOption = Enums.BetOption.Straight,
+                BetOption = Enums.BetOption.STRAIGHT,
                 NumberOfSelections = (ushort)selections.Length,
                 Selections = selections.Select(s => new Selection()
                 {

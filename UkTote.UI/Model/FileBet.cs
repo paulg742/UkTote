@@ -94,7 +94,7 @@ namespace UkTote.UI.Model
 
             if (fileBet.IsValid)
             {
-                if (Enum.TryParse(fields[5], true, out Enums.BetCode betCode))
+                if (Enum.TryParse(fields[5], out Enums.BetCode betCode))
                 {
                     request.BetCode = betCode;
                 }
@@ -107,7 +107,7 @@ namespace UkTote.UI.Model
 
             if (fileBet.IsValid)
             {
-                if (Enum.TryParse(fields[6], true, out Enums.BetOption betOption))
+                if (Enum.TryParse(fields[6], out Enums.BetOption betOption))
                 {
                     request.BetOption = betOption;
                 }
@@ -156,10 +156,10 @@ namespace UkTote.UI.Model
             switch(betRequest.BetCode)
             {
                 // multi-race, multi-selection
-                case Enums.BetCode.Trio:
-                case Enums.BetCode.Doubletrio:
-                case Enums.BetCode.Tripletrio:
-                case Enums.BetCode.Sixup:
+                case Enums.BetCode.TRIO:
+                case Enums.BetCode.DOUBLETRIO:
+                case Enums.BetCode.TRIPLETRIO:
+                case Enums.BetCode.SIXUP:
                     var legs = selections.Split('/');
                     for (var i=0; i<legs.Length; ++i)
                     {
@@ -168,18 +168,18 @@ namespace UkTote.UI.Model
                     break;
 
                 // multi-race:
-                case Enums.BetCode.Scoop6:
-                case Enums.BetCode.Super7:
-                case Enums.BetCode.Jackpot:
-                case Enums.BetCode.Placepot:
-                case Enums.BetCode.Quadpot:
-                case Enums.BetCode.Quaddie:
-                case Enums.BetCode.Totedouble:
-                case Enums.BetCode.Totetreble:
-                case Enums.BetCode.Superjackpot7:
-                case Enums.BetCode.Placepot7:
-                case Enums.BetCode.Superjackpot8:
-                case Enums.BetCode.Placepot8:
+                case Enums.BetCode.SCOOP6:
+                case Enums.BetCode.SUPER7:
+                case Enums.BetCode.JACKPOT:
+                case Enums.BetCode.PLACEPOT:
+                case Enums.BetCode.QUADPOT:
+                case Enums.BetCode.QUADDIE:
+                case Enums.BetCode.TOTEDOUBLE:
+                case Enums.BetCode.TOTETREBLE:
+                case Enums.BetCode.SUPERJACKPOT7:
+                case Enums.BetCode.PLACEPOT7:
+                case Enums.BetCode.SUPERJACKPOT8:
+                case Enums.BetCode.PLACEPOT8:
                     ret.AddRange(ParseMultiRaceSelections(betRequest, Array.ConvertAll(selections.Split(','), int.Parse)));
                     break;
 

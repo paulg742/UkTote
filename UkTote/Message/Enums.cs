@@ -188,40 +188,40 @@
 
         public enum BetCode : ushort
         {
-            Win = 0x001,
-            Place = 0x002,
-            Exacta = 0x003,
-            Trifecta = 0x004,
-            Jackpot = 0x005,
-            Placepot = 0x006,
-            Quadpot = 0x007,
-            Scoop6 = 0x008,
-            Swinger = 0x009,
-            Totedouble = 0x0A,
-            Totetreble = 0x0B,
-            Super7 = 0x0C,
-            Superjackpot7 = 0x0E,
-            Placepot7 = 0x0F,
-            Superjackpot8 = 0x10,
-            Placepot8 = 0x11,
-            Quaddie = 0x12,
-            Thursday_Millions = 0x13,
-            Quinella = 0x14,
-            Trio = 0x15,
-            Doubletrio = 0x16,
-            Tripletrio = 0x17,
-            Sixup = 0x18
+            WIN = 0x001,
+            PLACE = 0x002,
+            EXACTA = 0x003,
+            TRIFECTA = 0x004,
+            JACKPOT = 0x005,
+            PLACEPOT = 0x006,
+            QUADPOT = 0x007,
+            SCOOP6 = 0x008,
+            SWINGER = 0x009,
+            TOTEDOUBLE = 0x0A,
+            TOTETREBLE = 0x0B,
+            SUPER7 = 0x0C,
+            SUPERJACKPOT7 = 0x0E,
+            PLACEPOT7 = 0x0F,
+            SUPERJACKPOT8 = 0x10,
+            PLACEPOT8 = 0x11,
+            QUADDIE = 0x12,
+            THURSDAY_MILLIONS = 0x13,
+            QUINELLA = 0x14,
+            TRIO = 0x15,
+            DOUBLETRIO = 0x16,
+            TRIPLETRIO = 0x17,
+            SIXUP = 0x18
         }
 
         public enum BetOption : ushort
         {
-            Unknown_Option = 0x000,
-            No_Option = 0x001,
-            Straight = 0x002,
-            Permutation = 0x004,
-            Banker = 0x008,
-            Floating_Banker = 0x010,
-            Each_Way = 0x020
+            UNKNOWN_OPTION = 0x000,
+            NO_OPTION = 0x001,
+            STRAIGHT = 0x002,
+            PERMUTATION = 0x004,
+            BANKER = 0x008,
+            FLOATING_BANKER = 0x010,
+            EACH_WAY = 0x020
         }
     }
 }

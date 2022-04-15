@@ -927,12 +927,12 @@ namespace UkTote
         {
             switch (betCode)
             {
-                case Enums.BetCode.Win:
-                case Enums.BetCode.Place:
-                case Enums.BetCode.Quinella:
-                case Enums.BetCode.Exacta:
-                case Enums.BetCode.Swinger:
-                case Enums.BetCode.Trifecta:
+                case Enums.BetCode.WIN:
+                case Enums.BetCode.PLACE:
+                case Enums.BetCode.QUINELLA:
+                case Enums.BetCode.EXACTA:
+                case Enums.BetCode.SWINGER:
+                case Enums.BetCode.TRIFECTA:
                     return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (raceNumber, s)).ToArray(), betId);
                 default:
                     return SellBet(forDate, meetingNumber, unitStake, totalStake, betCode, betOption, selections.Select(s => (s / 100, s % 100)).ToArray(), betId);
@@ -1117,12 +1117,12 @@ namespace UkTote
 
                 switch (bet.BetCode)
                 {
-                    case Enums.BetCode.Win:
-                    case Enums.BetCode.Place:
-                    case Enums.BetCode.Quinella:
-                    case Enums.BetCode.Exacta:
-                    case Enums.BetCode.Swinger:
-                    case Enums.BetCode.Trifecta:
+                    case Enums.BetCode.WIN:
+                    case Enums.BetCode.PLACE:
+                    case Enums.BetCode.QUINELLA:
+                    case Enums.BetCode.EXACTA:
+                    case Enums.BetCode.SWINGER:
+                    case Enums.BetCode.TRIFECTA:
                         // single race
                         SellBetAsync(bet.ForDate, bet.MeetingNumber, bet.UnitStake, bet.TotalStake, bet.BetCode, bet.BetOption, bet.Selections, bet.BetId);
                         break;
