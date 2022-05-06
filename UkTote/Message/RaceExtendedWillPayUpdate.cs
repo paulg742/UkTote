@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+using Newtonsoft.Json;
 
 namespace UkTote.Message
 {
@@ -22,12 +23,29 @@ namespace UkTote.Message
 
         [FieldOrder(5)]
         [FieldCount("NumberOfCombinations")]
-        public List<ushort> Declarations { get; set; }
+        [JsonIgnore]
+        public List<uint> Declarations { get; set; }
 
         [FieldOrder(6)]
         [FieldCount("NumberOfCombinations")]
+        [JsonIgnore]
         public List<uint> CombinationTotal { get; set; }
 
+        public List<(ushort, ushort, uint)> CombinationTotals
+        {
+            get
+            {
+                var ret = new List<(ushort, ushort, uint)>();
+                for (var i=0; i < NumberOfCombinations; ++i)
+                {
+                    var r1 = (ushort) ((Declarations[i] & 0xFFFF0000) >> 16);
+                    var r2 = (ushort) (Declarations[i] & 0x0000FFFF);
+
+                    ret.Add((r1, r2, CombinationTotal[i]));
+                }
+                return ret; 
+            }
+        }
         public RaceExtendedWillPayUpdate()
             : base(Enums.MessageType.RacePoolExtendedWillPayUpdateMsg)
         {
