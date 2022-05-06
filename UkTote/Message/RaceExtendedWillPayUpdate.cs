@@ -6,6 +6,12 @@ namespace UkTote.Message
 {
     public class RaceExtendedWillPayUpdate : MessageBase
     {
+        public class Combination
+        {
+            public int N1 { get; set; }
+            public int N2 { get; set; }
+            public uint Total { get; set; }
+        }
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }
 
@@ -31,21 +37,27 @@ namespace UkTote.Message
         [JsonIgnore]
         public List<uint> CombinationTotal { get; set; }
 
-        public List<(ushort, ushort, uint)> CombinationTotals
+        public List<Combination> CombinationTotals
         {
             get
             {
-                var ret = new List<(ushort, ushort, uint)>();
+                var ret = new List<Combination>();
                 for (var i=0; i < NumberOfCombinations; ++i)
                 {
-                    var r1 = (ushort) ((Declarations[i] & 0xFFFF0000) >> 16);
-                    var r2 = (ushort) (Declarations[i] & 0x0000FFFF);
+                    var r1 = ((Declarations[i] & 0xFFFF0000) >> 16);
+                    var r2 = (Declarations[i] & 0x0000FFFF);
 
-                    ret.Add((r1, r2, CombinationTotal[i]));
+                    ret.Add(new Combination
+                    {
+                        N1 = (int)r1,
+                        N2 = (int)r2,
+                        Total = CombinationTotal[i]
+                    });
                 }
                 return ret; 
             }
         }
+
         public RaceExtendedWillPayUpdate()
             : base(Enums.MessageType.RacePoolExtendedWillPayUpdateMsg)
         {

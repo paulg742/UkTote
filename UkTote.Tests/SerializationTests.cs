@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UkTote.Message;
+using Newtonsoft.Json;
 
 namespace UkTote.Tests
 {
@@ -26,6 +27,8 @@ namespace UkTote.Tests
             packet.CombinationTotal.Add(100);
             packet.CombinationTotal.Add(200);
             packet.CombinationTotal.Add(300);
+
+            var serialized = JsonConvert.SerializeObject(packet);
 
             Assert.IsNotNull(packet);
         }
