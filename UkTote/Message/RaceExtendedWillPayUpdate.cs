@@ -37,6 +37,7 @@ namespace UkTote.Message
         [JsonIgnore]
         public List<uint> CombinationTotal { get; set; }
 
+        [Ignore]
         public List<Combination> CombinationTotals
         {
             get
