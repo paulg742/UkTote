@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace UkTote.Message
 {
-    public class RaceExtendedWillPayUpdate : MessageBase
+    public class RaceExtendedWillPayUpdate : MessageBase, IRaceUpdate
     {
         public class Combination
         {

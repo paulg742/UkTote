@@ -76,6 +76,7 @@
             this.btnChangeBetOutputFolder = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.txtBetOutputFolder = new System.Windows.Forms.TextBox();
+            this.btnArchiveFeed = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLastBetId)).BeginInit();
@@ -177,7 +178,7 @@
             this.listBoxLog.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.ItemHeight = 16;
-            this.listBoxLog.Location = new System.Drawing.Point(189, 574);
+            this.listBoxLog.Location = new System.Drawing.Point(189, 620);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.Size = new System.Drawing.Size(891, 148);
             this.listBoxLog.TabIndex = 10;
@@ -185,7 +186,7 @@
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(802, 739);
+            this.btnCopyLog.Location = new System.Drawing.Point(802, 785);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(280, 38);
             this.btnCopyLog.TabIndex = 11;
@@ -200,10 +201,10 @@
             this.statusLabel,
             this.balanceLabel,
             this.batchProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 783);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 827);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1091, 28);
+            this.statusStrip1.Size = new System.Drawing.Size(1091, 30);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -274,7 +275,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(189, 388);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(891, 137);
+            this.listView1.Size = new System.Drawing.Size(891, 183);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -338,7 +339,7 @@
             this.checkBoxHideRawComms.AutoSize = true;
             this.checkBoxHideRawComms.Checked = true;
             this.checkBoxHideRawComms.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHideRawComms.Location = new System.Drawing.Point(16, 575);
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(16, 621);
             this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
             this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
             this.checkBoxHideRawComms.TabIndex = 17;
@@ -407,7 +408,7 @@
             // btnExportBets
             // 
             this.btnExportBets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportBets.Location = new System.Drawing.Point(875, 531);
+            this.btnExportBets.Location = new System.Drawing.Point(875, 577);
             this.btnExportBets.Name = "btnExportBets";
             this.btnExportBets.Size = new System.Drawing.Size(202, 38);
             this.btnExportBets.TabIndex = 24;
@@ -454,7 +455,7 @@
             // btnPayEnquiry
             // 
             this.btnPayEnquiry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPayEnquiry.Location = new System.Drawing.Point(665, 531);
+            this.btnPayEnquiry.Location = new System.Drawing.Point(665, 577);
             this.btnPayEnquiry.Name = "btnPayEnquiry";
             this.btnPayEnquiry.Size = new System.Drawing.Size(206, 38);
             this.btnPayEnquiry.TabIndex = 29;
@@ -488,12 +489,23 @@
             this.txtBetOutputFolder.Size = new System.Drawing.Size(382, 26);
             this.txtBetOutputFolder.TabIndex = 30;
             // 
+            // btnArchiveFeed
+            // 
+            this.btnArchiveFeed.Location = new System.Drawing.Point(22, 548);
+            this.btnArchiveFeed.Name = "btnArchiveFeed";
+            this.btnArchiveFeed.Size = new System.Drawing.Size(156, 34);
+            this.btnArchiveFeed.TabIndex = 33;
+            this.btnArchiveFeed.Text = "Archive Feed";
+            this.btnArchiveFeed.UseVisualStyleBackColor = true;
+            this.btnArchiveFeed.Click += new System.EventHandler(this.btnArchiveFeed_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1091, 811);
+            this.ClientSize = new System.Drawing.Size(1091, 857);
+            this.Controls.Add(this.btnArchiveFeed);
             this.Controls.Add(this.btnChangeBetOutputFolder);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtBetOutputFolder);
@@ -589,6 +601,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox txtBetOutputFolder;
         private System.Windows.Forms.ToolStripProgressBar batchProgressBar;
+        private System.Windows.Forms.Button btnArchiveFeed;
     }
 }
 

@@ -3,7 +3,7 @@ using BinarySerialization;
 
 namespace UkTote.Message
 {
-    public class RunnerUpdate : MessageBase
+    public class RunnerUpdate : MessageBase, IRaceUpdate
     {
         public RunnerUpdate()
             : base(Enums.MessageType.RunnerUpdateMsg)

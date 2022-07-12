@@ -2,7 +2,7 @@
 
 namespace UkTote.Message
 {
-    public class RaceSalesUpdate : MessageBase
+    public class RaceSalesUpdate : MessageBase, IRaceUpdate
     {
         public RaceSalesUpdate()
             : base(Enums.MessageType.RaceSalesUpdate)

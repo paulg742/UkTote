@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using log4net;
 using Newtonsoft.Json;
 using UkTote.Message;
 
@@ -11,13 +14,14 @@ namespace UkTote.UI
 {
     public partial class MainForm : Form
     {
+        private readonly ILog _logger = LogManager.GetLogger(typeof(MainForm));
         private readonly ToteGateway _gateway = new ToteGateway(30000);
         private bool _connected;
         private bool _loggedIn;
         private Message.RacecardReply _racecard;
         private FileSystemWatcher _watcher;
-        private Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
-        private Dictionary<Guid?, ListViewItem> _itemMap = new Dictionary<Guid?, ListViewItem>();
+        private readonly Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
+        private readonly Dictionary<Guid?, ListViewItem> _itemMap = new Dictionary<Guid?, ListViewItem>();
 
         public MainForm()
         {
@@ -214,7 +218,52 @@ namespace UkTote.UI
         private void LogFeed<T>(string type, T obj) where T : MessageBase
         {
             var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            File.WriteAllText($"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json", str);
+            var fileName = $"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+            if (obj is IRaceUpdate)
+            {
+                var update = (IRaceUpdate)obj;
+                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                {
+                    var meeting = _racecard?.Meetings[update.MeetingNumber];
+                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                }
+            }
+            else if (obj is IUpdate)
+            {
+                var update = (IUpdate)obj;
+                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber)??false)
+                {
+                    var meeting = _racecard?.Meetings[update.MeetingNumber];
+                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                }
+            }
+            _logger.DebugFormat("Logging to: {0}", fileName);
+            File.WriteAllText(fileName, str);
+        }
+        private void ArchiveFeed()
+        {
+            var files = Directory.GetFiles(txtFeedFolder.Text);
+            
+            foreach (var file in files)
+            {
+                var match = Regex.Match(file, ".*\\.(.*?)\\.json");
+                if (match.Success)
+                {
+                    var dateStr = match.Groups[1].Value.Substring(0, 8);
+                    var date = DateTime.ParseExact(dateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
+                    if (date == DateTime.UtcNow.Date)
+                    {
+                        var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
+                        if (!Directory.Exists(archiveFolder))
+                        {
+                            Directory.CreateDirectory(archiveFolder);
+                        }
+                        var destFile = Path.Combine(archiveFolder, Path.GetFileName(file));
+                        File.Move(file, destFile);
+                    }
+
+                }
+            }
         }
 
         private void _gateway_OnMeetingUpdate(Message.MeetingUpdate obj)
@@ -844,6 +893,8 @@ namespace UkTote.UI
             numLastBetId.Value = Properties.Settings.Default.LastBetId;
             Properties.Settings.Default.LastRunTime = DateTime.UtcNow;
             Properties.Settings.Default.Save();
+
+            ArchiveFeed();
         }
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
@@ -967,6 +1018,11 @@ namespace UkTote.UI
                 txtBetOutputFolder.Text = dlg.SelectedPath;
                 SaveSettings();
             }
+        }
+
+        private void btnArchiveFeed_Click(object sender, EventArgs e)
+        {
+            ArchiveFeed();
         }
     }
 }

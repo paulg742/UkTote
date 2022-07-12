@@ -3,7 +3,7 @@ using BinarySerialization;
 
 namespace UkTote.Message
 {
-    public class MeetingPoolDividendUpdate : MessageBase
+    public class MeetingPoolDividendUpdate : MessageBase, IUpdate
     {
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }

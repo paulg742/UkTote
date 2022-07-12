@@ -2,7 +2,7 @@
 
 namespace UkTote.Message
 {
-    public class WeighedInUpdate : MessageBase
+    public class WeighedInUpdate : MessageBase, IRaceUpdate
     {
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }

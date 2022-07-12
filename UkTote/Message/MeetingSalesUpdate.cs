@@ -2,7 +2,7 @@
 
 namespace UkTote.Message
 {
-    public class MeetingSalesUpdate : MessageBase
+    public class MeetingSalesUpdate : MessageBase, IUpdate
     {
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }
