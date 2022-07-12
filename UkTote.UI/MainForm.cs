@@ -251,17 +251,13 @@ namespace UkTote.UI
                 {
                     var dateStr = match.Groups[1].Value.Substring(0, 8);
                     var date = DateTime.ParseExact(dateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
-                    if (date == DateTime.UtcNow.Date)
+                    var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
+                    if (!Directory.Exists(archiveFolder))
                     {
-                        var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
-                        if (!Directory.Exists(archiveFolder))
-                        {
-                            Directory.CreateDirectory(archiveFolder);
-                        }
-                        var destFile = Path.Combine(archiveFolder, Path.GetFileName(file));
-                        File.Move(file, destFile);
+                        Directory.CreateDirectory(archiveFolder);
                     }
-
+                    var destFile = Path.Combine(archiveFolder, Path.GetFileName(file));
+                    File.Move(file, destFile);
                 }
             }
         }
