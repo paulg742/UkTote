@@ -217,7 +217,7 @@ namespace UkTote.UI
 
         private void LogFeed<T>(string type, T obj) where T : MessageBase
         {
-            var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            var str = JsonConvert.SerializeObject(obj, Formatting.Indented).Replace("\\u0000", string.Empty); 
             var fileName = $"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
             if (obj is IRacePoolUpdate)
             {
@@ -557,13 +557,7 @@ namespace UkTote.UI
             DisplayRacecardTree();
 
             if (_racecard == null) return;
-            var text = Newtonsoft.Json.JsonConvert.SerializeObject(_racecard, Newtonsoft.Json.Formatting.Indented)
-                .Replace("\\u0000", string.Empty);
-
-            var fileName = $"{txtFeedFolder.Text}\\Racecard.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-
-            _logger.DebugFormat("Logging to: {0}", fileName);
-            File.WriteAllText(fileName, text);
+            LogFeed("RaceCardReply", _racecard);
         }
 
         private void DisplayRacecardTree()
@@ -700,6 +694,7 @@ namespace UkTote.UI
             {
                 Log("Requesting balance");
                 var currentBalance = await _gateway.GetCurrentBalance();
+                LogFeed("CurrentBalanceReply", currentBalance);
                 if (currentBalance != null)
                 {
                     Log(JsonConvert.SerializeObject(currentBalance));
