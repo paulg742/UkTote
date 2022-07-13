@@ -419,20 +419,22 @@ namespace UkTote.UI
                     if (!_connected)
                     {
                         Log($"Could not connect to {txtHostIpAddress.Text}");
-
-                    }
-                    _loggedIn = await _gateway.Login(txtUsername.Text, txtPassword.Text);
-                    if (!_loggedIn)
-                    {
-                        Log($"Login failed with {txtUsername.Text}");
                     }
                     else
                     {
-                        btnGetRacecard.Enabled = true;
-                        numLastBetId.Enabled = true;
-                        if (numLastBetId.Value > 0)
+                        _loggedIn = await _gateway.Login(txtUsername.Text, txtPassword.Text);
+                        if (!_loggedIn)
                         {
-                            numLastBetId_ValueChanged(this, null);
+                            Log($"Login failed with {txtUsername.Text}");
+                        }
+                        else
+                        {
+                            btnGetRacecard.Enabled = true;
+                            numLastBetId.Enabled = true;
+                            if (numLastBetId.Value > 0)
+                            {
+                                numLastBetId_ValueChanged(this, null);
+                            }
                         }
                     }
                 }
