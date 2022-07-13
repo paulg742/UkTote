@@ -260,24 +260,48 @@ namespace UkTote.UI
             _logger.DebugFormat("Logging to: {0}", fileName);
             File.WriteAllText(fileName, str);
         }
+
         private void ArchiveFeed()
         {
-            var files = Directory.GetFiles(txtFeedFolder.Text);
-            
-            foreach (var file in files)
+            if (btnArchiveFeed.InvokeRequired)
             {
-                var match = Regex.Match(file, ".*\\.(.*?)\\.json");
-                if (match.Success)
+                Invoke(new Action(() => btnArchiveFeed.Enabled = false));
+            }
+            
+            try
+            {
+                var files = Directory.GetFiles(txtFeedFolder.Text);
+                Log($"Running archive task in {txtFeedFolder.Text}");
+
+                if (files.Length > 0) Log($"Archiving {files.Length} files...");
+                foreach (var file in files)
                 {
-                    var dateStr = match.Groups[1].Value.Substring(0, 8);
-                    var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
-                    if (!Directory.Exists(archiveFolder))
+                    var match = Regex.Match(file, ".*\\.(.*?)\\.json");
+                    if (match.Success)
                     {
-                        Directory.CreateDirectory(archiveFolder);
+                        var dateStr = match.Groups[1].Value.Substring(0, 8);
+                        var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
+                        if (!Directory.Exists(archiveFolder))
+                        {
+                            Directory.CreateDirectory(archiveFolder);
+                        }
+                        var destFile = Path.Combine(archiveFolder, Path.GetFileName(file));
+                        File.Move(file, destFile);
                     }
-                    var destFile = Path.Combine(archiveFolder, Path.GetFileName(file));
-                    File.Move(file, destFile);
                 }
+            }
+            catch (Exception ex)
+            {
+                Log("Error archiving files, check log");
+                _logger.Error(ex);
+            }
+            finally
+            {
+                if (btnArchiveFeed.InvokeRequired)
+                {
+                    Invoke(new Action(() => btnArchiveFeed.Enabled = true));
+                }
+                Log("Archive task completed");
             }
         }
 
@@ -463,6 +487,7 @@ namespace UkTote.UI
 
         private void Log(string text)
         {
+            _logger.Debug(text);
             if (listBoxLog.InvokeRequired)
             {
                 Invoke(new Action(() => Log(text)));
@@ -530,6 +555,15 @@ namespace UkTote.UI
             }
             UpdateButtons();
             DisplayRacecardTree();
+
+            if (_racecard == null) return;
+            var text = Newtonsoft.Json.JsonConvert.SerializeObject(_racecard, Newtonsoft.Json.Formatting.Indented)
+                .Replace("\\u0000", string.Empty);
+
+            var fileName = $"{txtFeedFolder.Text}\\Racecard.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+
+            _logger.DebugFormat("Logging to: {0}", fileName);
+            File.WriteAllText(fileName, text);
         }
 
         private void DisplayRacecardTree()
@@ -887,7 +921,7 @@ namespace UkTote.UI
 
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             // create folders if they dont exist
             if (!Directory.Exists(txtBetFolder.Text))
@@ -911,7 +945,7 @@ namespace UkTote.UI
             Properties.Settings.Default.LastRunTime = DateTime.UtcNow;
             Properties.Settings.Default.Save();
 
-            ArchiveFeed();
+            await Task.Run(() => ArchiveFeed());
         }
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
@@ -1037,9 +1071,9 @@ namespace UkTote.UI
             }
         }
 
-        private void btnArchiveFeed_Click(object sender, EventArgs e)
+        private async void btnArchiveFeed_Click(object sender, EventArgs e)
         {
-            ArchiveFeed();
+            await Task.Run(() => ArchiveFeed());
         }
     }
 }
