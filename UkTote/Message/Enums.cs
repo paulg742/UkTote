@@ -210,7 +210,14 @@
             TRIO = 0x15,
             DOUBLETRIO = 0x16,
             TRIPLETRIO = 0x17,
-            SIXUP = 0x18
+            SIXUP = 0x18,
+            SURVIVOR6 = 0x19,
+            ZETRIO = 0x20,
+            ZECOULLION = 0x21,
+            ZE4 = 0x22,
+            ZE5 = 0x23,
+            ZE24 = 0x24,
+            ZESHOW = 0x25
         }
 
         public enum BetOption : ushort

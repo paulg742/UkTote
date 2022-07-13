@@ -219,7 +219,27 @@ namespace UkTote.UI
         {
             var str = JsonConvert.SerializeObject(obj, Formatting.Indented);
             var fileName = $"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-            if (obj is IRaceUpdate)
+            if (obj is IRacePoolUpdate)
+            {
+                var update = (IRacePoolUpdate)obj;
+                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                {
+                    var meeting = _racecard?.Meetings[update.MeetingNumber];
+                    var betCode = (Enums.BetCode)update.PoolNumber;
+                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}-{betCode}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                }
+            }
+            else if (obj is IPoolUpdate)
+            {
+                var update = (IPoolUpdate)obj;
+                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                {
+                    var meeting = _racecard?.Meetings[update.MeetingNumber];
+                    var betCode = (Enums.BetCode)update.PoolNumber;
+                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-{betCode}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                }
+            }
+            else if (obj is IRaceUpdate)
             {
                 var update = (IRaceUpdate)obj;
                 if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
@@ -250,7 +270,6 @@ namespace UkTote.UI
                 if (match.Success)
                 {
                     var dateStr = match.Groups[1].Value.Substring(0, 8);
-                    var date = DateTime.ParseExact(dateStr, "yyyyMMdd", CultureInfo.InvariantCulture);
                     var archiveFolder = Path.Combine(txtFeedFolder.Text, dateStr);
                     if (!Directory.Exists(archiveFolder))
                     {

@@ -3,7 +3,7 @@ using BinarySerialization;
 
 namespace UkTote.Message
 {
-    public class LegBreakdownUpdate : MessageBase, IUpdate
+    public class LegBreakdownUpdate : MessageBase, IPoolUpdate
     {
         [FieldOrder(0)]
         public ushort MeetingNumber { get; set; }
