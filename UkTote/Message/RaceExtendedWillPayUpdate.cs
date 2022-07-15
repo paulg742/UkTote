@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
 using Newtonsoft.Json;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -22,7 +27,7 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         [FieldOrder(3)]
-        public uint TotalInvestment { get; set; }
+        public money_t TotalInvestment { get; set; }
 
         [FieldOrder(4)]
         public ushort NumberOfCombinations { get; set; }

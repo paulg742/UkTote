@@ -1,14 +1,19 @@
 ﻿using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
     public class PayEnquirySuccess : ReplyMessage
     {
         [FieldOrder(0)]
-        public uint PayoutAmount { get; set; }
+        public money_t PayoutAmount { get; set; }
 
         [FieldOrder(1)]
-        public uint VoidAmount { get; set; }
+        public money_t VoidAmount { get; set; }
 
         [FieldOrder(2)]
         [FieldLength(18)]

@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -24,22 +29,22 @@ namespace UkTote.Message
         public uint Reserved2 { get; set; }
 
         [FieldOrder(6)]
-        public uint CarriedForwardAmount { get; set; }
+        public money_t CarriedForwardAmount { get; set; }
 
         [FieldOrder(7)]
-        public uint BonusPoolAmount { get; set; }
+        public money_t BonusPoolAmount { get; set; }
 
         [FieldOrder(8)]
-        public uint Reserved3 { get; set; }
+        public money_t Reserved3 { get; set; }
 
         [FieldOrder(9)]
-        public uint Reserved4 { get; set; }
+        public money_t Reserved4 { get; set; }
 
         [FieldOrder(10)]
-        public uint Reserved5 { get; set; }
+        public money_t Reserved5 { get; set; }
 
         [FieldOrder(11)]
-        public uint Reserved6 { get; set; }
+        public money_t Reserved6 { get; set; }
 
         [FieldOrder(12)]
         public ushort NumberLegs { get; set; }

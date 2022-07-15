@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -15,18 +20,18 @@ namespace UkTote.Message
         public ushort LegNumber { get; set; }
 
         [FieldOrder(3)]
-        public uint MainStakeTotal { get; set; }
+        public money_t MainStakeTotal { get; set; }
 
         [FieldOrder(4)]
-        public uint ConsolationStakeTotal { get; set; }
+        public money_t ConsolationStakeTotal { get; set; }
 
         [FieldOrder(5)]
         [FieldCount(41)]
-        public List<uint> MainStakeBreakdowns { get; set; }
+        public List<money_t> MainStakeBreakdowns { get; set; }
 
         [FieldOrder(6)]
         [FieldCount(41)]
-        public List<uint> ConsolationStakeBreakdowns { get; set; }
+        public List<money_t> ConsolationStakeBreakdowns { get; set; }
 
         public LegBreakdownUpdate()
             : base(Enums.MessageType.LegBreakdownUpdateMsg)

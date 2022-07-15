@@ -1,4 +1,9 @@
 ﻿using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -22,8 +27,12 @@ namespace UkTote.Message
         public string PoolName { get; set; }
 
         [FieldOrder(5)]
-        [FieldLength(18)]
-        public byte[] Reserved2 { get; set; }
+        [FieldCount(2)]
+        public money_t[] Reserved2 { get; set; }
+
+        [FieldOrder(6)]
+        [FieldLength(10)]
+        public byte[] Reserved3 { get; set; }
 
         //[Ignore]
         //protected override ushort BodyLength => 42;

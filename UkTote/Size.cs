@@ -61,6 +61,10 @@ namespace UkTote
             {
                 return Of(type.GenericTypeArguments[0]);
             }
+            else if (type.IsArray)
+            {
+                return Of(type.GetElementType());
+            }
             else
             {
                 PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);

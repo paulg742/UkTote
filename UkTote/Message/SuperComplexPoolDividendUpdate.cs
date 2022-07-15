@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -23,10 +28,10 @@ namespace UkTote.Message
 
         [FieldOrder(6)]
         [FieldCount(10)]
-        public List<uint> PoolTotals { get; set; }
+        public List<money_t> PoolTotals { get; set; }
 
         [FieldOrder(7)]
-        public uint CarriedForwardAmount { get; set; }
+        public money_t CarriedForwardAmount { get; set; }
 
         [FieldOrder(8)]
         [FieldCount("NumberOfLegs")]

@@ -1,4 +1,9 @@
 ﻿using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -14,7 +19,7 @@ namespace UkTote.Message
         public ushort Reserved { get; set; }
 
         [FieldOrder(3)]
-        public uint TotalInvestment { get; set; }
+        public money_t TotalInvestment { get; set; }
 
         public MeetingPoolWillPayUpdate()
             : base(Enums.MessageType.MeetingPoolWillPayUpdateMsg)

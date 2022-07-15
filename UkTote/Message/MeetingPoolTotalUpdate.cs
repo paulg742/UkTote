@@ -1,4 +1,9 @@
 ﻿using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -11,7 +16,7 @@ namespace UkTote.Message
         public ushort PoolNumber { get; set; }
 
         [FieldOrder(2)]
-        public uint MainPoolTotal { get; set; }
+        public money_t MainPoolTotal { get; set; }
 
         [FieldOrder(3)]
         public uint Reserved1 { get; set; }
@@ -23,7 +28,7 @@ namespace UkTote.Message
         public uint Reserved3 { get; set; }
 
         [FieldOrder(6)]
-        public uint ConsolationPoolTotal { get; set; }
+        public money_t ConsolationPoolTotal { get; set; }
 
         [FieldOrder(7)]
         public uint Reserved4 { get; set; }
@@ -35,7 +40,7 @@ namespace UkTote.Message
         public uint Reserved6 { get; set; }
 
         [FieldOrder(10)]
-        public uint BonusPoolTotal { get; set; }
+        public money_t BonusPoolTotal { get; set; }
 
         public MeetingPoolTotalUpdate()
             : base(Enums.MessageType.MeetingPoolTotalUpdate)

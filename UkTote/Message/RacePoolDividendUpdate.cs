@@ -1,5 +1,10 @@
 ﻿using System.Collections.Generic;
 using BinarySerialization;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -30,11 +35,11 @@ namespace UkTote.Message
         public List<uint> Dividend { get; set; }
 
         [FieldOrder(7)]
-        public uint CarriedForwardAmount { get; set; }
+        public money_t CarriedForwardAmount { get; set; }
 
         [FieldOrder(8)]
-        [FieldLength(48)]
-        public byte[] Reserved2 { get; set; }
+        [FieldCount(12)]
+        public money_t[] Reserved2 { get; set; }
 
         public RacePoolDividendUpdate()
             : base(Enums.MessageType.RacePoolDivUpdateMsg)
