@@ -19,7 +19,7 @@ namespace UkTote.Message
         [FieldOrder(2)]
         public ushort Reserved { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 6;
+        //[Ignore]
+        //protected override ushort BodyLength => 6;
     }
 }

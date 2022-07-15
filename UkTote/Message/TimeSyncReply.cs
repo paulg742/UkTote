@@ -14,7 +14,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string Time { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 14;
+        //[Ignore]
+        //protected override ushort BodyLength => 14;
     }
 }

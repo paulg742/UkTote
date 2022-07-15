@@ -39,8 +39,8 @@ namespace UkTote.Message
         [FieldOrder(7)]
         public Enums.Going Going { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 41;
+        //[Ignore]
+        //protected override ushort BodyLength => 41;
 
         [Ignore]
         public IDictionary<int, RaceReply> Races { get; set; }

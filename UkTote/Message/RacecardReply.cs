@@ -11,6 +11,7 @@ namespace UkTote.Message
 
         [FieldOrder(0)]
         [FieldLength(60)]
+        [FieldEncoding("us-ascii")]
         public string Description { get; set; }
 
         [FieldOrder(1)]
@@ -28,8 +29,8 @@ namespace UkTote.Message
         [FieldLength(2)]
         public byte[] Reserved { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 26;
+        //[Ignore]
+        //protected override ushort BodyLength => 26;
 
         [Ignore]
         public IDictionary<int, MeetingReply> Meetings { get; set; }

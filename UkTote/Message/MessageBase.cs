@@ -49,6 +49,6 @@ namespace UkTote.Message
         public Enums.ErrorCode ErrorCode { get; set; }
 
         [Ignore]
-        protected abstract ushort BodyLength { get; }
+        protected virtual ushort BodyLength => (ushort) Size.Of(this);
     }
 }

@@ -65,7 +65,8 @@ namespace UkTote.Message
 
         }
 
-        [Ignore]
-        protected override ushort BodyLength => ((ushort)(12 + NumberOfCombinations * 8));
+        protected override ushort BodyLength => (ushort)(base.BodyLength + NumberOfCombinations * 8); // declarations + CombinationTotal = 8 (two x uints)
+        //[Ignore]
+        //protected override ushort BodyLength => ((ushort)(12 + NumberOfCombinations * 8));
     }
 }

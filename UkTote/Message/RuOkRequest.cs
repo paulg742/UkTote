@@ -20,7 +20,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string Password { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 40;
+        //[Ignore]
+        //protected override ushort BodyLength => 40;
     }
 }

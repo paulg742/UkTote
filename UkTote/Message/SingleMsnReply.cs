@@ -4,7 +4,7 @@ namespace UkTote.Message
 {
     public class SingleMsnReply : ReplyMessage
     {
-        [Ignore]
-        protected override ushort BodyLength => 0;
+        //[Ignore]
+        //protected override ushort BodyLength => 0;
     }
 }

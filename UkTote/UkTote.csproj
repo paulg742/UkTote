@@ -142,6 +142,7 @@
     <Compile Include="Message\TimeSyncRequest.cs" />
     <Compile Include="PayEnquiryReply.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Size.cs" />
     <Compile Include="ToteGateway.cs" />
     <Compile Include="ToteGateway.Fast.cs" />
     <Compile Include="WatchdogTimer.cs" />

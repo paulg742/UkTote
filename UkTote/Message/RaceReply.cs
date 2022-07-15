@@ -51,8 +51,8 @@ namespace UkTote.Message
         [FieldOrder(12)]
         public ushort DistanceMeters { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 88;
+        //[Ignore]
+        //protected override ushort BodyLength => 88;
 
         [Ignore]
         public IDictionary<int, RunnerReply> Runners { get; set; }

@@ -15,7 +15,7 @@ namespace UkTote.Message
         [FieldOrder(2)]
         public uint BetId { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 66;
+        //[Ignore]
+        //protected override ushort BodyLength => 66;
     }
 }

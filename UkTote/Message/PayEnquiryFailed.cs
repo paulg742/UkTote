@@ -17,7 +17,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string Tsn { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 80;
+        //[Ignore]
+        //protected override ushort BodyLength => 80;
     }
 }

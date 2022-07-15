@@ -28,7 +28,7 @@ namespace UkTote.Message
         [FieldCount(40)]
         public List<ushort> NonRunnerMap { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 106;
+        //[Ignore]
+        //protected override ushort BodyLength => 106;
     }
 }

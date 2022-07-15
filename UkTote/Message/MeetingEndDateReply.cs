@@ -27,7 +27,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string EndDate { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 40;
+        //[Ignore]
+        //protected override ushort BodyLength => 40;
     }
 }

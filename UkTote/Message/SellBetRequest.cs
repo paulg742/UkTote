@@ -44,7 +44,6 @@ namespace UkTote.Message
         [FieldCount("NumberOfSelections")]
         public List<Selection> Selections { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => (ushort) (30 + NumberOfSelections * 13);
+        protected override ushort BodyLength => (ushort)(base.BodyLength + NumberOfSelections * Size.Of(typeof(Selection)));
     }
 }

@@ -54,7 +54,8 @@ namespace UkTote.Message
 
         }
 
-        [Ignore]
-        protected override ushort BodyLength => 1276;
+        protected override ushort BodyLength => (ushort)(base.BodyLength + NumberLegs * Size.Of(typeof(MeetingPoolCombination)));
+        //[Ignore]
+        //protected override ushort BodyLength => 1276;
     }
 }

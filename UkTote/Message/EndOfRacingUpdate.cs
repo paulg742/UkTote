@@ -12,7 +12,7 @@ namespace UkTote.Message
 
         public ushort MeetingNumber { get => 0; }
 
-        [Ignore]
-        protected override ushort BodyLength => 0;
+        //[Ignore]
+        //protected override ushort BodyLength => 0;
     }
 }

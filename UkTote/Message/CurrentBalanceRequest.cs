@@ -10,7 +10,7 @@ namespace UkTote.Message
 
         }
 
-        [Ignore]
-        protected override ushort BodyLength => 0;
+        //[Ignore]
+        //protected override ushort BodyLength => 0;
     }
 }

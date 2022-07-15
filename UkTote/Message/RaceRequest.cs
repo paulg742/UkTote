@@ -16,7 +16,7 @@ namespace UkTote.Message
         [FieldOrder(1)]
         public ushort RaceNumber { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 4;
+        //[Ignore]
+        //protected override ushort BodyLength => 4;
     }
 }

@@ -1,5 +1,10 @@
 ﻿using BinarySerialization;
 using log4net;
+#if EIGHT_BYTE_MONEY
+using money_t = System.UInt64;
+#else
+using money_t = System.UInt32;
+#endif
 
 namespace UkTote.Message
 {
@@ -11,19 +16,19 @@ namespace UkTote.Message
         public ushort Active { get; set; }
 
         [FieldOrder(1)]
-        public uint Limit { get; set; }
+        public money_t Limit {get;set;}
 
         [FieldOrder(2)]
         public uint StakeLimit { get; set; }
 
         [FieldOrder(3)]
-        public uint Balance { get; set; }
+        public money_t Balance { get; set; }
 
         [FieldOrder(4)]
-        public uint SessionBalanceHighWatermark { get; set; }
+        public money_t SessionBalanceHighWatermark {get;set;}
 
         [FieldOrder(5)]
-        public uint LifeBalanceHighWatermark { get; set; }
+        public money_t LifeBalanceHighWatermark { get; set; }
 
         [FieldOrder(6)]
         public ushort BalanceResetDays { get; set; }
@@ -32,9 +37,9 @@ namespace UkTote.Message
         public ushort BalanceLimitReached { get; set; }
 
         [FieldOrder(8)]
-        public uint RemainingBalance { get; set; }
+        public money_t RemainingBalance { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 30;
+        //[Ignore]
+        //protected override ushort BodyLength => (ushort) (Size.Of(Active) + Size.Of(Limit) + Size.Of(StakeLimit) + Size.Of(Balance));
     }
 }

@@ -9,7 +9,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string ErrorText { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 20;
+        //[Ignore]
+        //protected override ushort BodyLength => 20;
     }
 }

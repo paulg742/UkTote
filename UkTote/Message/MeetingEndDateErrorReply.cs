@@ -12,7 +12,7 @@ namespace UkTote.Message
         [FieldEncoding("us-ascii")]
         public string MeetingCode { get; set; }
 
-        [Ignore]
-        protected override ushort BodyLength => 4;
+        //[Ignore]
+        //protected override ushort BodyLength => 4;
     }
 }
