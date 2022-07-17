@@ -918,6 +918,9 @@ namespace UkTote.UI
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
+#if EIGHT_BYTE_MONEY
+            this.Text += " (8 byte Money)";
+#endif
             // create folders if they dont exist
             if (!Directory.Exists(txtBetFolder.Text))
             {
