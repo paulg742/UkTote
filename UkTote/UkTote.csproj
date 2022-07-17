@@ -29,6 +29,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugEightByteMoney|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugEightByteMoney\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EIGHT_BYTE_MONEY</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BinarySerializer, Version=6.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BinarySerializer.6.0.3\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10+xamarinmac20\BinarySerializer.dll</HintPath>

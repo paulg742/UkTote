@@ -103,25 +103,7 @@ namespace UkTote
 
         public static int Of<T>(T t) where T : Message.MessageBase
         {
-            var type = t.GetType();
-            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            var ret = 0;
-            foreach (var property in properties)
-            {
-                if (property.CustomAttributes.Any(a => a.AttributeType == typeof(FieldOrderAttribute)))
-                {
-                    var fieldCountAttribute = type.GetCustomAttribute(typeof(FieldCountAttribute));
-                    if (fieldCountAttribute == null)
-                    {
-                        ret += Of(property.PropertyType);
-                    }
-                    else
-                    {
-                        var x = 1;
-                    }
-                }
-            }
-            return ret - Message.MessageBase.HEADER_LENGTH;
+            return Of(t.GetType());
         }
     }
 }
