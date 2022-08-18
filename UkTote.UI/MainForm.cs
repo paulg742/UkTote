@@ -217,48 +217,57 @@ namespace UkTote.UI
 
         private void LogFeed<T>(string type, T obj) where T : MessageBase
         {
-            var str = JsonConvert.SerializeObject(obj, Formatting.Indented).Replace("\\u0000", string.Empty); 
-            var fileName = $"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-            if (obj is IRacePoolUpdate)
+            try
             {
-                var update = (IRacePoolUpdate)obj;
-                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                var str = JsonConvert.SerializeObject(obj, Formatting.Indented).Replace("\\u0000", string.Empty);
+                var fileName = $"{txtFeedFolder.Text}\\{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                if (obj is IRacePoolUpdate)
                 {
-                    var meeting = _racecard?.Meetings[update.MeetingNumber];
-                    var betCode = (Enums.BetCode)update.PoolNumber;
-                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}-{betCode}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                    var update = (IRacePoolUpdate)obj;
+                    if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                    {
+                        var meeting = _racecard?.Meetings[update.MeetingNumber];
+                        var racePool = meeting.Races[update.RaceNumber].RacePools[update.PoolNumber];
+                        //var betCode = (Enums.BetCode)update.PoolNumber;
+                        fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}-{racePool.PoolName.Trim('\0')}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                    }
                 }
+                else if (obj is IPoolUpdate)
+                {
+                    var update = (IPoolUpdate)obj;
+                    if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                    {
+                        var meeting = _racecard?.Meetings[update.MeetingNumber];
+                        var meetingPool = meeting.MeetingPools[update.PoolNumber];
+                        //var betCode = (Enums.BetCode)update.PoolNumber;
+                        fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-{meetingPool.PoolName.Trim('\0')}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                    }
+                }
+                else if (obj is IRaceUpdate)
+                {
+                    var update = (IRaceUpdate)obj;
+                    if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                    {
+                        var meeting = _racecard?.Meetings[update.MeetingNumber];
+                        fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                    }
+                }
+                else if (obj is IUpdate)
+                {
+                    var update = (IUpdate)obj;
+                    if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
+                    {
+                        var meeting = _racecard?.Meetings[update.MeetingNumber];
+                        fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
+                    }
+                }
+                _logger.DebugFormat("Logging to: {0}", fileName);
+                File.WriteAllText(fileName, str);
             }
-            else if (obj is IPoolUpdate)
+            catch (Exception ex)
             {
-                var update = (IPoolUpdate)obj;
-                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
-                {
-                    var meeting = _racecard?.Meetings[update.MeetingNumber];
-                    var betCode = (Enums.BetCode)update.PoolNumber;
-                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-{betCode}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-                }
+                _logger.Error(ex);
             }
-            else if (obj is IRaceUpdate)
-            {
-                var update = (IRaceUpdate)obj;
-                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber) ?? false)
-                {
-                    var meeting = _racecard?.Meetings[update.MeetingNumber];
-                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}-R{update.RaceNumber}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-                }
-            }
-            else if (obj is IUpdate)
-            {
-                var update = (IUpdate)obj;
-                if (_racecard?.Meetings.ContainsKey(update.MeetingNumber)??false)
-                {
-                    var meeting = _racecard?.Meetings[update.MeetingNumber];
-                    fileName = $"{txtFeedFolder.Text}\\{meeting.MeetingName.Trim('\0')}.{type}.{DateTime.UtcNow:yyyyMMddTHHmmssfff}.json";
-                }
-            }
-            _logger.DebugFormat("Logging to: {0}", fileName);
-            File.WriteAllText(fileName, str);
         }
 
         private void ArchiveFeed()
