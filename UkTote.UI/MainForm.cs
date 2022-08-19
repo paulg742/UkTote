@@ -933,15 +933,6 @@ namespace UkTote.UI
 #if EIGHT_BYTE_MONEY
             this.Text += " (8 byte Money)";
 #endif
-            using (var dlg = new AgreementForm())
-            {
-                if (dlg.ShowDialog() != DialogResult.OK)
-                {
-                    Application.Exit();
-                    return;
-                }
-            };
-
             // create folders if they dont exist
             if (!Directory.Exists(txtBetFolder.Text))
             {

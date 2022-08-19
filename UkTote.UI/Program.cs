@@ -15,7 +15,15 @@ namespace UkTote.UI
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+            using (var dlg = new AgreementForm())
+            {
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    Application.Run(new MainForm());
+                }
+            };
+            
         }
     }
 }
