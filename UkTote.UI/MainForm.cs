@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -1095,6 +1096,21 @@ namespace UkTote.UI
         private async void btnArchiveFeed_Click(object sender, EventArgs e)
         {
             await Task.Run(() => ArchiveFeed());
+        }
+
+        private void btnOpenBetInputFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", txtBetFolder.Text);
+        }
+
+        private void btnOpenBetOutputFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", txtBetOutputFolder.Text);
+        }
+
+        private void btnOpenFeedOutputFolder_Click(object sender, EventArgs e)
+        {
+            Process.Start("explorer.exe", txtFeedFolder.Text);
         }
     }
 }

@@ -42,6 +42,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.balanceLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.batchProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.versionLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnGetRacecard = new System.Windows.Forms.Button();
             this.racecardTreeView = new System.Windows.Forms.TreeView();
             this.btnExportRacecard = new System.Windows.Forms.Button();
@@ -77,8 +79,9 @@
             this.txtBetOutputFolder = new System.Windows.Forms.TextBox();
             this.btnArchiveFeed = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
-            this.batchProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.versionLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnOpenBetInputFolder = new System.Windows.Forms.Button();
+            this.btnOpenBetOutputFolder = new System.Windows.Forms.Button();
+            this.btnOpenFeedOutputFolder = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLastBetId)).BeginInit();
@@ -223,6 +226,17 @@
             // 
             this.balanceLabel.Name = "balanceLabel";
             this.balanceLabel.Size = new System.Drawing.Size(0, 25);
+            // 
+            // batchProgressBar
+            // 
+            this.batchProgressBar.Name = "batchProgressBar";
+            this.batchProgressBar.Size = new System.Drawing.Size(100, 24);
+            // 
+            // versionLabel
+            // 
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(110, 25);
+            this.versionLabel.Text = "versionLabel";
             // 
             // btnGetRacecard
             // 
@@ -377,9 +391,9 @@
             // 
             this.btnChangeBetFolder.Location = new System.Drawing.Point(728, 285);
             this.btnChangeBetFolder.Name = "btnChangeBetFolder";
-            this.btnChangeBetFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetFolder.Size = new System.Drawing.Size(86, 32);
             this.btnChangeBetFolder.TabIndex = 21;
-            this.btnChangeBetFolder.Text = "...";
+            this.btnChangeBetFolder.Text = "Change";
             this.btnChangeBetFolder.UseVisualStyleBackColor = true;
             this.btnChangeBetFolder.Click += new System.EventHandler(this.btnChangeBetFolder_Click);
             // 
@@ -421,9 +435,9 @@
             // 
             this.btnChangeFeedFolder.Location = new System.Drawing.Point(728, 349);
             this.btnChangeFeedFolder.Name = "btnChangeFeedFolder";
-            this.btnChangeFeedFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeFeedFolder.Size = new System.Drawing.Size(86, 32);
             this.btnChangeFeedFolder.TabIndex = 27;
-            this.btnChangeFeedFolder.Text = "...";
+            this.btnChangeFeedFolder.Text = "Change";
             this.btnChangeFeedFolder.UseVisualStyleBackColor = true;
             this.btnChangeFeedFolder.Click += new System.EventHandler(this.btnChangeFeedFolder_Click);
             // 
@@ -468,9 +482,9 @@
             // 
             this.btnChangeBetOutputFolder.Location = new System.Drawing.Point(728, 317);
             this.btnChangeBetOutputFolder.Name = "btnChangeBetOutputFolder";
-            this.btnChangeBetOutputFolder.Size = new System.Drawing.Size(33, 32);
+            this.btnChangeBetOutputFolder.Size = new System.Drawing.Size(86, 32);
             this.btnChangeBetOutputFolder.TabIndex = 32;
-            this.btnChangeBetOutputFolder.Text = "...";
+            this.btnChangeBetOutputFolder.Text = "Change";
             this.btnChangeBetOutputFolder.UseVisualStyleBackColor = true;
             this.btnChangeBetOutputFolder.Click += new System.EventHandler(this.btnChangeBetOutputFolder_Click);
             // 
@@ -513,16 +527,35 @@
     "USERS own risk ***";
             this.label9.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // batchProgressBar
+            // btnOpenBetInputFolder
             // 
-            this.batchProgressBar.Name = "batchProgressBar";
-            this.batchProgressBar.Size = new System.Drawing.Size(100, 24);
+            this.btnOpenBetInputFolder.Location = new System.Drawing.Point(820, 285);
+            this.btnOpenBetInputFolder.Name = "btnOpenBetInputFolder";
+            this.btnOpenBetInputFolder.Size = new System.Drawing.Size(86, 32);
+            this.btnOpenBetInputFolder.TabIndex = 35;
+            this.btnOpenBetInputFolder.Text = "Open";
+            this.btnOpenBetInputFolder.UseVisualStyleBackColor = true;
+            this.btnOpenBetInputFolder.Click += new System.EventHandler(this.btnOpenBetInputFolder_Click);
             // 
-            // versionLabel
+            // btnOpenBetOutputFolder
             // 
-            this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(110, 25);
-            this.versionLabel.Text = "versionLabel";
+            this.btnOpenBetOutputFolder.Location = new System.Drawing.Point(820, 317);
+            this.btnOpenBetOutputFolder.Name = "btnOpenBetOutputFolder";
+            this.btnOpenBetOutputFolder.Size = new System.Drawing.Size(86, 32);
+            this.btnOpenBetOutputFolder.TabIndex = 36;
+            this.btnOpenBetOutputFolder.Text = "Open";
+            this.btnOpenBetOutputFolder.UseVisualStyleBackColor = true;
+            this.btnOpenBetOutputFolder.Click += new System.EventHandler(this.btnOpenBetOutputFolder_Click);
+            // 
+            // btnOpenFeedOutputFolder
+            // 
+            this.btnOpenFeedOutputFolder.Location = new System.Drawing.Point(820, 349);
+            this.btnOpenFeedOutputFolder.Name = "btnOpenFeedOutputFolder";
+            this.btnOpenFeedOutputFolder.Size = new System.Drawing.Size(86, 32);
+            this.btnOpenFeedOutputFolder.TabIndex = 37;
+            this.btnOpenFeedOutputFolder.Text = "Open";
+            this.btnOpenFeedOutputFolder.UseVisualStyleBackColor = true;
+            this.btnOpenFeedOutputFolder.Click += new System.EventHandler(this.btnOpenFeedOutputFolder_Click);
             // 
             // MainForm
             // 
@@ -530,6 +563,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1091, 908);
+            this.Controls.Add(this.btnOpenFeedOutputFolder);
+            this.Controls.Add(this.btnOpenBetOutputFolder);
+            this.Controls.Add(this.btnOpenBetInputFolder);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.btnArchiveFeed);
             this.Controls.Add(this.btnChangeBetOutputFolder);
@@ -630,6 +666,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ToolStripProgressBar batchProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel versionLabel;
+        private System.Windows.Forms.Button btnOpenBetInputFolder;
+        private System.Windows.Forms.Button btnOpenBetOutputFolder;
+        private System.Windows.Forms.Button btnOpenFeedOutputFolder;
     }
 }
 
