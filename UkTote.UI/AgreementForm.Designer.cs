@@ -43,8 +43,8 @@
             this.label1.Size = new System.Drawing.Size(516, 171);
             this.label1.TabIndex = 0;
             this.label1.Text = "This tool is provided for testing purposes only. Although it has been used succes" +
-    "sfully, it is not warranted in a LIVE enviroinment. Any LIVE bets made using thi" +
-    "s tool are at the user\'s own risk.";
+    "sfully, it is not warranted in a LIVE environment. Any LIVE bets made using this" +
+    " tool are at the user\'s own risk.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnAccept

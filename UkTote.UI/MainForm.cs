@@ -874,7 +874,10 @@ namespace UkTote.UI
 
         private void btnChangeBetFolder_Click(object sender, EventArgs e)
         {
-            var dlg = new FolderBrowserDialog();
+            var dlg = new FolderBrowserDialog()
+            {
+                SelectedPath = txtBetFolder.Text
+            };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtBetFolder.Text = dlg.SelectedPath;
@@ -970,7 +973,11 @@ namespace UkTote.UI
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
         {
-            var dlg = new FolderBrowserDialog();
+            var dlg = new FolderBrowserDialog()
+            {
+                SelectedPath = txtFeedFolder.Text
+            };
+
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtFeedFolder.Text = dlg.SelectedPath;
@@ -1083,7 +1090,10 @@ namespace UkTote.UI
 
         private void btnChangeBetOutputFolder_Click(object sender, EventArgs e)
         {
-            var dlg = new FolderBrowserDialog();
+            var dlg = new FolderBrowserDialog()
+            {
+                SelectedPath = txtBetOutputFolder.Text
+            };
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 txtBetOutputFolder.Text = dlg.SelectedPath;
