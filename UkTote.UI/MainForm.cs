@@ -930,6 +930,15 @@ namespace UkTote.UI
 #if EIGHT_BYTE_MONEY
             this.Text += " (8 byte Money)";
 #endif
+            using (var dlg = new AgreementForm())
+            {
+                if (dlg.ShowDialog() != DialogResult.OK)
+                {
+                    Application.Exit();
+                    return;
+                }
+            };
+
             // create folders if they dont exist
             if (!Directory.Exists(txtBetFolder.Text))
             {
@@ -951,6 +960,10 @@ namespace UkTote.UI
             numLastBetId.Value = Properties.Settings.Default.LastBetId;
             Properties.Settings.Default.LastRunTime = DateTime.UtcNow;
             Properties.Settings.Default.Save();
+
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            versionLabel.Text = $"Version: {version.Major}.{version.Minor}";
+            versionLabel.Alignment = ToolStripItemAlignment.Right;
 
             await Task.Run(() => ArchiveFeed());
         }
