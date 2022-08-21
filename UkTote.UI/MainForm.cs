@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -23,10 +25,15 @@ namespace UkTote.UI
         private FileSystemWatcher _watcher;
         private readonly Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
         private readonly Dictionary<Guid?, ListViewItem> _itemMap = new Dictionary<Guid?, ListViewItem>();
+        private readonly HttpClient _httpClient;
 
         public MainForm()
         {
             InitializeComponent();
+            _httpClient = new HttpClient()
+            {
+                BaseAddress = new Uri("https://hooks.slack.com")
+            };
             txtHostIpAddress.Text = Properties.Settings.Default.HostIpAddress;
             numHostPort.Value = Properties.Settings.Default.HostPort;
             txtUsername.Text = Properties.Settings.Default.Username;
@@ -449,25 +456,45 @@ namespace UkTote.UI
             {
                 try
                 {
-                    _connected = await Task.Factory.StartNew(() => _gateway.Connect(txtHostIpAddress.Text, (int)numHostPort.Value));
-                    if (!_connected)
+                    var message = new Model.SlackMessage()
                     {
-                        Log($"Could not connect to {txtHostIpAddress.Text}");
+                        Text = $"{txtUsername.Text} connecting to {txtHostIpAddress.Text}:{(int)numHostPort.Value} - Version: {ApplicationVersion}"
+                    };
+                    var request = new HttpRequestMessage(HttpMethod.Post, "/services/T03UJ822ELU/B03UCR5GY3X/1OQ00QQ7JGAzLjaBYt9X5qyt")
+                    {
+                        Content = new StringContent(message.ToString(), 
+                            Encoding.UTF8,
+                            "application/json")
+                    };
+                    
+                    var resp = await _httpClient.SendAsync(request);
+
+                    if (!resp.IsSuccessStatusCode)
+                    {
+                        Log("Audit failure - please contact support");
                     }
                     else
                     {
-                        _loggedIn = await _gateway.Login(txtUsername.Text, txtPassword.Text);
-                        if (!_loggedIn)
+                        _connected = await Task.Factory.StartNew(() => _gateway.Connect(txtHostIpAddress.Text, (int)numHostPort.Value));
+                        if (!_connected)
                         {
-                            Log($"Login failed with {txtUsername.Text}");
+                            Log($"Could not connect to {txtHostIpAddress.Text}");
                         }
                         else
                         {
-                            btnGetRacecard.Enabled = true;
-                            numLastBetId.Enabled = true;
-                            if (numLastBetId.Value > 0)
+                            _loggedIn = await _gateway.Login(txtUsername.Text, txtPassword.Text);
+                            if (!_loggedIn)
                             {
-                                numLastBetId_ValueChanged(this, null);
+                                Log($"Login failed with {txtUsername.Text}");
+                            }
+                            else
+                            {
+                                btnGetRacecard.Enabled = true;
+                                numLastBetId.Enabled = true;
+                                if (numLastBetId.Value > 0)
+                                {
+                                    numLastBetId_ValueChanged(this, null);
+                                }
                             }
                         }
                     }
@@ -479,11 +506,8 @@ namespace UkTote.UI
                 finally
                 {
                     if (!_connected || !_loggedIn)
-                    {
+                    { 
                         _gateway.Disconnect();
-                    }
-                    if (!_connected || !_loggedIn)
-                    {
                         btnConnect.Enabled = true;
                     }
                     if (_loggedIn)
@@ -956,11 +980,19 @@ namespace UkTote.UI
             Properties.Settings.Default.LastRunTime = DateTime.UtcNow;
             Properties.Settings.Default.Save();
 
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            versionLabel.Text = $"Version: {version.Major}.{version.Minor}";
+            versionLabel.Text = ApplicationVersion;
             versionLabel.Alignment = ToolStripItemAlignment.Right;
 
             await Task.Run(() => ArchiveFeed());
+        }
+
+        private string ApplicationVersion
+        {
+            get
+            {
+                var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                return $"Version: {version.Major}.{version.Minor}";
+            }
         }
 
         private void btnChangeFeedFolder_Click(object sender, EventArgs e)
