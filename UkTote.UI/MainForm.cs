@@ -769,13 +769,26 @@ namespace UkTote.UI
 
         private List<Model.FileBet> ProcessBetFile(string path)
         {
+            _logger.DebugFormat("Processing bet file: {0}", path);
             var ret = new List<Model.FileBet>();
             var lines = File.ReadAllLines(path);
+            int lineCounter = 0;
             foreach (var line in lines)
             {
+                ++lineCounter;
                 if (!string.IsNullOrEmpty(line.Trim()))
                 {
-                    ret.Add(Model.FileBet.Parse(line));
+                    try
+                    {
+                        _logger.DebugFormat("Parsing bet - line: {0} - {1}", lineCounter, line);
+                        var bet = Model.FileBet.Parse(line);
+                        ret.Add(bet);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Error(ex);
+                        Log($"Invalid bet found in file line: {lineCounter} - {line}");
+                    }
                 }
             }
             return ret;
