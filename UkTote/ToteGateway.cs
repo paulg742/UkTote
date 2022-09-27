@@ -291,7 +291,7 @@ namespace UkTote
             catch(IOException ex)
             {
                 // don't want the watchdog butting in when we're in orderly shutdown
-                _watchdogTimer.Stop();
+                _watchdogTimer?.Stop();
                 _logger.Error("IOException", ex);
                 if (!_shuttingDown)
                 {
