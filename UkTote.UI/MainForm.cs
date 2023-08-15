@@ -911,7 +911,17 @@ namespace UkTote.UI
                 outputTxt += outputLine;
             }
             File.AppendAllText($"{outputFilePath}", outputTxt);
-            File.Delete(filePath);
+            try
+            {
+                _logger.DebugFormat("Deleting file: {0}", filePath);
+                File.Delete(filePath);
+                _logger.DebugFormat("{0} deleted successfully", filePath);
+            }
+            catch (Exception ex)
+            {
+                var msg = string.Format("Exception deleting {0}", filePath);
+                _logger.Error(msg, ex);
+            }
         }
 
         private void btnChangeBetFolder_Click(object sender, EventArgs e)
