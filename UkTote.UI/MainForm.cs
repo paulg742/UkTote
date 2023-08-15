@@ -27,6 +27,7 @@ namespace UkTote.UI
         private readonly Dictionary<string, DateTime> _watcherLog = new Dictionary<string, DateTime>();   // use to de-dupe fsw events
         private readonly Dictionary<Guid?, ListViewItem> _itemMap = new Dictionary<Guid?, ListViewItem>();
         private readonly HttpClient _httpClient;
+        private readonly int _dupeBetWindowSeconds;
 
         public MainForm()
         {
@@ -45,6 +46,7 @@ namespace UkTote.UI
             txtBetFolder.Text = Properties.Settings.Default.BetFolder;
             txtFeedFolder.Text = Properties.Settings.Default.FeedFolder;
             txtBetOutputFolder.Text = Properties.Settings.Default.BetOutputFolder;
+            _dupeBetWindowSeconds = Properties.Settings.Default.DupeBetWindowSeconds;
 
             _gateway.OnConnected += _gateway_OnConnected;
             _gateway.OnDisconnected += _gateway_OnDisconnected;
@@ -800,7 +802,9 @@ namespace UkTote.UI
 
         private async void OnChanged(object source, FileSystemEventArgs e)
         {
-            if (_watcherLog.ContainsKey(e.FullPath) && (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < 30)
+            // a value of -1 for _dupeBetWindowSeconds implies NEVER reprocess a file
+            if (_watcherLog.ContainsKey(e.FullPath) && 
+                (_dupeBetWindowSeconds == -1 || (DateTime.UtcNow - _watcherLog[e.FullPath]).TotalSeconds < _dupeBetWindowSeconds))
             {
                 // ignore this dupe event
                 return;
