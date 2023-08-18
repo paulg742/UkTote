@@ -800,7 +800,7 @@ namespace UkTote.UI
             return ret;
         }
 
-        private async void OnChanged(object source, FileSystemEventArgs e)
+        private void OnChanged(object source, FileSystemEventArgs e)
         {
             // a value of -1 for _dupeBetWindowSeconds implies NEVER reprocess a file
             if (_watcherLog.ContainsKey(e.FullPath) && 
@@ -856,7 +856,7 @@ namespace UkTote.UI
                         .Where(b => b.Request != null && b.IsValid)
                         .Select(b => b.Request)
                         .ToList();
-                    var results = await _gateway.SellBatch(batch);
+                    var results = _gateway.SellBatch(batch).Result;
 
                     listView1.BeginUpdate();
                     foreach (var result in results)
