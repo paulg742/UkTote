@@ -378,7 +378,7 @@ namespace UkTote
 
         private void _watchdogTimer_OnTimeout(string obj)
         {
-            _logger.DebugFormat("Watchdog timer timeout: {0}", obj);
+            _logger.InfoFormat("Watchdog timer timeout: {0}", obj);
             OnIdle?.Invoke(obj);
         }
 
@@ -779,7 +779,7 @@ namespace UkTote
             }
             catch (Exception ex)
             {
-                _logger.DebugFormat("Disconnect", ex);
+                _logger.InfoFormat("Disconnect", ex);
             }
             finally
             {
@@ -950,7 +950,7 @@ namespace UkTote
 
             successHandler += (reply) =>
             {
-                _logger.DebugFormat("BetId {0} succeeded", reply.BetId);
+                _logger.InfoFormat("BetId {0} succeeded", reply.BetId);
                 tcs.TrySetResult(new BetReply()
                 {
                     Tsn = reply.Tsn,
@@ -963,7 +963,7 @@ namespace UkTote
             };
             failedHandler += (reply) =>
             {
-                _logger.DebugFormat("BetId {0} failed ErrorCode({1}) ErrorText({2})", reply.BetId, reply.ErrorCode2, reply.ErrorText);
+                _logger.InfoFormat("BetId {0} failed ErrorCode({1}) ErrorText({2})", reply.BetId, reply.ErrorCode2, reply.ErrorText);
                 tcs.TrySetResult(new BetReply()
                 {
                     Tsn = string.Empty,
@@ -997,7 +997,7 @@ namespace UkTote
             successHandler += (reply) => 
             {
                 var tsn = reply.Tsn.Replace("\0", string.Empty);
-                _logger.DebugFormat("Pay enquiry {0} succeeded", tsn);
+                _logger.InfoFormat("Pay enquiry {0} succeeded", tsn);
                 if (responses.ContainsKey(tsn))
                 {
                     responses[tsn] = new PayEnquiryReply()
@@ -1020,7 +1020,7 @@ namespace UkTote
             failedHandler += (reply) =>
             {
                 var tsn = reply.Tsn.Replace("\0", string.Empty);
-                _logger.DebugFormat("Pay enquiry {0} failed", tsn);
+                _logger.InfoFormat("Pay enquiry {0} failed", tsn);
                 if (responses.ContainsKey(tsn))
                 {
                     responses[tsn] = new PayEnquiryReply()
@@ -1063,7 +1063,7 @@ namespace UkTote
 
             successHandler += (reply) =>
             {
-                _logger.DebugFormat("BetId {0} succeeded", reply.BetId);
+                _logger.InfoFormat("BetId {0} succeeded", reply.BetId);
                 if (responses.ContainsKey((int)reply.BetId))
                 {
                     responses[(int)reply.BetId] = new BetReply()
@@ -1085,7 +1085,7 @@ namespace UkTote
             };
             failedHandler += (reply) =>
             {
-                _logger.DebugFormat("BetId {0} failed", reply.BetId);
+                _logger.InfoFormat("BetId {0} failed", reply.BetId);
                 if (responses.ContainsKey((int)reply.BetId))
                 {
                     responses[(int)reply.BetId] = new BetReply()

@@ -71,6 +71,8 @@
     <Compile Include="AgreementForm.Designer.cs">
       <DependentUpon>AgreementForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileProcessQueue.cs" />
+    <Compile Include="IHandleQueueUpdates.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
