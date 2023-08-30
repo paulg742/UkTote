@@ -959,6 +959,9 @@ namespace UkTote.UI
 
         private async void MainForm_Load(object sender, EventArgs e)
         {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text += string.Format(" v{0}", version);
+
 #if EIGHT_BYTE_MONEY
             this.Text += " (8 byte Money)";
 #endif
