@@ -12,7 +12,7 @@ namespace UkTote.UI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.6.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("217.46.202.209")]
+        [global::System.Configuration.DefaultSettingValueAttribute("35.176.191.152")]
         public string HostIpAddress {
             get {
                 return ((string)(this["HostIpAddress"]));
@@ -37,7 +37,7 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8032")]
+        [global::System.Configuration.DefaultSettingValueAttribute("9031")]
         public int HostPort {
             get {
                 return ((int)(this["HostPort"]));
@@ -49,7 +49,7 @@ namespace UkTote.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ATCentrum5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ATHKDCentrum04")]
         public string Username {
             get {
                 return ((string)(this["Username"]));

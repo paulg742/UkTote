@@ -920,7 +920,12 @@ namespace UkTote.UI
             Properties.Settings.Default.BetFolder = txtBetFolder.Text;
             Properties.Settings.Default.BetOutputFolder = txtBetOutputFolder.Text;
             Properties.Settings.Default.FeedFolder = txtFeedFolder.Text;
+            Properties.Settings.Default.HostIpAddress = txtHostIpAddress.Text;
+            Properties.Settings.Default.HostPort = (int)numHostPort.Value;
+            Properties.Settings.Default.Username = txtUsername.Text;
+            Properties.Settings.Default.Password = txtPassword.Text;
             Properties.Settings.Default.Save();
+            UpdateStatus("Settings saved");
         }
         private void numLastBetId_ValueChanged(object sender, EventArgs e)
         {
@@ -1240,6 +1245,11 @@ namespace UkTote.UI
         public void FileFinishedProcessing(string path)
         {
             
+        }
+
+        private void btnSaveLogin_Click(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
     }
 }

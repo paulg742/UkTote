@@ -83,6 +83,7 @@
     <Compile Include="Model\SlackMessage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UkToteUserSettings.cs" />
     <EmbeddedResource Include="AgreementForm.resx">
       <DependentUpon>AgreementForm.cs</DependentUpon>
     </EmbeddedResource>

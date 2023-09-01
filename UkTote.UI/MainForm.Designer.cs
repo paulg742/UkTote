@@ -28,14 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtHostIpAddress = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numHostPort = new System.Windows.Forms.NumericUpDown();
             this.btnConnect = new System.Windows.Forms.Button();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.btnCopyLog = new System.Windows.Forms.Button();
@@ -82,90 +74,21 @@
             this.btnOpenBetInputFolder = new System.Windows.Forms.Button();
             this.btnOpenBetOutputFolder = new System.Windows.Forms.Button();
             this.btnOpenFeedOutputFolder = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnSaveLogin = new System.Windows.Forms.Button();
+            this.numHostPort = new System.Windows.Forms.NumericUpDown();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtUsername = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtHostIpAddress = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLastBetId)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 43);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(125, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Host IP Address";
-            // 
-            // txtHostIpAddress
-            // 
-            this.txtHostIpAddress.Location = new System.Drawing.Point(18, 74);
-            this.txtHostIpAddress.Name = "txtHostIpAddress";
-            this.txtHostIpAddress.Size = new System.Drawing.Size(156, 26);
-            this.txtHostIpAddress.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 111);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 20);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Host Port";
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.Location = new System.Drawing.Point(18, 209);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(156, 26);
-            this.txtUsername.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 179);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 20);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Username";
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.Location = new System.Drawing.Point(18, 279);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(156, 26);
-            this.txtPassword.TabIndex = 7;
-            this.txtPassword.UseSystemPasswordChar = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(18, 246);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 20);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Password";
-            // 
-            // numHostPort
-            // 
-            this.numHostPort.Location = new System.Drawing.Point(18, 142);
-            this.numHostPort.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numHostPort.Minimum = new decimal(new int[] {
-            8000,
-            0,
-            0,
-            0});
-            this.numHostPort.Name = "numHostPort";
-            this.numHostPort.Size = new System.Drawing.Size(156, 26);
-            this.numHostPort.TabIndex = 8;
-            this.numHostPort.Value = new decimal(new int[] {
-            8000,
-            0,
-            0,
-            0});
             // 
             // btnConnect
             // 
@@ -184,15 +107,15 @@
             this.listBoxLog.Font = new System.Drawing.Font("Lucida Console", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.ItemHeight = 16;
-            this.listBoxLog.Location = new System.Drawing.Point(189, 671);
+            this.listBoxLog.Location = new System.Drawing.Point(189, 680);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(891, 148);
+            this.listBoxLog.Size = new System.Drawing.Size(921, 148);
             this.listBoxLog.TabIndex = 10;
             // 
             // btnCopyLog
             // 
             this.btnCopyLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyLog.Location = new System.Drawing.Point(802, 836);
+            this.btnCopyLog.Location = new System.Drawing.Point(832, 845);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(280, 38);
             this.btnCopyLog.TabIndex = 11;
@@ -210,10 +133,10 @@
             this.batchProgressBar,
             this.versionLabel});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 876);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 885);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 14, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1091, 32);
+            this.statusStrip1.Size = new System.Drawing.Size(1121, 32);
             this.statusStrip1.TabIndex = 12;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -254,13 +177,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.racecardTreeView.Location = new System.Drawing.Point(189, 43);
             this.racecardTreeView.Name = "racecardTreeView";
-            this.racecardTreeView.Size = new System.Drawing.Size(891, 193);
+            this.racecardTreeView.Size = new System.Drawing.Size(921, 193);
             this.racecardTreeView.TabIndex = 14;
             // 
             // btnExportRacecard
             // 
             this.btnExportRacecard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportRacecard.Location = new System.Drawing.Point(799, 242);
+            this.btnExportRacecard.Location = new System.Drawing.Point(829, 242);
             this.btnExportRacecard.Name = "btnExportRacecard";
             this.btnExportRacecard.Size = new System.Drawing.Size(280, 38);
             this.btnExportRacecard.TabIndex = 15;
@@ -290,7 +213,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(189, 388);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(891, 234);
+            this.listView1.Size = new System.Drawing.Size(921, 243);
             this.listView1.TabIndex = 16;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -354,7 +277,7 @@
             this.checkBoxHideRawComms.AutoSize = true;
             this.checkBoxHideRawComms.Checked = true;
             this.checkBoxHideRawComms.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHideRawComms.Location = new System.Drawing.Point(16, 672);
+            this.checkBoxHideRawComms.Location = new System.Drawing.Point(16, 681);
             this.checkBoxHideRawComms.Name = "checkBoxHideRawComms";
             this.checkBoxHideRawComms.Size = new System.Drawing.Size(162, 24);
             this.checkBoxHideRawComms.TabIndex = 17;
@@ -399,8 +322,9 @@
             // 
             // numLastBetId
             // 
+            this.numLastBetId.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.numLastBetId.Enabled = false;
-            this.numLastBetId.Location = new System.Drawing.Point(18, 349);
+            this.numLastBetId.Location = new System.Drawing.Point(281, 643);
             this.numLastBetId.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -413,8 +337,9 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 316);
+            this.label6.Location = new System.Drawing.Point(185, 645);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 20);
             this.label6.TabIndex = 23;
@@ -423,7 +348,7 @@
             // btnExportBets
             // 
             this.btnExportBets.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportBets.Location = new System.Drawing.Point(875, 628);
+            this.btnExportBets.Location = new System.Drawing.Point(905, 637);
             this.btnExportBets.Name = "btnExportBets";
             this.btnExportBets.Size = new System.Drawing.Size(202, 38);
             this.btnExportBets.TabIndex = 24;
@@ -470,7 +395,7 @@
             // btnPayEnquiry
             // 
             this.btnPayEnquiry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPayEnquiry.Location = new System.Drawing.Point(665, 628);
+            this.btnPayEnquiry.Location = new System.Drawing.Point(695, 637);
             this.btnPayEnquiry.Name = "btnPayEnquiry";
             this.btnPayEnquiry.Size = new System.Drawing.Size(206, 38);
             this.btnPayEnquiry.TabIndex = 29;
@@ -521,7 +446,7 @@
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(0, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(1091, 20);
+            this.label9.Size = new System.Drawing.Size(1121, 20);
             this.label9.TabIndex = 34;
             this.label9.Text = "*** Provided on an AS IS basis. Use of this test tool for live betting is at the " +
     "USERS own risk ***";
@@ -557,12 +482,121 @@
             this.btnOpenFeedOutputFolder.UseVisualStyleBackColor = true;
             this.btnOpenFeedOutputFolder.Click += new System.EventHandler(this.btnOpenFeedOutputFolder_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnSaveLogin);
+            this.groupBox1.Controls.Add(this.numHostPort);
+            this.groupBox1.Controls.Add(this.txtPassword);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.txtUsername);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.txtHostIpAddress);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Location = new System.Drawing.Point(12, 39);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(171, 343);
+            this.groupBox1.TabIndex = 38;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Host Config";
+            // 
+            // btnSaveLogin
+            // 
+            this.btnSaveLogin.Location = new System.Drawing.Point(5, 290);
+            this.btnSaveLogin.Name = "btnSaveLogin";
+            this.btnSaveLogin.Size = new System.Drawing.Size(156, 34);
+            this.btnSaveLogin.TabIndex = 47;
+            this.btnSaveLogin.Text = "Save";
+            this.btnSaveLogin.UseVisualStyleBackColor = true;
+            this.btnSaveLogin.Click += new System.EventHandler(this.btnSaveLogin_Click);
+            // 
+            // numHostPort
+            // 
+            this.numHostPort.Location = new System.Drawing.Point(5, 121);
+            this.numHostPort.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numHostPort.Minimum = new decimal(new int[] {
+            8000,
+            0,
+            0,
+            0});
+            this.numHostPort.Name = "numHostPort";
+            this.numHostPort.Size = new System.Drawing.Size(156, 26);
+            this.numHostPort.TabIndex = 46;
+            this.numHostPort.Value = new decimal(new int[] {
+            8000,
+            0,
+            0,
+            0});
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(5, 258);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(156, 26);
+            this.txtPassword.TabIndex = 45;
+            this.txtPassword.UseSystemPasswordChar = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(5, 225);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 20);
+            this.label4.TabIndex = 44;
+            this.label4.Text = "Password";
+            // 
+            // txtUsername
+            // 
+            this.txtUsername.Location = new System.Drawing.Point(5, 188);
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(156, 26);
+            this.txtUsername.TabIndex = 43;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(5, 158);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 20);
+            this.label3.TabIndex = 42;
+            this.label3.Text = "Username";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 90);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 20);
+            this.label2.TabIndex = 41;
+            this.label2.Text = "Port";
+            // 
+            // txtHostIpAddress
+            // 
+            this.txtHostIpAddress.Location = new System.Drawing.Point(5, 53);
+            this.txtHostIpAddress.Name = "txtHostIpAddress";
+            this.txtHostIpAddress.Size = new System.Drawing.Size(156, 26);
+            this.txtHostIpAddress.TabIndex = 40;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 20);
+            this.label1.TabIndex = 39;
+            this.label1.Text = "IP Address";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1091, 908);
+            this.ClientSize = new System.Drawing.Size(1121, 917);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnOpenFeedOutputFolder);
             this.Controls.Add(this.btnOpenBetOutputFolder);
             this.Controls.Add(this.btnOpenBetInputFolder);
@@ -592,37 +626,22 @@
             this.Controls.Add(this.btnCopyLog);
             this.Controls.Add(this.listBoxLog);
             this.Controls.Add(this.btnConnect);
-            this.Controls.Add(this.numHostPort);
-            this.Controls.Add(this.txtPassword);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtUsername);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtHostIpAddress);
-            this.Controls.Add(this.label1);
             this.Name = "MainForm";
             this.Text = "UkTote UI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLastBetId)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numHostPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtHostIpAddress;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown numHostPort;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ListBox listBoxLog;
         private System.Windows.Forms.Button btnCopyLog;
@@ -669,6 +688,16 @@
         private System.Windows.Forms.Button btnOpenBetInputFolder;
         private System.Windows.Forms.Button btnOpenBetOutputFolder;
         private System.Windows.Forms.Button btnOpenFeedOutputFolder;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnSaveLogin;
+        private System.Windows.Forms.NumericUpDown numHostPort;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtUsername;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtHostIpAddress;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="HostIpAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">217.46.202.209</Value>
+      <Value Profile="(Default)">35.176.191.152</Value>
     </Setting>
     <Setting Name="HostPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">8032</Value>
+      <Value Profile="(Default)">9031</Value>
     </Setting>
     <Setting Name="Username" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ATCentrum5</Value>
+      <Value Profile="(Default)">ATHKDCentrum04</Value>
     </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)">password</Value>
